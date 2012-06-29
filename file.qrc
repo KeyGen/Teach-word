@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file alias="icon_trey">picture/icon_trey.png</file>
+        <file alias="edit">picture/edit.png</file>
+        <file alias="exit">picture/exit.png</file>
+        <file alias="help">picture/help.png</file>
+        <file alias="info">picture/info.png</file>
+        <file alias="mask">picture/mask.png</file>
+        <file alias="setting">picture/setting.png</file>
+        <file alias="style">picture/style.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>Edit_push.qml</file>
+        <file>Exit_push.qml</file>
+        <file>Help_push.qml</file>
+        <file>Info_push.qml</file>
+        <file>Mask_push.qml</file>
+        <file>Setting_push.qml</file>
+        <file>Style_push.qml</file>
+        <file>Background_qml.qml</file>
+        <file>Menu_qml.qml</file>
+    </qresource>
+</RCC>
