@@ -8,6 +8,7 @@
         <file alias="mask">picture/mask.png</file>
         <file alias="setting">picture/setting.png</file>
         <file alias="style">picture/style.png</file>
+        <file alias="finger">picture/finger.png</file>
     </qresource>
     <qresource prefix="/">
         <file>Edit_push.qml</file>

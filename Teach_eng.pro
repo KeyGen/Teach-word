@@ -17,7 +17,9 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui \
     input_word_ui.ui \
-    setting_programm_ui.ui
+    setting_programm_ui.ui \
+    info.ui \
+    style.ui
 
 RESOURCES += \
     file.qrc

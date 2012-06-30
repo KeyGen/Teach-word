@@ -25,6 +25,6 @@ Image {
         anchors.fill: parent
         anchors.margins: -10
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: console.log("Not func")
+        onClicked: Qt_fun.execStyle()
     }
 }

@@ -15,6 +15,8 @@ namespace Ui {
 class MainWindow;
 class Setting_programm;
 class Input_word;
+class Info;
+class Style;
 }
 
 class MainWindow : public QMainWindow
@@ -25,10 +27,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    // Вызываетстя из qml
     Q_INVOKABLE void exec_dialog_setting();
     Q_INVOKABLE void exec_dialog_input();
+    Q_INVOKABLE void exec_dialog_info();
+    Q_INVOKABLE void execStyle();
     Q_INVOKABLE void exitProgramm();
     Q_INVOKABLE void maskProgramm();
+    Q_INVOKABLE void helpProgramm();
 
 private slots:
     void setCurrnetRow_list_rus(int);
@@ -57,12 +63,31 @@ private slots:
     void treyInfo();
     void treyMask();
 
+    // Слоты для изменения градиента
+    void sliderPositionOne(int);
+    void sliderPositionTwo(int);
+    void sliderPositionThree(int);
+
+    void sliderColorOneR(int);
+    void sliderColorOneG(int);
+    void sliderColorOneB(int);
+
+    void sliderColorTwoR(int);
+    void sliderColorTwoG(int);
+    void sliderColorTwoB(int);
+
+    void sliderColorThreeR(int);
+    void sliderColorThreeG(int);
+    void sliderColorThreeB(int);
+
     void temp(int);
     
 private:
     Ui::MainWindow *ui;
     Ui::Input_word *ui_input;
     Ui::Setting_programm *ui_setting;
+    Ui::Info *ui_info;
+    Ui::Style *ui_style;
 
     QDeclarativeView *ui_qml_background;
     QObject *Root_ui_qml_background; //корневой элемент QML модели
@@ -83,12 +108,25 @@ private:
 
     QDialog *dialog_input;
     QDialog *dialog_setting;
+    QDialog *dialog_info;
+    QDialog *dialog_style;
+
+    QColor colorGradientOne;
+    QColor colorGradientTwo;
+    QColor colorGradientThree;
+    double positionGradientOne;
+    double positionGradientTwo;
+    double positionGradientTree;
+
+
+    int chopHelpWord;
     int saveRow;
     int saveRowTeachWord;
     int shiftWord;
     int amount_correct;
     bool demandWord;
     bool reperatWord;
+    bool BL_help_apply; // Фиксирует пользовались ли подсказкой
     int whatAmountWord;
     QTime saveTime;
 
