@@ -2,8 +2,9 @@
 import QtQuick 1.1
 
 Rectangle {
+    id: backenground
     width: 390
-    height: 300
+    height: 306
 
     gradient: Gradient {
         objectName: "background_color"
@@ -24,5 +25,14 @@ Rectangle {
             position: 0.0;
             color: "#9C9C9C"
         }
+    }
+
+    MouseArea {
+        id: input_size_2_Mouse
+        anchors.fill: parent
+        onClicked: Qt.LeftButton
+        onPositionChanged: Qt_fun.move_window();
+        onEntered: Qt_fun.cursor_up()
+        onExited: Qt_fun.cursor_down()
     }
 }

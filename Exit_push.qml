@@ -6,25 +6,57 @@ import QtQuick 1.1
 
 Image {
     id: edit //Имя кнопки
-    objectName: "edit_push"
-    source: ":/icon/exit"
 
     width: 44
     height: 44
 
     x: 3
 
+    scale: qtMouse.pressed ? 0.8 : 1.0
+
     smooth: true
     rotation: -90
 
-    scale: quitMouse.pressed ? 0.8 : 1.0
-    //smooth: true
+    state: "normal"
+
+            states: [
+                State {
+                    name: "normal"
+                    PropertyChanges {
+                        target: edit
+                        source: ":/icon/exit"
+                    }
+                },
+                State {
+                    name: "shift"
+                    PropertyChanges {
+                        target: edit
+                        source: ":/icon/exit_activ"
+                    }
+                }
+            ]
 
     MouseArea {
         id: quitMouse
         anchors.fill: parent
-        anchors.margins: -10
+
+        hoverEnabled: true
+        onEntered:
+        {
+            edit.state = 'shift'
+            Qt_fun.startSoundButton()
+        }
+        onExited: edit.state = 'normal'
+    }
+
+    MouseArea {
+        id: qtMouse
+        anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: Qt_fun.exitProgramm()
+        onClicked:
+        {
+            edit.state = 'normal'
+            Qt_fun.exitProgramm()
+        }
     }
 }

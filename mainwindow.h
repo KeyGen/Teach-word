@@ -11,8 +11,10 @@
 #include <QGraphicsObject>
 #include <QtGui>
 
+#include <phonon>
+using namespace Phonon;
+
 namespace Ui {
-class MainWindow;
 class Setting_programm;
 class Input_word;
 class Info;
@@ -27,7 +29,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    // Вызываетстя из qml
+    // Р’С‹Р·С‹РІР°РµС‚СЃС‚СЏ РёР· qml
     Q_INVOKABLE void exec_dialog_setting();
     Q_INVOKABLE void exec_dialog_input();
     Q_INVOKABLE void exec_dialog_info();
@@ -35,6 +37,15 @@ public:
     Q_INVOKABLE void exitProgramm();
     Q_INVOKABLE void maskProgramm();
     Q_INVOKABLE void helpProgramm();
+
+    // Р—Р°РїСѓСЃРєР°РµРј Р·РІСѓРє РёР· qml
+    Q_INVOKABLE void startSoundError();
+    Q_INVOKABLE void startSoundButton();
+    Q_INVOKABLE void startSoundShow();
+
+    Q_INVOKABLE void move_window(); //Р¤СѓРЅРєС†РёСЏ C++ РІС‹Р·С‹РІР°РµРјР°СЏ РёР· QML РїСЂРµРјРµС‰Р°СЋС‰РёРµ РѕРєРЅРѕ
+    Q_INVOKABLE void cursor_up(); //Р¤СѓРЅРєС†РёСЏ C++ РІС‹Р·С‹РІР°РµРјР°СЏ РёР· QML РёР·РјРµРЅСЏСЋС‰РёРµ РєСѓСЂСЃРѕСЂ
+    Q_INVOKABLE void cursor_down(); //Р¤СѓРЅРєС†РёСЏ C++ РІС‹Р·С‹РІР°РµРјР°СЏ РёР· QML РёР·РјРµРЅСЏСЋС‰РёРµ РєСѓСЂСЃРѕСЂ
 
 private slots:
     void setCurrnetRow_list_rus(int);
@@ -55,7 +66,8 @@ private slots:
     void pushHelp();
 
     // slot for trey action
-    void treyProgrammShow();
+    void treyProgrammShow(QSystemTrayIcon::ActivationReason);
+    void timerProgrammShow();
     void treyEdit();
     void treySetting();
     void treyStyle();
@@ -63,7 +75,7 @@ private slots:
     void treyInfo();
     void treyMask();
 
-    // Слоты для изменения градиента
+    // РЎР»РѕС‚С‹ РґР»СЏ РёР·РјРµРЅРµРЅРёСЏ РіСЂР°РґРёРµРЅС‚Р°
     void sliderPositionOne(int);
     void sliderPositionTwo(int);
     void sliderPositionThree(int);
@@ -83,18 +95,29 @@ private slots:
     void temp(int);
     
 private:
-    Ui::MainWindow *ui;
+    QLabel *show_word;
+    QLineEdit *input_word_edit;
+    QPushButton *push_help;
+    QProgressBar *progress_lesson;
+
     Ui::Input_word *ui_input;
     Ui::Setting_programm *ui_setting;
     Ui::Info *ui_info;
     Ui::Style *ui_style;
 
     QDeclarativeView *ui_qml_background;
-    QObject *Root_ui_qml_background; //корневой элемент QML модели
+    QObject *Root_ui_qml_background; //РєРѕСЂРЅРµРІРѕР№ СЌР»РµРјРµРЅС‚ QML РјРѕРґРµР»Рё
     QDeclarativeView *ui_qml_menu;
-    QObject *Root_ui_qml_menu; //корневой элемент QML модели
+    QObject *Root_ui_qml_menu; //РєРѕСЂРЅРµРІРѕР№ СЌР»РµРјРµРЅС‚ QML РјРѕРґРµР»Рё
 
     QTimeLine *timer;
+
+    MediaObject *mediaObject;
+    AudioOutput *audioOutput;
+
+    bool BL_move;
+    int save_x;
+    int save_y;
 
     QSystemTrayIcon *systemTray;
     QMenu *menuTrey;
@@ -126,7 +149,8 @@ private:
     int amount_correct;
     bool demandWord;
     bool reperatWord;
-    bool BL_help_apply; // Фиксирует пользовались ли подсказкой
+    bool BL_help_apply; // Р¤РёРєСЃРёСЂСѓРµС‚ РїРѕР»СЊР·РѕРІР°Р»РёСЃСЊ Р»Рё РїРѕРґСЃРєР°Р·РєРѕР№
+    bool BLsound; // Р’С‹РєР»СЋС‡Р°РµС‚/РІРєР»СЋС‡Р°РµС‚ Р·РІСѓРє
     int whatAmountWord;
     QTime saveTime;
 

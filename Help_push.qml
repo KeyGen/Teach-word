@@ -6,8 +6,6 @@ import QtQuick 1.1
 
 Image {
     id: edit //Имя кнопки
-    objectName: "edit_push"
-    source: ":/icon/help"
 
     width: 50
     height: 50
@@ -15,14 +13,48 @@ Image {
     smooth: true
     rotation: -90
 
-    scale: quitMouse.pressed ? 0.8 : 1.0
-    //smooth: true
+    scale: qtMouse.pressed ? 0.8 : 1.0
+
+    state: "normal"
+
+            states: [
+                State {
+                    name: "normal"
+                    PropertyChanges {
+                        target: edit
+                        source: ":/icon/help"
+                    }
+                },
+                State {
+                    name: "shift"
+                    PropertyChanges {
+                        target: edit
+                        source: ":/icon/help_activ"
+                    }
+                }
+            ]
 
     MouseArea {
         id: quitMouse
         anchors.fill: parent
-        anchors.margins: -10
+
+        hoverEnabled: true
+        onEntered:
+        {
+            edit.state = 'shift'
+            Qt_fun.startSoundButton()
+        }
+        onExited: edit.state = 'normal'
+    }
+
+    MouseArea {
+        id: qtMouse
+        anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: Qt_fun.helpProgramm()
+        onClicked:
+        {
+            edit.state = 'normal'
+            Qt_fun.helpProgramm()
+        }
     }
 }

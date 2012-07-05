@@ -3,19 +3,19 @@ import QtQuick 1.1
 
 Item {
     width: 390
-    height: 60
+    height: 53
 
     Rectangle{
 
         width: 50
-        height: 388
+        height: 387
 
         x: 170
-        y: -168
+        y: -167
 
         border.width: 2
 
-        border.color: "#303030"
+        border.color: "#363636"
         smooth: true
 
         rotation: 90

@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "ui_input_word_ui.h"
 #include "ui_setting_programm_ui.h"
 #include "ui_style.h"
@@ -9,18 +8,43 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), ui_input(new Ui::Input_word),
+    ui_input(new Ui::Input_word),
     ui_setting(new Ui::Setting_programm),
     ui_info(new Ui::Info),
     ui_style(new Ui::Style),
     settings("KeyGen","Teach_eng")
 {
-    ui->setupUi(this);
     // Отключаем обводку
     this->setWindowFlags(Qt::CustomizeWindowHint);
 
     // Функция инициализирущая(как-то так пишется) qml
     installQml();
+
+    ////////// Вводим обьекты главного окна
+    BLsound = true; // Выключает/включает звук
+
+    show_word = new QLabel(this);
+    show_word->setFont(QFont("", 20, QFont::DemiBold));
+    show_word->setFrameShape(QFrame::Box);
+    show_word->setAlignment(Qt::AlignCenter);
+
+    show_word->setGeometry(24,60,341,130);
+
+    show_word->setText("<center><span style=\"font-size:16pt;\">Добавьте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
+
+    input_word_edit = new QLineEdit(this);
+    input_word_edit->setGeometry(49,200,291,30);
+    input_word_edit->setAlignment(Qt::AlignCenter);
+    input_word_edit->setFont(QFont("", 12, QFont::Normal));
+
+    push_help = new QPushButton(this);
+    push_help->setText(tr("Подсказать"));
+    push_help->setGeometry(158,237,75,23);
+
+    progress_lesson = new QProgressBar(this);
+    progress_lesson->setGeometry(49,269,291,21);
+
+    //////////the end
 
     // Создаем диалоги чтобы засунуть в них Ui
     dialog_input = new QDialog(this);
@@ -34,6 +58,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     dialog_style = new QDialog(this);
     ui_style->setupUi(dialog_style);
+
+    // Фиксируем окна
+    dialog_input->setFixedSize(619,309);
+    dialog_setting->setFixedSize(659,449);
+    dialog_info->setFixedSize(439,274);
+    dialog_style->setFixedSize(499,297);
+    this->setFixedSize(390,306);
     // the end
 
     ////////////////////// Создаем трей
@@ -75,7 +106,7 @@ MainWindow::MainWindow(QWidget *parent) :
     systemTray->setContextMenu(menuTrey);
 
     // Подключаем актоны к слотам
-    connect(systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(treyProgrammShow()));
+    connect(systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(treyProgrammShow(QSystemTrayIcon::ActivationReason)));
     connect(actionTreyEdit,SIGNAL(triggered()),this,SLOT(treyEdit()));
     connect(actionTreySetting,SIGNAL(triggered()),this,SLOT(treySetting()));
     connect(actionTreyStyle,SIGNAL(triggered()),this,SLOT(treyStyle()));
@@ -130,6 +161,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    settings.remove("Settings/positionGradientOne");
 //    settings.remove("Settings/positionGradientTwo");
 //    settings.remove("Settings/positionGradientTree");
+//    settings.remove("Settings/BLsound");
 
     // Чтение настроек
     readSetting();
@@ -214,7 +246,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //the end
 
     // Подключаем таймер к слоту
-    connect(timer,SIGNAL(finished()),this,SLOT(treyProgrammShow()));
+    connect(timer,SIGNAL(finished()),this,SLOT(timerProgrammShow()));
     connect(timer,SIGNAL(frameChanged(int)),this,SLOT(temp(int)));
     //the end
 
@@ -227,19 +259,19 @@ MainWindow::MainWindow(QWidget *parent) :
     // Если есть выбранные слова для обучения первое загружаем в главное окно
     if(!teach_word.isEmpty())
     {
-        ui->show_word->setText(teach_word.at(shiftWord));
-        ui->progress_lesson->setMaximum(teach_word.size()-1);
-        ui->progress_lesson->setValue(0); // ПрогрессБар ставим в нуль
+        show_word->setText(teach_word.at(shiftWord));
+        progress_lesson->setMaximum(teach_word.size()-1);
+        progress_lesson->setValue(0); // ПрогрессБар ставим в нуль
         chopHelpWord = -1; // При подсказке слово будет резать
     }
     else
     {
-        ui->progress_lesson->setValue(0); // ПрогрессБар ставим в нуль
+        progress_lesson->setValue(0); // ПрогрессБар ставим в нуль
     }
 
     // Соединяем слоты и сигналы
-    connect(ui->input_word_edit,SIGNAL(returnPressed()),this,SLOT(returnPressedInputWord()));
-    connect(ui->push_help,SIGNAL(clicked()),this,SLOT(pushHelp()));
+    connect(input_word_edit,SIGNAL(returnPressed()),this,SLOT(returnPressedInputWord()));
+    connect(push_help,SIGNAL(clicked()),this,SLOT(pushHelp()));
 
     connect(ui_input->list_ang_word,SIGNAL(currentRowChanged(int)),this,SLOT(setCurrnetRow_list_rus(int)));
     connect(ui_input->list_rus_word,SIGNAL(currentRowChanged(int)),this,SLOT(setCurrnetRow_list_eng(int)));
@@ -287,11 +319,76 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui_style->sliderThreeG,SIGNAL(valueChanged(int)),this,SLOT(sliderColorThreeG(int)));
     connect(ui_style->sliderThreeB,SIGNAL(valueChanged(int)),this,SLOT(sliderColorThreeB(int)));
 
+    // phonon
+    mediaObject = new MediaObject(this);
+    audioOutput = new AudioOutput(MusicCategory, this);
+    Phonon::createPath(mediaObject, audioOutput);
+
+    // В верх стека
+    //show_word->stackUnder(this);
 }
 
 void MainWindow::temp(int temp)
 {
-    //qDebug() << temp;
+   // qDebug() << temp;
+}
+
+//Функция C++ вызываемая из QML изменяющие курсор
+void MainWindow::cursor_down()
+{
+   this->setCursor(QCursor(Qt::ArrowCursor));
+    BL_move = true;
+}
+
+//Функция C++ вызываемая из QML изменяющие курсор
+void MainWindow::cursor_up()
+{
+    this->setCursor(QCursor(Qt::SizeAllCursor));
+}
+
+//Функция C++ вызываемая из QML премещающие окно
+void MainWindow::move_window()
+{
+    if(BL_move)
+    {
+        save_x = QCursor::pos().x() - this->pos().x();
+        save_y = QCursor::pos().y() - this->pos().y();
+
+        this->setCursor(QCursor(Qt::SizeAllCursor));
+    }
+
+    if(BL_move)
+        BL_move = false;
+
+    this->move(QCursor::pos().x()-save_x , QCursor::pos().y() - save_y);
+}
+
+// Запускаем звук из qml
+void MainWindow::startSoundError()
+{
+    if(BLsound)
+    {
+        mediaObject->setCurrentSource(Phonon::MediaSource(":/icon/error_sound"));
+
+        mediaObject->play();
+    }
+}
+
+void MainWindow::startSoundButton()
+{
+//    mediaObject->setCurrentSource(Phonon::MediaSource(":/icon/enter_button_sound"));
+
+//    mediaObject->play();
+}
+
+void MainWindow::startSoundShow()
+{
+    if(BLsound)
+    {
+        mediaObject->setCurrentSource(Phonon::MediaSource(":/icon/start_sound"));
+
+        mediaObject->play();
+    }
 }
 
 // Слоты для изменения градиента
@@ -350,6 +447,8 @@ void MainWindow::sliderColorOneR(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientOne.name());
+
+     ui_style->lineEditOne->setText(colorGradientOne.name());
 }
 
 void MainWindow::sliderColorOneG(int amount)
@@ -362,6 +461,8 @@ void MainWindow::sliderColorOneG(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientOne.name());
+
+     ui_style->lineEditOne->setText(colorGradientOne.name());
 }
 
 void MainWindow::sliderColorOneB(int amount)
@@ -374,6 +475,8 @@ void MainWindow::sliderColorOneB(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientOne.name());
+
+     ui_style->lineEditOne->setText(colorGradientOne.name());
 }
 
 void MainWindow::sliderColorTwoR(int amount)
@@ -386,6 +489,8 @@ void MainWindow::sliderColorTwoR(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientTwo.name());
+
+     ui_style->lineEditTwo->setText(colorGradientTwo.name());
 }
 
 void MainWindow::sliderColorTwoG(int amount)
@@ -398,6 +503,8 @@ void MainWindow::sliderColorTwoG(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientTwo.name());
+
+     ui_style->lineEditTwo->setText(colorGradientTwo.name());
 }
 
 void MainWindow::sliderColorTwoB(int amount)
@@ -410,6 +517,8 @@ void MainWindow::sliderColorTwoB(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientTwo.name());
+
+     ui_style->lineEditTwo->setText(colorGradientTwo.name());
 }
 
 void MainWindow::sliderColorThreeR(int amount)
@@ -422,6 +531,8 @@ void MainWindow::sliderColorThreeR(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientThree.name());
+
+     ui_style->lineEdit_Three->setText(colorGradientThree.name());
 }
 
 void MainWindow::sliderColorThreeG(int amount)
@@ -434,6 +545,8 @@ void MainWindow::sliderColorThreeG(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientThree.name());
+
+     ui_style->lineEdit_Three->setText(colorGradientThree.name());
 }
 
 void MainWindow::sliderColorThreeB(int amount)
@@ -446,17 +559,23 @@ void MainWindow::sliderColorThreeB(int amount)
 
      if (rect)
          rect->setProperty("color", colorGradientThree.name());
+
+     ui_style->lineEdit_Three->setText(colorGradientThree.name());
 }
 
 // the end
 
 void MainWindow::execStyle()
 {
-    dialog_style->move(200,200);
+    dialog_style->move(100,100);
 
     ui_style->label_background_1->setPalette(QPalette(colorGradientOne));
     ui_style->label_background_2->setPalette(QPalette(colorGradientTwo));
     ui_style->label_background_3->setPalette(QPalette(colorGradientThree));
+
+    ui_style->lineEditOne->setText(colorGradientOne.name());
+    ui_style->lineEditTwo->setText(colorGradientTwo.name());
+    ui_style->lineEdit_Three->setText(colorGradientThree.name());
 
     ui_style->slider_position_one->setValue(positionGradientOne*100);
     ui_style->slider_position_two->setValue(positionGradientTwo*100);
@@ -477,16 +596,46 @@ void MainWindow::execStyle()
     dialog_style->show();
 }
 
-// slot for trey action
-void MainWindow::treyProgrammShow()
+void MainWindow::timerProgrammShow()
 {
     shiftWord = 0;
-    ui->progress_lesson->setValue(shiftWord);
-    ui->show_word->setText(teach_word.at(shiftWord));
-    ui->input_word_edit->clear();
 
-    timer->stop();
-    this->show();
+    progress_lesson->setValue(shiftWord);
+
+    if(!teach_word.isEmpty())
+        show_word->setText(teach_word.at(shiftWord));
+
+    input_word_edit->clear();
+
+    if(!this->isVisible())
+    {
+        startSoundShow();
+        this->setVisible(true);
+    }
+}
+
+// slot for trey action
+void MainWindow::treyProgrammShow(QSystemTrayIcon::ActivationReason temp)
+{
+    if(temp == QSystemTrayIcon::Trigger)
+    {
+        shiftWord = 0;
+
+        progress_lesson->setValue(shiftWord);
+
+        if(!teach_word.isEmpty())
+            show_word->setText(teach_word.at(shiftWord));
+
+        input_word_edit->clear();
+
+        if(!this->isVisible())
+        {
+            startSoundShow();
+            this->setVisible(true);
+        }
+
+        timer->stop();
+    }
 }
 
 void MainWindow::treyEdit()
@@ -505,6 +654,7 @@ void MainWindow::treySetting()
 
 void MainWindow::treyStyle()
 {
+    timer->stop();
     this->show();
     execStyle();
 }
@@ -521,8 +671,13 @@ void MainWindow::treyInfo()
 
 void MainWindow::treyMask()
 {
-    this->setVisible(false);
-    timer->start();
+    if(this->isVisible())
+    {
+        dialog_style->close();
+
+        this->setVisible(false);
+        timer->start();
+    }
 }
 
 // function for qml
@@ -543,6 +698,8 @@ void MainWindow::exitProgramm()
 
 void MainWindow::maskProgramm()
 {
+    dialog_style->close();
+
     this->setVisible(false);
     timer->start();
 }
@@ -554,7 +711,7 @@ void MainWindow::installQml()
     ui_qml_background = new QDeclarativeView(this);
     ui_qml_background->setSource(QUrl("qrc:/Background_qml.qml"));
     // Помещаем на в конец стека виджетов
-    ui_qml_background->lower();
+    //ui_qml_background->lower();
 
     //Находим корневой элемент
     Root_ui_qml_background = ui_qml_background->rootObject();
@@ -578,11 +735,11 @@ void MainWindow::installQml()
 void MainWindow::pushHelp()
 {
     BL_help_apply = true;
-    if(ui->show_word->text().contains(QRegExp("([А-Я])|([а-я])")))
+    if(show_word->text().contains(QRegExp("([А-Я])|([а-я])")))
     {
         for(int i = 0; i<rus_word.size(); i++)
         {
-            if(rus_word.at(i) == ui->show_word->text())
+            if(rus_word.at(i) == show_word->text())
             {
                 if(chopHelpWord == -1)
                     chopHelpWord = ang_word.at(i).size()-1;
@@ -592,16 +749,16 @@ void MainWindow::pushHelp()
                 QString temp_str = ang_word.at(i);
                 temp_str.chop(chopHelpWord);
 
-                ui->input_word_edit->setText(temp_str);
-                ui->input_word_edit->setFocus();
+                input_word_edit->setText(temp_str);
+                input_word_edit->setFocus();
             }
         }
     }
-    else if(ui->show_word->text().contains(QRegExp("([A-Z])|([a-z])")))
+    else if(show_word->text().contains(QRegExp("([A-Z])|([a-z])")))
     {
         for(int i = 0; i<ang_word.size(); i++)
         {
-            if(ang_word.at(i) == ui->show_word->text())
+            if(ang_word.at(i) == show_word->text())
             {
                 if(chopHelpWord == -1)
                     chopHelpWord = rus_word.at(i).size()-1;
@@ -611,8 +768,8 @@ void MainWindow::pushHelp()
                 QString temp_str = rus_word.at(i);
                 temp_str.chop(chopHelpWord);
 
-                ui->input_word_edit->setText(temp_str);
-                ui->input_word_edit->setFocus();
+                input_word_edit->setText(temp_str);
+                input_word_edit->setFocus();
             }
         }
     }
@@ -622,13 +779,13 @@ void MainWindow::pushHelp()
 // Ввод слова на проверку. Т.е Написали слово в глав. окне и нажали Enter
 void MainWindow::returnPressedInputWord()
 {
-    if(ui->show_word->text().contains(QRegExp("([А-Я])|([а-я])")))
+    if(show_word->text().contains(QRegExp("([А-Я])|([а-я])")))
     {
         for(int i = 0; i<ang_word.size(); i++)
         {
-            if(rus_word.at(i) == ui->show_word->text())
+            if(rus_word.at(i) == show_word->text())
             {
-                if(ang_word.at(i) == ui->input_word_edit->text())
+                if(ang_word.at(i) == input_word_edit->text())
                 {
                     if(shiftWord < teach_word.size()-1)
                     {
@@ -667,9 +824,9 @@ void MainWindow::returnPressedInputWord()
                         chopHelpWord = -1; // При подсказке слово будет резать
                         BL_help_apply = false; // Фиксирует пользовались ли подсказкой
 
-                        ui->progress_lesson->setValue(shiftWord);
-                        ui->show_word->setText(teach_word.at(shiftWord));
-                        ui->input_word_edit->clear();
+                        progress_lesson->setValue(shiftWord);
+                        show_word->setText(teach_word.at(shiftWord));
+                        input_word_edit->clear();
                         break;
                     }
                     else
@@ -705,10 +862,10 @@ void MainWindow::returnPressedInputWord()
                                     {
                                         QMessageBox::information(this, tr("Информация"),tr("Все слова выучены  \nДобавьте новые  "));
 
-                                        ui->show_word->setText("<center><span style=\"font-size:16pt;\">Добавте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
+                                        show_word->setText("<center><span style=\"font-size:16pt;\">Добавьте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
 
                                         BL_temp = false;
-                                        ui->input_word_edit->clear();
+                                        input_word_edit->clear();
                                     }
                                 }
                                 else
@@ -728,9 +885,9 @@ void MainWindow::returnPressedInputWord()
                             if(ret == 16384)
                             {
                                 shiftWord = 0;
-                                ui->progress_lesson->setValue(shiftWord);
-                                ui->show_word->setText(teach_word.at(shiftWord));
-                                ui->input_word_edit->clear();
+                                progress_lesson->setValue(shiftWord);
+                                show_word->setText(teach_word.at(shiftWord));
+                                input_word_edit->clear();
                             }
                             else
                             {
@@ -744,21 +901,22 @@ void MainWindow::returnPressedInputWord()
                 }
                 else
                 {
+                    startSoundError();
                     QMessageBox::information(this,tr("Информация"), tr("Ответ не верен"));
                     break;
                 }
             }
         }
     }
-    else if(ui->show_word->text().contains(QRegExp("([A-Z])|([a-z])")))
+    else if(show_word->text().contains(QRegExp("([A-Z])|([a-z])")))
     {
         for(int i = 0; i<ang_word.size(); i++)
         {
-            if(ang_word.at(i) == ui->show_word->text())
+            if(ang_word.at(i) == show_word->text())
             {
-                if(rus_word.at(i) == ui->input_word_edit->text())
+                if(rus_word.at(i) == input_word_edit->text())
                 {
-                    ui->input_word_edit->clear();
+                    input_word_edit->clear();
 
                     if(shiftWord < teach_word.size()-1)
                     {
@@ -796,9 +954,9 @@ void MainWindow::returnPressedInputWord()
                         chopHelpWord = -1; // При подсказке слово будет резать
                         BL_help_apply = false; // Фиксирует пользовались ли подсказкой
 
-                        ui->progress_lesson->setValue(shiftWord);
-                        ui->show_word->setText(teach_word.at(shiftWord));
-                        ui->input_word_edit->clear();
+                        progress_lesson->setValue(shiftWord);
+                        show_word->setText(teach_word.at(shiftWord));
+                        input_word_edit->clear();
                         break;
                     }
                     else
@@ -833,8 +991,8 @@ void MainWindow::returnPressedInputWord()
                                     if(teach_word.isEmpty())
                                     {
                                         QMessageBox::information(this, tr("Информация"),tr("Все слова выучены  \nДобавьте новые  "));
-                                        ui->show_word->setText("<center><span style=\"font-size:16pt;\">Добавте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
-                                        ui->input_word_edit->clear();
+                                        show_word->setText("<center><span style=\"font-size:16pt;\">Добавьте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
+                                        input_word_edit->clear();
                                         BL_temp = false;
                                     }
                                 }
@@ -855,9 +1013,9 @@ void MainWindow::returnPressedInputWord()
                             if(ret == 16384)
                             {
                                 shiftWord = 0;
-                                ui->progress_lesson->setValue(shiftWord);
-                                ui->show_word->setText(teach_word.at(shiftWord));
-                                ui->input_word_edit->clear();
+                                progress_lesson->setValue(shiftWord);
+                                show_word->setText(teach_word.at(shiftWord));
+                                input_word_edit->clear();
                             }
                             else
                             {
@@ -871,6 +1029,7 @@ void MainWindow::returnPressedInputWord()
                 }
                 else
                 {
+                    startSoundError();
                     QMessageBox::information(this,tr("Информация"), tr("Ответ не верен"));
                     break;
                 }
@@ -886,9 +1045,10 @@ void MainWindow::settingSaveTrue()
     whatAmountWord = ui_setting->input_amount->value();
     saveTime = ui_setting->intup_time->time();
     amount_correct = ui_setting->input_amount_correct->value();
+    BLsound = ui_setting->checkBoxSound->isChecked();
 
     chopHelpWord = -1;
-    ui->input_word_edit->clear();
+    input_word_edit->clear();
 
     if(!statistics_word.isEmpty())
         statistics_word.clear();
@@ -909,17 +1069,17 @@ void MainWindow::settingSaveTrue()
     if(!teach_word.isEmpty())
     {
         shiftWord = 0;
-        ui->show_word->setText(teach_word.at(shiftWord));
+        show_word->setText(teach_word.at(shiftWord));
     }
     else
     {
-        ui->show_word->setText("<center><span style=\"font-size:16pt;\">Добавте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
+        show_word->setText("<center><span style=\"font-size:16pt;\">Добавьте слова для обучения <br>в настройках <br><img src=\":/icon/setting\" width=\"50\"/></span></center>");
     }
 
     if(!teach_word.isEmpty())
     {
-        ui->progress_lesson->setMaximum(teach_word.size()-1);
-        ui->progress_lesson->setValue(0);
+        progress_lesson->setMaximum(teach_word.size()-1);
+        progress_lesson->setValue(0);
     }
 }
 
@@ -965,7 +1125,7 @@ void MainWindow::closeDialogSetting()
     ui_setting->list_base->clear();
     ui_setting->list_teach->clear();
     ui_setting->save_false->setFocus();
-    ui->input_word_edit->setFocus();
+    input_word_edit->setFocus();
 }
 
 void MainWindow::showTranslation(QString str)
@@ -1231,6 +1391,11 @@ void MainWindow::exec_dialog_setting()
     ui_setting->input_amount->setMaximum(ang_word.size());
     ui_setting->input_amount->setValue(whatAmountWord);
 
+    if(BLsound)
+        ui_setting->checkBoxSound->setChecked(true);
+    else
+        ui_setting->checkBoxSound->setChecked(false);
+
     ui_setting->label_translation->setText(tr("Выбирите слово для перевода"));
 
     if(teach_word.isEmpty())
@@ -1270,10 +1435,10 @@ void MainWindow::exec_dialog_setting()
     // Установим позицию на слово из главного окна
     if(!teach_word.isEmpty())
     {
-        ui->show_word->text();
+        show_word->text();
         for(int i = 0; i<teach_word.size(); i++)
         {
-            if(ui->show_word->text() == teach_word.at(i))
+            if(show_word->text() == teach_word.at(i))
             {
                 ui_setting->list_teach->setCurrentRow(i);
                 ui_setting->list_teach->setFocus();
@@ -1515,11 +1680,12 @@ void MainWindow::writeSetting()
     settings.setValue("Settings/positionGradientOne", positionGradientOne);
     settings.setValue("Settings/positionGradientTwo", positionGradientTwo);
     settings.setValue("Settings/positionGradientTree", positionGradientTree);
+    settings.setValue("Settings/BLsound", BLsound);
 }
 
 void MainWindow::readSetting()
 {
-    if(settings.value("/Settings/pos/x").toInt()!=0&&settings.value("/Settings/pos/y").toInt())
+    if(settings.value("/Settings/pos/x").toInt()!=0&&settings.value("/Settings/pos/y").toInt()!=0)
     this->move(settings.value("/Settings/pos/x").toInt(),settings.value("/Settings/pos/y").toInt());
 
     ang_word = settings.value("/Settings/ang_word", ang_word).toStringList();
@@ -1540,28 +1706,32 @@ void MainWindow::readSetting()
     positionGradientTwo = settings.value("Settings/positionGradientTwo", positionGradientTwo).toDouble();
     positionGradientTree = settings.value("Settings/positionGradientTree", positionGradientTree).toDouble();
 
+    BLsound = settings.value("Settings/BLsound", BLsound).toBool();
+
     if(ang_word.isEmpty()||rus_word.isEmpty())
     {
-        QFile read_file("word.dic");
+        QFile read_file(":/icon/dictionary");
         QString all_file;
 
         if(read_file.open(QIODevice::ReadOnly))
         {
             QTextStream out(&read_file);
+            out.setCodec("UTF-8");
             all_file = out.readAll();
-        }
 
-        all_file.remove("\t");
-        all_file.remove("\n");
 
-        qDebug() << "read word";
+            all_file.remove("\t");
+            all_file.remove("\n");
 
-        QStringList tempList = all_file.split(";");
+            qDebug() << "read word";
 
-        for(int i = 0; i<tempList.size(); i+=2)
-        {
-            ang_word << tempList.at(i);
-            rus_word << tempList.at(i+1);
+            QStringList tempList = all_file.split(";");
+
+            for(int i = 0; i<tempList.size(); i+=2)
+            {
+                ang_word << tempList.at(i);
+                rus_word << tempList.at(i+1);
+            }
         }
     }
 }
@@ -1569,5 +1739,4 @@ void MainWindow::readSetting()
 MainWindow::~MainWindow()
 {
     writeSetting();
-    delete ui;
 }
