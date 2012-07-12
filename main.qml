@@ -33,6 +33,18 @@ Rectangle{
             PropertyChanges {target: inputSetting; x: 0}
             PropertyChanges {target: setting; x: -600}
             PropertyChanges {target: main; x: -600}
+        },
+        State {
+            name: "shiftInfo"
+            PropertyChanges {target: rectagleinfo; x: 0}
+            PropertyChanges {target: setting; x: -600}
+            PropertyChanges {target: main; x: -600}
+        },
+        State {
+            name: "shiftinputLearnWords"
+            PropertyChanges {target: inputLearnWords; x: 0}
+            PropertyChanges {target: setting; x: -600}
+            PropertyChanges {target: main; x: -600}
         }
 
     ]
@@ -183,14 +195,30 @@ Rectangle{
 
         Back{}
 
-        Button_setting{}
-
         Button_setting{
-            y:  139
+            id: settingButton
+            textButton: "Общие натройки"
         }
 
         Button_setting{
-            y:  203
+            id: learnButton
+            textButton: "Установка уроков"
+            iconButton: ":/picture/learn"
+            y:  settingButton.y + 55
+        }
+
+        Button_setting{
+            id: helpButton
+            textButton: "Справка"
+            iconButton: ":/picture/help"
+            y:  learnButton.y + 55
+        }
+
+        Button_setting{
+            id: infoButton
+            textButton: "О программе"
+            iconButton: ":/picture/info"
+            y:  helpButton.y + 55
         }
 
     }
@@ -199,6 +227,51 @@ Rectangle{
         id: inputSetting
         width: 600
         x: 600
+
+        height: 4
+        color: "red"
+
+        SaveSetting{}
+
+        Back{
+            x: parent.width - 100
+            y: mainAll.height - 50
+        }
+
+        Setting{
+            x: parent.width - 150
+            y: mainAll.height - 50
+        }
+    }
+
+    Rectangle{
+        id: rectagleinfo
+        width: 600
+        height: 4
+        x: 600
+
+        color: "yellow"
+
+        RectagleInfo{}
+
+        Back{
+            x: parent.width - 50
+            y: mainAll.height - 50
+        }
+
+        Setting{
+            x: parent.width - 100
+            y: mainAll.height - 50
+        }
+    }
+
+    Rectangle{
+        id: inputLearnWords
+        width: 600
+        x: 600
+
+        height: 4
+        color: "blue"
 
         SaveSetting{}
 

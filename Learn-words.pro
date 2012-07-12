@@ -28,4 +28,5 @@ OTHER_FILES += \
     Help_word.qml \
     Back.qml \
     Button_setting.qml \
-    SaveSetting.qml
+    SaveSetting.qml \
+    RectagleInfo.qml

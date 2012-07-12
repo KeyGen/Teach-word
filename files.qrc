@@ -10,6 +10,7 @@
         <file>Back.qml</file>
         <file>Button_setting.qml</file>
         <file>SaveSetting.qml</file>
+        <file>RectagleInfo.qml</file>
     </qresource>
     <qresource prefix="/picture">
         <file alias="quit">picture/quit.png</file>
@@ -24,5 +25,6 @@
         <file alias="back">picture/back.png</file>
         <file alias="backgruand">picture/backgraund.png</file>
         <file alias="saveSetting">picture/ok.png</file>
+        <file alias="learn">picture/learn.png</file>
     </qresource>
 </RCC>
