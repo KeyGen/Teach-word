@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Quit.qml</file>
+        <file>Show_words.qml</file>
+        <file>TextInputQml.qml</file>
+        <file>Down.qml</file>
+        <file>Setting.qml</file>
+        <file>Help_word.qml</file>
+        <file>Back.qml</file>
+        <file>Button_setting.qml</file>
+        <file>SaveSetting.qml</file>
+    </qresource>
+    <qresource prefix="/picture">
+        <file alias="quit">picture/quit.png</file>
+        <file alias="down">picture/down.png</file>
+        <file alias="help_word">picture/help_word.png</file>
+        <file alias="setting">picture/setting.png</file>
+        <file alias="ico_main">picture/ico_main.png</file>
+        <file alias="help">picture/help.png</file>
+        <file alias="info">picture/info.png</file>
+        <file alias="music">picture/music.png</file>
+        <file alias="up_arrow">picture/up_arrow.png</file>
+        <file alias="back">picture/back.png</file>
+        <file alias="backgruand">picture/backgraund.png</file>
+        <file alias="saveSetting">picture/ok.png</file>
+    </qresource>
+</RCC>

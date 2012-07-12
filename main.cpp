@@ -1,6 +1,6 @@
 #include <QtGui/QApplication>
-#include <QTextCodec>
 #include "mainwindow.h"
+#include <QTextCodec>
 
 int main(int argc, char *argv[])
 {
@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(codec);
     QTextCodec::setCodecForCStrings(codec);
     QTextCodec::setCodecForLocale(codec);
+
 
     MainWindow w;
     w.show();
