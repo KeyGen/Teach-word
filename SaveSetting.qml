@@ -8,7 +8,7 @@ Image {
     width: 40
     height: 40
 
-    x: parent.width - 50
+    x: parent.width - 60
     y: mainAll.height - 50
 
     smooth: true

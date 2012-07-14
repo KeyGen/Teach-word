@@ -50,7 +50,7 @@ Rectangle{
     ]
 
     transitions: Transition {
-        PropertyAnimation { properties: "x"; duration: 800; easing.type: Easing.InOutSine}
+        PropertyAnimation { properties: "x"; duration: 500; easing.type: Easing.InOutSine }
     }
 
     MouseArea {
@@ -191,6 +191,15 @@ Rectangle{
             smooth: true
         }
 
+        Image {
+            id: backgruandButtonTwo
+            source: ":/picture/backgruandTwo"
+            smooth: true
+
+            x: setting.width - 190
+            y: 20
+        }
+
         smooth: true
 
         Back{}
@@ -228,39 +237,35 @@ Rectangle{
         width: 600
         x: 600
 
-        height: 4
-        color: "red"
-
         SaveSetting{}
 
         Back{
-            x: parent.width - 100
+            x: parent.width - 110
             y: mainAll.height - 50
         }
 
         Setting{
-            x: parent.width - 150
+            x: parent.width - 160
             y: mainAll.height - 50
         }
+
+        RectangleSetting{}
     }
 
     Rectangle{
         id: rectagleinfo
         width: 600
-        height: 4
         x: 600
-
-        color: "yellow"
 
         RectagleInfo{}
 
         Back{
-            x: parent.width - 50
+            x: parent.width - 60
             y: mainAll.height - 50
         }
 
         Setting{
-            x: parent.width - 100
+            x: parent.width - 110
             y: mainAll.height - 50
         }
     }
@@ -270,20 +275,189 @@ Rectangle{
         width: 600
         x: 600
 
-        height: 4
-        color: "blue"
-
-        SaveSetting{}
+        SaveSetting{
+            x: parent.width - 60
+        }
 
         Back{
-            x: parent.width - 100
+            x: parent.width - 110
             y: mainAll.height - 50
         }
 
         Setting{
-            x: parent.width - 150
+            x: parent.width - 160
             y: mainAll.height - 50
         }
+
+       Rectangle{
+            width: 560
+            height: 215
+
+            radius: 10
+            smooth: true
+            opacity: 1.0
+
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "#4c0000"}
+                GradientStop { position: 0.5; color: "#df8c73"}
+                GradientStop { position: 1.0; color: "#4c0000"}
+            }
+
+            y: 30
+            x: 20
+
+            border.width: 3
+            border.color: "#080808"
+
+            Image {
+                id: helpAmount
+                source: ":/picture/help30"
+
+                width: 40
+                height: 40
+
+                x: 11
+                y: -20
+
+                smooth: true
+
+                scale: helpAmountMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: helpAmountMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+
+            Image {
+                id: helpLearnWord
+                source: ":/picture/help30"
+
+                width: 40
+                height: 40
+
+                x: 124
+                y: -20
+
+                smooth: true
+
+                scale: helpLearnWordMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: helpLearnWordMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+
+            Image {
+                id: trash_fullLearnWord
+                source: ":/picture/trash_full"
+
+                width: 40
+                height: 40
+
+                x: helpLearnWord.x + helpLearnWord.width + 10
+                y: helpLearnWord.y
+
+                smooth: true
+
+                scale: trash_fullLearnWordMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: trash_fullLearnWordMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+
+            Image {
+                id: helpBase
+                source: ":/picture/help30"
+
+                width: 40
+                height: 40
+
+                x: 393
+                y: -20
+
+                smooth: true
+
+                scale: helpBaseWordMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: helpBaseWordMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+
+            Image {
+                id: languageBase
+                source: ":/picture/globe"
+
+                width: 40
+                height: 40
+
+                x: helpBase.x + helpBase.width + 10
+                y: helpBase.y
+
+                smooth: true
+
+                scale: languageBaseMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: languageBaseMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+
+            Image {
+                id: right
+                source: ":/picture/right"
+
+                width: 40
+                height: 40
+
+                x: 283
+                y: 117
+
+                smooth: true
+
+                scale: rightMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: rightMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+
+            Image {
+                id: left
+                source: ":/picture/left"
+
+                width: 40
+                height: 40
+
+                x: right.x
+                y: right.y - 50
+
+                smooth: true
+
+                scale: leftMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: leftMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+                }
+            }
+       }
+
+        onXChanged: Qt_fun.moveInputWords(inputLearnWords.x)
     }
 
 }

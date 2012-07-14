@@ -63,6 +63,9 @@ Rectangle{
 
             if(textButton.text == "Установка уроков")
             mainAll.state = "shiftinputLearnWords"
+
+            if(textButton.text == "Справка")
+                Qt_fun.openUrlHelp()
         }
     }
 }

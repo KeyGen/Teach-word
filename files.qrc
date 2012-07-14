@@ -11,6 +11,7 @@
         <file>Button_setting.qml</file>
         <file>SaveSetting.qml</file>
         <file>RectagleInfo.qml</file>
+        <file>RectangleSetting.qml</file>
     </qresource>
     <qresource prefix="/picture">
         <file alias="quit">picture/quit.png</file>
@@ -26,5 +27,27 @@
         <file alias="backgruand">picture/backgraund.png</file>
         <file alias="saveSetting">picture/ok.png</file>
         <file alias="learn">picture/learn.png</file>
+        <file alias="icon">picture/icon.png</file>
+        <file alias="backgruandTwo">picture/backgraund_two.png</file>
+        <file alias="right">picture/right_arrow.png</file>
+        <file alias="left">picture/left_arrow.png</file>
+        <file alias="trash_full">picture/trash_full.png</file>
+        <file alias="help30">picture/help30.png</file>
+        <file alias="globe">picture/globe.png</file>
+        <file alias="clock128">picture/clock128.png</file>
+        <file alias="globe128">picture/globe128.png</file>
+        <file alias="music128">picture/music128.png</file>
+        <file alias="ok128">picture/ok128.png</file>
+        <file alias="clock128false">picture/clock128false.png</file>
+        <file alias="globe128false">picture/globe128false.png</file>
+        <file alias="music128false">picture/music128false.png</file>
+        <file alias="ok128false">picture/ok128false.png</file>
+        <file alias="refresh128">picture/refresh128.png</file>
+        <file alias="refresh128back">picture/refresh128back.png</file>
+        <file alias="refresh128false">picture/refresh128false.png</file>
+        <file alias="clock128back">picture/clock128back.png</file>
+        <file alias="globe128back">picture/globe128back.png</file>
+        <file alias="music128back">picture/music128back.png</file>
+        <file alias="ok128back">picture/ok128back.png</file>
     </qresource>
 </RCC>

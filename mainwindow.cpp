@@ -1,43 +1,33 @@
 #include "mainwindow.h"
-//#include <QBrush>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QPalette>
-#include <QLabel>
-#include <QBitmap>
-#include <QPainter>
+#include <QRadioButton>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    this->setWindowFlags(Qt::CustomizeWindowHint); // Отключаем обводку
+    this->setWindowFlags(Qt::CustomizeWindowHint);  // Отключаем обводку
 
-    this->setFixedSize(600,300);
+    this->setFixedSize(600,300);    // Фиксируем размер окна
 
-    // Определяем разрешение экрана
-    QDesktopWidget *desktop = QApplication::desktop();
+    QDesktopWidget *desktop = QApplication::desktop();  // Определяем разрешение экрана
 
-    // Распологаем MainWindow в ценре
-    this->move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
+    this->move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2); // Распологаем MainWindow в ценре
 
-    setRoundedCorners(20,20,20,20);
-
-    learn_word << "hello" << "int" << "big" << "smoll" << "smooth" << "teach" << "learn" << "words";
+    setRoundedCorners(20,20,20,20); // Вызываем функцию которая закруглит углы
 
     //Включаем наш QML Background_qml
     ui = new QDeclarativeView(this);
     ui->setSource(QUrl("qrc:/main.qml"));
-
-    ui->setAutoFillBackground(true);
-    ui->setBackgroundRole(QPalette::Window);
-
 
     //Находим корневой элемент
     Root = ui->rootObject();
     //Соединяем C++ и QML, делая видимым функции С++ через элемент Qt_fun
     ui->rootContext()->setContextProperty("Qt_fun", this);
 
-    this->setCentralWidget(ui);
+    this->setCentralWidget(ui); // Устанавливаем ui по центру
 
     //----------------------//////////////////////////////////////////////////----------------------//
                             ////////// Создаем иконку с меню в трее //////////
@@ -51,63 +41,99 @@ MainWindow::MainWindow(QWidget *parent)
     // Создаем актионы котрые пойдут в меню, а меню в системный трей
 
     actionTreyClose = new QAction("Выход", this);                   // Актион для выхода
-    actionTreyEdit = new QAction("Музыка", this);
+    actionTreySound = new QAction("Звук", this);                    // Актион включает/выключает звук
     actionTreyHelp = new QAction("Справка", this);                  // Актион который открывает справку
     actionTreyInfo = new QAction("О программе", this);              // Актион открывающий диалог инфор. о программе
     actionTreySetting = new QAction("Настройки", this);             // Актион открывающий диалог настроек
-    actionTreyStyle = new QAction("Показать", this);
+    actionTreyShow = new QAction("Показать", this);                 // Актион отображающий программу
     actionTreyMask = new QAction("Скрыть программу", this);         // Актион прячет окно программы в трей
 
     // Вставляем иконки в актионы
-    actionTreyClose->setIcon(QIcon(QPixmap(":/picture/quit")));      // Актион для выхода
-    actionTreyEdit->setIcon(QIcon(QPixmap(":/picture/music")));
-    actionTreyHelp->setIcon(QIcon(QPixmap(":/picture/help")));       // Актион который открывает справку
-    actionTreyInfo->setIcon(QIcon(QPixmap(":/picture/info")));       // Актион открывающий диалог инфор. о программе
-    actionTreySetting->setIcon(QIcon(QPixmap(":/picture/setting"))); // Актион открывающий диалог настроек
-    actionTreyStyle->setIcon(QIcon(QPixmap(":/picture/up_arrow")));
-    actionTreyMask->setIcon(QIcon(QPixmap(":/picture/down")));       // Актион прячет окно программы в трей
+    actionTreyClose->setIcon(QIcon(QPixmap(":/picture/quit")));         // Актион для выхода
+    actionTreySound->setIcon(QIcon(QPixmap(":/picture/music")));        // Актион включает/выключает звук
+    actionTreyHelp->setIcon(QIcon(QPixmap(":/picture/help")));          // Актион который открывает справку
+    actionTreyInfo->setIcon(QIcon(QPixmap(":/picture/info")));          // Актион открывающий диалог инфор. о программе
+    actionTreySetting->setIcon(QIcon(QPixmap(":/picture/setting")));    // Актион открывающий диалог настроек
+    actionTreyShow->setIcon(QIcon(QPixmap(":/picture/up_arrow")));      // Актион отображающий программу
+    actionTreyMask->setIcon(QIcon(QPixmap(":/picture/down")));          // Актион прячет окно программы в трей
 
     // Вставляем в меню актионы (от порядка добавления зависит расположение)
-    menuTrey->addAction(actionTreyEdit);
     menuTrey->addAction(actionTreySetting);
-    menuTrey->addAction(actionTreyStyle);
+    menuTrey->addAction(actionTreySound);
+    menuTrey->addSeparator();               // Разделитель
     menuTrey->addAction(actionTreyHelp);
     menuTrey->addAction(actionTreyInfo);
     menuTrey->addSeparator();               // Разделитель
+    menuTrey->addAction(actionTreyShow);
     menuTrey->addAction(actionTreyMask);
+    menuTrey->addSeparator();               // Разделитель
     menuTrey->addAction(actionTreyClose);
 
     // Вставляем меню в системный трей
     systemTray->setContextMenu(menuTrey);
 
-    // Подключаем актоны к слотам подготовленых для них
+    /////// Подключаем актоны к слотам подготовленых для них ///////
+
+    // Вызывает WainWindow при клике на иконку в трее
     connect(systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(treyProgrammShow(QSystemTrayIcon::ActivationReason)));
-//    connect(actionTreyEdit,SIGNAL(triggered()),this,SLOT(treyEdit()));
-//    connect(actionTreySetting,SIGNAL(triggered()),this,SLOT(treySetting()));
-//    connect(actionTreyStyle,SIGNAL(triggered()),this,SLOT(treyStyle()));
-//    connect(actionTreyHelp,SIGNAL(triggered()),this,SLOT(tryeHelp()));
-//    connect(actionTreyInfo,SIGNAL(triggered()),this,SLOT(treyInfo()));
-//    connect(actionTreyMask,SIGNAL(triggered()),this,SLOT(treyMask()));
-//    connect(actionTreyClose,SIGNAL(triggered()),this,SLOT(close()));
+
+    ///////                    the end                       ///////
 
     // Отображаем иконку в трее
     systemTray->show();
                             ///////////////////// The end ////////////////////
     //----------------------//////////////////////////////////////////////////----------------------/
 
+    SetupLautWordsInput(); // Установка обьектов для редактора уроков
+
+    learn_word << "hello" << "int" << "big" << "smoll" << "smooth" << "teach" << "learn" << "words";
 }
 
+// Деструктор
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete ui; // Удаляем обькт qml
+}
+
+// Функция C++ вызываемая из QML вызывающая справку по адресу url
+void MainWindow::openUrlHelp()
+{
+    QDesktopServices::openUrl(QUrl("http://www.cyberforum.ru/beta-testing/thread617608.html"));
+}
+
+// Установка обьектов для редактора уроков
+void MainWindow::SetupLautWordsInput()
+{
+    moveLautWordsInput = 600;
+
+    answerTrue = new QListWidget(this); // Создаем обект QListWidget
+    answerTrue->setGeometry(moveLautWordsInput + 20, 50, 40, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+
+    LestLearnWords = new QListWidget(this); // Создаем обект QListWidget
+    LestLearnWords->setGeometry(moveLautWordsInput + 100, 50, 225, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+
+    ListBase = new QListWidget(this); // Создаем обект QListWidget
+    ListBase->setGeometry(moveLautWordsInput + 200, 50, 225, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+
+}
+
+// Функция C++ вызываемая из QML для перемещания обьектов редактора уроков обучения
+void MainWindow::moveInputWords(int moveInt)
+{
+    moveLautWordsInput = moveInt; // Приравниваем полученное число из qml к нашей точки отчета позиции
+
+    answerTrue->move(moveLautWordsInput + 30, 50);      // Перемещаем обьект
+    LestLearnWords->move(moveLautWordsInput + 77, 50);  // Перемещаем обьект
+    ListBase->move(moveLautWordsInput + 344, 50);       // Перемещаем обьект
 }
 
 // Функция C++ вызываемая из QML для завершения работы приложения
 void MainWindow::quit()
 {
-    this->close();
+    this->close(); // Завершает выполнение программы
 }
 
+// Функция закругляет углы MainWindow
 void MainWindow::setRoundedCorners(int radius_tl, int radius_tr, int radius_bl, int radius_br) {
     QRegion region(0, 0, width(), height(), QRegion::Rectangle);
 
@@ -131,53 +157,55 @@ void MainWindow::setRoundedCorners(int radius_tl, int radius_tr, int radius_bl, 
     corner = QRegion(0, height()-radius_bl, radius_bl, radius_bl, QRegion::Rectangle);
     region = region.subtracted(corner.subtracted(round));
 
+    // Отображает созданный регион все лишнее скрывает
     setMask(region);
 }
 
 //Функция C++ вызываемая из QML изменяющие курсор
 void MainWindow::cursor_down()
 {
-   this->setCursor(QCursor(Qt::ArrowCursor));
-    BL_move = true;
+    this->setCursor(QCursor(Qt::ArrowCursor));  // Востанавливает нормальный вид курсора
+    BL_move = true; // Нужна для правильного перемещения мышкой MainWindow
 }
 
 //Функция C++ вызываемая из QML изменяющие курсор
 void MainWindow::cursor_up()
 {
-    this->setCursor(QCursor(Qt::SizeAllCursor));
+    this->setCursor(QCursor(Qt::SizeAllCursor));    // Изменяет вид курсора при клике на обьект
 }
 
 //Функция C++ вызываемая из QML премещающие окно
 void MainWindow::move_window()
 {
+    // При попытке переместить фиксирует положение мышки относительно окна
     if(BL_move)
     {
         save_x = QCursor::pos().x() - this->pos().x();
         save_y = QCursor::pos().y() - this->pos().y();
-
-        this->setCursor(QCursor(Qt::SizeAllCursor));
     }
 
+    // Запрещаем фиксацию
     if(BL_move)
         BL_move = false;
 
+    // Перемещаем окно
     this->move(QCursor::pos().x()-save_x , QCursor::pos().y() - save_y);
 }
 
 // Функция C++ вызываемая из QML для скрытия MainWindow
 void MainWindow::maskProgramm()
 {
-    this->setVisible(false);
+    this->setVisible(false);    // Прячет MainWindow
 }
 
 // Вызывает WainWindow при клике на иконку в трее
 void MainWindow::treyProgrammShow(QSystemTrayIcon::ActivationReason temp)
 {
-    if(temp == QSystemTrayIcon::Trigger)
+    if(temp == QSystemTrayIcon::Trigger)    // При одинарном клики на иконку в трее
     {
-        if(!this->isVisible())
+        if(!this->isVisible())      // если скрыта программа
         {
-            this->setVisible(true);
+            this->setVisible(true); // отображает
         }
     }
 }

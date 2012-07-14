@@ -29,4 +29,5 @@ OTHER_FILES += \
     Back.qml \
     Button_setting.qml \
     SaveSetting.qml \
-    RectagleInfo.qml
+    RectagleInfo.qml \
+    RectangleSetting.qml
