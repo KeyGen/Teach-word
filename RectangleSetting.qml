@@ -136,6 +136,12 @@ Rectangle{
             onTriggered: iconPr.opacity = 1.0
         }
 
+        Timer {
+            id: timerOneFunck
+            interval: 200;
+            onTriggered: Qt_fun.setVisibleObjectsetupLanguageComboBox(true)
+        }
+
         scale: iconPrMouseArea.pressed? 0.87 : 1.0
 
         MouseArea {
@@ -146,6 +152,12 @@ Rectangle{
             {
                 iconPr.opacity = 0.5
                 timer.running = true
+                timerOneFunck.running = true
+
+                Qt_fun.setVisibleObjectsetupVolume(false)
+                Qt_fun.setVisibleObjectsetupSinBoxInputAmountCorrect(false)
+                Qt_fun.setVisibleObjectsetupTime(false)
+                Qt_fun.setVisibleObjectsetupUpdate(false)
 
                 iconPr.state = "normaliconPr"
 
@@ -222,6 +234,12 @@ Rectangle{
             onTriggered: iconPrTwo.opacity = 1.0
         }
 
+        Timer {
+            id: timerTwoFunck
+            interval: 200;
+            onTriggered: Qt_fun.setVisibleObjectsetupVolume(true)
+        }
+
         scale: iconPrTwoMouseArea.pressed? 0.87 : 1.0
 
         MouseArea {
@@ -232,6 +250,12 @@ Rectangle{
             {
                 iconPrTwo.opacity = 0.5
                 timerTwo.running = true
+                timerTwoFunck.running = true
+
+                Qt_fun.setVisibleObjectsetupLanguageComboBox(false)
+                Qt_fun.setVisibleObjectsetupSinBoxInputAmountCorrect(false)
+                Qt_fun.setVisibleObjectsetupTime(false)
+                Qt_fun.setVisibleObjectsetupUpdate(false)
 
                 iconPrTwo.state = "normaliconPrTwo"
 
@@ -274,7 +298,6 @@ Rectangle{
 
     Image {
         id: iconPrThree
-        //source: ":/picture/clock128false"
         smooth: true
 
         width: 90
@@ -309,6 +332,12 @@ Rectangle{
             onTriggered: iconPrThree.opacity = 1.0
         }
 
+        Timer {
+            id: timerThreeFunck
+            interval: 200;
+            onTriggered: Qt_fun.setVisibleObjectsetupTime(true)
+        }
+
         scale: iconPrThreeMouseArea.pressed? 0.87 : 1.0
 
         MouseArea {
@@ -320,6 +349,12 @@ Rectangle{
             {
                 iconPrThree.opacity = 0.5
                 timerThree.running = true
+                timerThreeFunck.running = true
+
+                Qt_fun.setVisibleObjectsetupLanguageComboBox(false)
+                Qt_fun.setVisibleObjectsetupSinBoxInputAmountCorrect(false)
+                Qt_fun.setVisibleObjectsetupVolume(false)
+                Qt_fun.setVisibleObjectsetupUpdate(false)
 
                 iconPrThree.state = "normaliconPrThree"
 
@@ -362,7 +397,6 @@ Rectangle{
 
     Image {
         id: iconPrFour
-        //source: ":/picture/ok128false"
         smooth: true
 
         width: 90
@@ -397,6 +431,12 @@ Rectangle{
             onTriggered: iconPrFour.opacity = 1.0
         }
 
+        Timer {
+            id: timerFourFunck
+            interval: 200;
+            onTriggered: Qt_fun.setVisibleObjectsetupSinBoxInputAmountCorrect(true)
+        }
+
         scale: iconPrFourMouseArea.pressed? 0.87 : 1.0
 
         MouseArea {
@@ -407,6 +447,12 @@ Rectangle{
             {
                 iconPrFour.opacity = 0.5
                 timerFour.running = true
+                timerFourFunck.running = true
+
+                Qt_fun.setVisibleObjectsetupLanguageComboBox(false)
+                Qt_fun.setVisibleObjectsetupTime(false)
+                Qt_fun.setVisibleObjectsetupVolume(false)
+                Qt_fun.setVisibleObjectsetupUpdate(false)
 
                 iconPrFour.state = "normaliconPrFour"
 
@@ -484,6 +530,12 @@ Rectangle{
             onTriggered: iconPrFive.opacity = 1.0
         }
 
+        Timer {
+            id: timerFiveFunck
+            interval: 200;
+            onTriggered: Qt_fun.setVisibleObjectsetupUpdate(true)
+        }
+
         scale: iconPrFiveMouseArea.pressed? 0.87 : 1.0
 
         MouseArea {
@@ -494,6 +546,12 @@ Rectangle{
             {
                 iconPrFive.opacity = 0.5
                 timerFive.running = true
+                timerFiveFunck.running = true
+
+                Qt_fun.setVisibleObjectsetupLanguageComboBox(false)
+                Qt_fun.setVisibleObjectsetupVolume(false)
+                Qt_fun.setVisibleObjectsetupSinBoxInputAmountCorrect(false)
+                Qt_fun.setVisibleObjectsetupTime(false)
 
                 iconPrFive.state = "normaliconPrFive"
 

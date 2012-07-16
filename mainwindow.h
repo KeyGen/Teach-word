@@ -11,6 +11,11 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QListWidget>
+#include <QTimeEdit>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QPushButton>
+#include <phonon>
 
 class MainWindow : public QMainWindow
 {
@@ -27,7 +32,14 @@ public:
 
     Q_INVOKABLE void maskProgramm();            // Функция C++ вызываемая из QML для скрытия MainWindow
     Q_INVOKABLE void moveInputWords(int);       // Функция C++ вызываемая из QML для перемещания обьектов редактора уроков обучения
+    Q_INVOKABLE void moveSetup(int);            // Функция C++ вызываемая из QML для перемещания обьектов настроек
     Q_INVOKABLE void openUrlHelp();             // Функция C++ вызываемая из QML запускает справку по адресу url
+
+    Q_INVOKABLE void setVisibleObjectsetupLanguageComboBox(bool); // Показать/скрыть setupLanguageComboBox
+    Q_INVOKABLE void setVisibleObjectsetupTime(bool); // Показать/скрыть setupTime
+    Q_INVOKABLE void setVisibleObjectsetupSinBoxInputAmountCorrect(bool); // Показать/скрыть setupSinBoxInputAmountCorrect
+    Q_INVOKABLE void setVisibleObjectsetupVolume(bool); // Показать/скрыть setupVolume
+    Q_INVOKABLE void setVisibleObjectsetupUpdate(bool); // Показать/скрыть setupUpdate
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason); // Вызывает WainWindow при клике на иконку в трее
@@ -40,8 +52,6 @@ private:
     int save_x;                         // Сохраняет X положение MainWindow на экране
     int save_y;                         // Сохраняет Y положение MainWindow на экране
     QStringList learn_word;             // Слова для обучения
-
-    int moveLautWordsInput;             // Точка отчета позиции обьектов для inputLearnWords из Qml
 
     void setRoundedCorners(int,int,int,int); // Функция закругляет углы MainWindow
 
@@ -56,9 +66,20 @@ private:
     QAction *actionTreyMask;            // Актион скрывающий MainWindow
 
     void SetupLautWordsInput();         // Установка обьектов для редактора уроков
+    int moveLautWordsInput;             // Точка отчета позиции обьектов для установки уроков из Qml
     QListWidget *answerTrue;            // Обьект QListWidget предназначен для отображения статистики правильных ответов
     QListWidget *LestLearnWords;        // Обьект QListWidget предназначен для отображения слов которые будем учить
     QListWidget *ListBase;              // Обьект QListWidget предназначен для отображения словоря (базы слов для обучения)
+
+    void SetupObjectSetup();            // Установка обьектов насторек qml
+    int moveObjectSetup;                // Точка отчета позиции обьектов для настроек из Qml
+
+    QTimeEdit *setupTime;                       // Установка времени отображения программы
+    QSpinBox  *setupSinBoxInputAmountCorrect;   // Установка статистики правильных ответов
+    QComboBox *setupLanguageComboBox;           // Установка языка
+    Phonon::VolumeSlider   *setupVolume;                     // Громкость звука
+    QPushButton *setupUpdate;                   // Проверка обновлений
+
 };
 
 #endif // MAINWINDOW_H

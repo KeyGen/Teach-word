@@ -85,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
     //----------------------//////////////////////////////////////////////////----------------------/
 
     SetupLautWordsInput(); // Установка обьектов для редактора уроков
+    SetupObjectSetup();            // Установка обьектов насторек qml
 
     learn_word << "hello" << "int" << "big" << "smoll" << "smooth" << "teach" << "learn" << "words";
 }
@@ -125,6 +126,80 @@ void MainWindow::moveInputWords(int moveInt)
     answerTrue->move(moveLautWordsInput + 30, 50);      // Перемещаем обьект
     LestLearnWords->move(moveLautWordsInput + 77, 50);  // Перемещаем обьект
     ListBase->move(moveLautWordsInput + 344, 50);       // Перемещаем обьект
+}
+
+// Установка обьектов насторек qml
+void MainWindow::SetupObjectSetup()
+{
+    // Точка отчета позиции обьектов для настроек из Qml
+    moveObjectSetup = 600;
+
+    setupTime = new QTimeEdit(this);
+    setupTime->setGeometry(moveObjectSetup, 0, 200, 30);
+    setupTime->setVisible(false);
+
+    setupSinBoxInputAmountCorrect = new QSpinBox(this);
+    setupSinBoxInputAmountCorrect->setGeometry(moveObjectSetup, 0, 200, 30);
+    setupSinBoxInputAmountCorrect->setVisible(false);
+
+    setupLanguageComboBox = new QComboBox(this);
+    setupLanguageComboBox->setGeometry(moveObjectSetup, 0, 200, 30);
+    setupLanguageComboBox->setVisible(true);
+
+    setupVolume = new Phonon::VolumeSlider(this);
+    setupVolume->setGeometry(moveObjectSetup, 0, 200, 30);
+    setupVolume->setVisible(false);
+
+    setupUpdate = new QPushButton("Проверить обновления", this);
+    setupUpdate->setGeometry(moveObjectSetup,0,200,30);
+    setupUpdate->setVisible(false);
+}
+
+// Функция C++ вызываемая из QML для перемещания обьектов настроек
+void MainWindow::moveSetup(int moveInt)
+{
+    // Точка отчета позиции обьектов для настроек из Qml
+    moveObjectSetup = moveInt;
+
+    setupTime->move(moveObjectSetup + 35, 135);
+
+    setupSinBoxInputAmountCorrect->move(moveObjectSetup + 35, 135);
+
+    setupLanguageComboBox->move(moveObjectSetup + 35, 135);
+
+    setupVolume->move(moveObjectSetup + 35, 138);
+
+    setupUpdate->move(moveObjectSetup + 35, 138);
+}
+
+// Показать/скрыть setupLanguageComboBox
+void MainWindow::setVisibleObjectsetupLanguageComboBox(bool BL)
+{
+    setupLanguageComboBox->setVisible(BL);
+}
+
+// Показать/скрыть setupTime
+void MainWindow::setVisibleObjectsetupTime(bool BL)
+{
+    setupTime->setVisible(BL);
+}
+
+// Показать/скрыть setupSinBoxInputAmountCorrect
+void MainWindow::setVisibleObjectsetupSinBoxInputAmountCorrect(bool BL)
+{
+    setupSinBoxInputAmountCorrect->setVisible(BL);
+}
+
+// Показать/скрыть setupVolume
+void MainWindow::setVisibleObjectsetupVolume(bool BL)
+{
+    setupVolume->setVisible(BL);
+}
+
+// Показать/скрыть setupUpdate
+void MainWindow::setVisibleObjectsetupUpdate(bool BL)
+{
+    setupUpdate->setVisible(BL);
 }
 
 // Функция C++ вызываемая из QML для завершения работы приложения

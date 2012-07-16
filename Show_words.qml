@@ -15,9 +15,15 @@ Rectangle{
     border.width: 2
     border.color: "#4c0000"
 
+    Behavior on x { PropertyAnimation {duration: 600; easing.type: Easing.InCurve} }
+    Behavior on y { PropertyAnimation {duration: 600; easing.type: Easing.InOutSine} }
+    Behavior on scale { PropertyAnimation {duration: 400; easing.type: Easing.InOutSine} }
+    Behavior on opacity { PropertyAnimation {duration: 600; easing.type: Easing.InOutSine} }
+
+    // Разрешаем доступ textButton
+    property alias textShow: text.text
     Text {
         id: text
-        text: "Hello"
         font.pixelSize: 40
 
         anchors.verticalCenter: show.verticalCenter

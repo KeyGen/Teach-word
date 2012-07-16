@@ -82,95 +82,141 @@ Rectangle{
             y: mainAll.height/2
 
             Show_words{
+                id: showleftopacity
+                objectName: "minusfive"
+
+                z: -4
+                x: 97
+                y: -170
+
+                color: "yellow"
+
+                scale: 0.3
+
+                textShow: "leftopacity"
+
+                opacity: 0.0
+
+            }
+
+            Show_words{
                 id: show1
-                objectName: "show1"
+                objectName: "minusfour"
 
                 z: -3
 
-                y: show4.y - 30
-                x: 60*1.7
+                y: -153
+                x: 72
                 color: "white"
 
-                width: show4.width/1.8
-                height: show4.height/1.8
+                scale: 0.4
+
+                textShow: "show1"
             }
 
             Show_words{
                 id: show2
-                objectName: "show2"
+                objectName: "minusthree"
 
                 z: -2
 
-                y: show4.y - 20
-                x: 40*1.5
+                y: -128
+                x: 30
 
                 color: "magenta"
 
-                width: show4.width/1.5
-                height: show4.height/1.5
+                scale: 0.6
+
+                textShow: "show2"
             }
 
             Show_words{
                 id: show3
-                objectName: "show3"
+                objectName: "minustwo"
 
                 z: -1
-                y: show4.y - 10
-                x: 20
+                x: -280 + 20 + show3.width*0.8
+                y: -100
 
                 color: "blue"
 
-                width: show4.width/1.3
-                height: show4.height/1.3
+                scale: 0.8
+
+                textShow: "show3"
             }
 
             Show_words{
                 id: show4
-                objectName: "show4"
+                objectName: "one"
+
+                textShow: "show4"
+
+                scale: 1.0
 
                 z: 0
             }
 
             Show_words{
                 id: show5
-                objectName: "show5"
+                objectName: "two"
 
                 z: -1
-
-                y: show4.y - 10
-                x: -show5.width - 20
+                x: -40 + ((show5.width)*-1)*0.8
+                y: -100
 
                 color: "yellow"
 
-                width: show4.width/1.3
-                height: show4.height/1.3
+                scale: 0.8
+
+                textShow: "show5"
             }
 
             Show_words{
                 id: show6
-                objectName: "show6"
+                objectName: "three"
 
                 z: -2
-                y: show4.y - 20
-                x: -show5.width - 40/1.2
+                x: -332
+                y: -128
 
                 color: "red"
 
-                width: show4.width/1.5
-                height: show4.height/1.5
+                scale: 0.6
+
+                textShow: "show6"
             }
 
             Show_words{
                 id: show7
-                objectName: "show7"
+                objectName: "four"
 
                 z: -3
-                y: show4.y - 30
-                x: -show5.width - 60 / 1.3
+                x: -374
+                y: -153
 
-                width: show4.width/1.8
-                height: show4.height/1.8
+                scale: 0.4
+
+                textShow: "show7"
             }
+
+            Show_words{
+                id: showrightopacity
+                objectName: "five"
+
+                z: -4
+                x: -400
+                y: -170
+
+                color: "yellow"
+
+                scale: 0.3
+
+                textShow: "rightopacity"
+
+                opacity: 0.0
+
+            }
+
         }
 
         TextInputQml{}
@@ -250,6 +296,8 @@ Rectangle{
         }
 
         RectangleSetting{}
+
+        onXChanged: Qt_fun.moveSetup(inputSetting.x)
     }
 
     Rectangle{
