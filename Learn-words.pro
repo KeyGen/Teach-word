@@ -11,7 +11,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    facilityapplication.cpp
 
 HEADERS  += mainwindow.h
 
@@ -31,3 +32,5 @@ OTHER_FILES += \
     SaveSetting.qml \
     RectagleInfo.qml \
     RectangleSetting.qml
+
+#include(include_directories(${QT_INCLUDES}))

@@ -49,5 +49,7 @@
         <file alias="globe128back">picture/globe128back.png</file>
         <file alias="music128back">picture/music128back.png</file>
         <file alias="ok128back">picture/ok128back.png</file>
+        <file alias="mainbackground">picture/mainbackground.png</file>
+        <file alias="rotate">picture/rotate.png</file>
     </qresource>
 </RCC>

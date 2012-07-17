@@ -15,6 +15,8 @@
 #include <QSpinBox>
 #include <QComboBox>
 #include <QPushButton>
+#include <QLineEdit>
+#include <QTextBrowser>
 #include <phonon>
 
 class MainWindow : public QMainWindow
@@ -35,11 +37,14 @@ public:
     Q_INVOKABLE void moveSetup(int);            // Функция C++ вызываемая из QML для перемещания обьектов настроек
     Q_INVOKABLE void openUrlHelp();             // Функция C++ вызываемая из QML запускает справку по адресу url
 
-    Q_INVOKABLE void setVisibleObjectsetupLanguageComboBox(bool); // Показать/скрыть setupLanguageComboBox
-    Q_INVOKABLE void setVisibleObjectsetupTime(bool); // Показать/скрыть setupTime
+    Q_INVOKABLE void setVisibleObjectsetupLanguageComboBox(bool);   // Показать/скрыть setupLanguageComboBox
+    Q_INVOKABLE void setVisibleObjectsetupTime(bool);               // Показать/скрыть setupTime
     Q_INVOKABLE void setVisibleObjectsetupSinBoxInputAmountCorrect(bool); // Показать/скрыть setupSinBoxInputAmountCorrect
-    Q_INVOKABLE void setVisibleObjectsetupVolume(bool); // Показать/скрыть setupVolume
-    Q_INVOKABLE void setVisibleObjectsetupUpdate(bool); // Показать/скрыть setupUpdate
+    Q_INVOKABLE void setVisibleObjectsetupVolume(bool);             // Показать/скрыть setupVolume
+    Q_INVOKABLE void setVisibleObjectsetupUpdate(bool);             // Показать/скрыть setupUpdate
+    Q_INVOKABLE void setVisibleObjectLernWord();                    // Показывает/скрывает findWord transferWord
+
+    Q_INVOKABLE bool inputShowWords(QString, QString); // Установка слов в qml / проверка правильности введенного ответа
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason); // Вызывает WainWindow при клике на иконку в трее
@@ -70,6 +75,8 @@ private:
     QListWidget *answerTrue;            // Обьект QListWidget предназначен для отображения статистики правильных ответов
     QListWidget *LestLearnWords;        // Обьект QListWidget предназначен для отображения слов которые будем учить
     QListWidget *ListBase;              // Обьект QListWidget предназначен для отображения словоря (базы слов для обучения)
+    QLineEdit *findWord;                // Обьект QLineEdit предназначен для поиска слов по словарю
+    QTextBrowser *transferWord;         // Обьект QTextBrowser предназначен для отображения перевода слов
 
     void SetupObjectSetup();            // Установка обьектов насторек qml
     int moveObjectSetup;                // Точка отчета позиции обьектов для настроек из Qml
@@ -77,8 +84,10 @@ private:
     QTimeEdit *setupTime;                       // Установка времени отображения программы
     QSpinBox  *setupSinBoxInputAmountCorrect;   // Установка статистики правильных ответов
     QComboBox *setupLanguageComboBox;           // Установка языка
-    Phonon::VolumeSlider   *setupVolume;                     // Громкость звука
+    Phonon::VolumeSlider   *setupVolume;        // Громкость звука
     QPushButton *setupUpdate;                   // Проверка обновлений
+
+    void bootDictionary();                      // Загрузка словарей StarDict
 
 };
 

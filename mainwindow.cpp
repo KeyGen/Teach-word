@@ -87,6 +87,8 @@ MainWindow::MainWindow(QWidget *parent)
     SetupLautWordsInput(); // Установка обьектов для редактора уроков
     SetupObjectSetup();            // Установка обьектов насторек qml
 
+    bootDictionary();
+
     learn_word << "hello" << "int" << "big" << "smoll" << "smooth" << "teach" << "learn" << "words";
 }
 
@@ -114,7 +116,16 @@ void MainWindow::SetupLautWordsInput()
     LestLearnWords->setGeometry(moveLautWordsInput + 100, 50, 225, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
 
     ListBase = new QListWidget(this); // Создаем обект QListWidget
-    ListBase->setGeometry(moveLautWordsInput + 200, 50, 225, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+    ListBase->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+
+    // Обьект QLineEdit предназначен для поиска слов по словарю
+    findWord = new QLineEdit(this);
+    findWord->setGeometry(moveLautWordsInput + 200, 50, 225, 30); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+
+    // Обьект QTextBrowser предназначен для отображения перевода слов
+    transferWord = new QTextBrowser(this);
+    transferWord->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+    transferWord->setVisible(false);
 
 }
 
@@ -125,7 +136,25 @@ void MainWindow::moveInputWords(int moveInt)
 
     answerTrue->move(moveLautWordsInput + 30, 50);      // Перемещаем обьект
     LestLearnWords->move(moveLautWordsInput + 77, 50);  // Перемещаем обьект
-    ListBase->move(moveLautWordsInput + 344, 50);       // Перемещаем обьект
+    ListBase->move(moveLautWordsInput + 344, 80);       // Перемещаем обьект
+
+    findWord->move(moveLautWordsInput + 344, 50);  // Перемещаем обьект
+    transferWord->move(moveLautWordsInput + 344, 80);       // Перемещаем обьект
+}
+
+// Показывает/скрывает findWord transferWord
+void MainWindow::setVisibleObjectLernWord()
+{
+    if(ListBase->isVisible())
+    {
+        ListBase->setVisible(false);
+        transferWord->setVisible(true);
+    }
+    else
+    {
+        ListBase->setVisible(true);
+        transferWord->setVisible(false);
+    }
 }
 
 // Установка обьектов насторек qml
@@ -283,4 +312,13 @@ void MainWindow::treyProgrammShow(QSystemTrayIcon::ActivationReason temp)
             this->setVisible(true); // отображает
         }
     }
+}
+
+// Установка слов в qml / проверка правильности введенного ответа
+bool MainWindow::inputShowWords(QString str, QString strinput)
+{
+    if(str == strinput)
+        return true;
+    else
+        return false;
 }

@@ -28,7 +28,7 @@ Rectangle
         x: 10
         focus: true
 
-        text: "Hello world!"
+        text: ""
         color: "black"
         font.pixelSize : 17
         cursorVisible: true
@@ -39,10 +39,9 @@ Rectangle
 
         Timer {
             id: timerFocus
-            interval: 600;
+            interval: 800;
             onTriggered:
             {
-
                 if(show4.objectName=="one" && show5.objectName == "one")
                 {
                     showleftopacity.objectName = "minusfive"
@@ -125,7 +124,6 @@ Rectangle
                     show6.opacity = show7.opacity
                     show6.objectName = show7.objectName
 
-
                     show7.x = showrightopacity.x
                     show7.y = showrightopacity.y
                     show7.scale = showrightopacity.scale
@@ -165,6 +163,7 @@ Rectangle
                     show4.x = show5.x
                     show4.y = show5.y
                     show4.scale = show5.scale
+                    if(show5.opacity != 0.01)
                     show4.opacity = show5.opacity
                     show4.objectName = show5.objectName
 
@@ -285,12 +284,14 @@ Rectangle
                         showrightopacity.z = 0
                     }
                 }
+
+                timerFocus.running = false
             }
         }
 
         Timer {
             id: timerTwoFocus
-            interval: 295;
+            interval: 300;
             onTriggered:
             {
                 if(showleftopacity.objectName == "one")
@@ -337,60 +338,125 @@ Rectangle
                 {
                     show7.scale = 1.0
                 }
+
+                timerTwoFocus.running = false
+            }
+        }
+
+        Timer {
+            id: timerThreeFocus
+            interval: 1200;
+            onTriggered:
+            {
+                timerThreeFocus.running = false
             }
         }
 
         onAccepted: {
 
-            if(showleftopacity.objectName == "one")
+            if(timerThreeFocus.running != true)
             {
-                showleftopacity.scale = 1.3
+                var textOne;
+                if(showleftopacity.objectName == "one")
+                {
+                    textOne = showleftopacity.textShow
+                }
+
+                else if(show1.objectName == "one")
+                {
+                    textOne = show1.textShow
+                }
+
+                else if(show2.objectName == "one")
+                {
+                    textOne = show2.textShow
+                }
+
+                else if(show3.objectName == "one")
+                {
+                    textOne = show3.textShow
+                }
+
+                else if(showrightopacity.objectName == "one")
+                {
+                    textOne = showrightopacity.textShow
+                }
+
+                else if(show5.objectName == "one")
+                {
+                    textOne = show5.textShow
+                }
+
+                else if(show4.objectName == "one")
+                {
+                    textOne = show4.textShow
+                }
+
+                else if(show6.objectName == "one")
+                {
+                    textOne = show6.textShow
+                }
+
+                else if(show7.objectName == "one")
+                {
+                    textOne = show7.textShow
+                }
+
+                if(Qt_fun.inputShowWords(textOne, textInput.text))
+                {
+                    if(showleftopacity.objectName == "one")
+                    {
+                        showleftopacity.scale = 1.3
+                    }
+
+                    else if(show1.objectName == "one")
+                    {
+                        show1.scale = 1.3
+                    }
+
+                    else if(show2.objectName == "one")
+                    {
+                        show2.scale = 1.3
+                    }
+
+                    else if(show3.objectName == "one")
+                    {
+                        show3.scale = 1.3
+                    }
+
+                    else if(showrightopacity.objectName == "one")
+                    {
+                        showrightopacity.scale = 1.3
+                    }
+
+                    else if(show5.objectName == "one")
+                    {
+                        show5.scale = 1.3
+                    }
+
+                    else if(show4.objectName == "one")
+                    {
+                        show4.scale = 1.3
+                    }
+
+                    else if(show6.objectName == "one")
+                    {
+                        show6.scale = 1.3
+                    }
+
+                    else if(show7.objectName == "one")
+                    {
+                        show7.scale = 1.3
+                    }
+
+                    timerFocus.running = true
+                    timerTwoFocus.running = true
+                    timerThreeFocus.running = true
+
+                    textInput.text = ""
+                    console.log("Enter")
+                }
             }
-
-            else if(show1.objectName == "one")
-            {
-                show1.scale = 1.3
-            }
-
-            else if(show2.objectName == "one")
-            {
-                show2.scale = 1.3
-            }
-
-            else if(show3.objectName == "one")
-            {
-                show3.scale = 1.3
-            }
-
-            else if(showrightopacity.objectName == "one")
-            {
-                showrightopacity.scale = 1.3
-            }
-
-            else if(show5.objectName == "one")
-            {
-                show5.scale = 1.3
-            }
-
-            else if(show4.objectName == "one")
-            {
-                show4.scale = 1.3
-            }
-
-            else if(show6.objectName == "one")
-            {
-                show6.scale = 1.3
-            }
-
-            else if(show7.objectName == "one")
-            {
-                show7.scale = 1.3
-            }
-
-            timerFocus.running = true
-            timerTwoFocus.running = true
-
-            console.log("Enter")
         }
     }
 

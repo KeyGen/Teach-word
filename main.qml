@@ -72,6 +72,13 @@ Rectangle{
 
         smooth: true
 
+//        Image {
+//            id: mainbackground
+//            source: ":/picture/mainbackground"
+
+//            y: -24
+//        }
+
         Rectangle
         {
             id: show
@@ -89,11 +96,17 @@ Rectangle{
                 x: 97
                 y: -170
 
-                color: "yellow"
+                //color: "yellow"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#00358c"}
+                    GradientStop { position: 0.5; color: "#00c7e6"}
+                    GradientStop { position: 1.0; color: "#00358c"}
+                }
 
                 scale: 0.3
 
-                textShow: "leftopacity"
+                textShow: "show"
 
                 opacity: 0.0
 
@@ -107,11 +120,18 @@ Rectangle{
 
                 y: -153
                 x: 72
-                color: "white"
+                //color: "white"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#5f005e"}
+                    GradientStop { position: 0.5; color: "#ff00fc"}
+                    GradientStop { position: 1.0; color: "#5f005e"}
+                }
 
                 scale: 0.4
 
-                textShow: "show1"
+                textShow: "show"
+
             }
 
             Show_words{
@@ -123,11 +143,17 @@ Rectangle{
                 y: -128
                 x: 30
 
-                color: "magenta"
+                //color: "magenta"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#0e6600"}
+                    GradientStop { position: 0.5; color: "#24ff00"}
+                    GradientStop { position: 1.0; color: "#0e6600"}
+                }
 
                 scale: 0.6
 
-                textShow: "show2"
+                textShow: "show"
             }
 
             Show_words{
@@ -138,18 +164,30 @@ Rectangle{
                 x: -280 + 20 + show3.width*0.8
                 y: -100
 
-                color: "blue"
+                //color: "blue"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#005c71"}
+                    GradientStop { position: 0.5; color: "#00cfff"}
+                    GradientStop { position: 1.0; color: "#005c71"}
+                }
 
                 scale: 0.8
 
-                textShow: "show3"
+                textShow: "show"
             }
 
             Show_words{
                 id: show4
                 objectName: "one"
 
-                textShow: "show4"
+                textShow: "show"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#00562c"}
+                    GradientStop { position: 0.5; color: "#00dc71"}
+                    GradientStop { position: 1.0; color: "#00562c"}
+                }
 
                 scale: 1.0
 
@@ -164,11 +202,19 @@ Rectangle{
                 x: -40 + ((show5.width)*-1)*0.8
                 y: -100
 
-                color: "yellow"
+                //color: "yellow"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#007a25"}
+                    GradientStop { position: 0.5; color: "#00ff4e"}
+                    GradientStop { position: 1.0; color: "#007a25"}
+                }
 
                 scale: 0.8
 
-                textShow: "show5"
+                textShow: "show"
+
+                opacity: 0.01
             }
 
             Show_words{
@@ -179,11 +225,19 @@ Rectangle{
                 x: -332
                 y: -128
 
-                color: "red"
+                //color: "red"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#625800"}
+                    GradientStop { position: 0.5; color: "#ffe500"}
+                    GradientStop { position: 1.0; color: "#625800"}
+                }
 
                 scale: 0.6
 
-                textShow: "show6"
+                textShow: "show"
+
+                opacity: 0.01
             }
 
             Show_words{
@@ -196,7 +250,15 @@ Rectangle{
 
                 scale: 0.4
 
-                textShow: "show7"
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#2e5a00"}
+                    GradientStop { position: 0.5; color: "#84ff00"}
+                    GradientStop { position: 1.0; color: "#2e5a00"}
+                }
+
+                textShow: "show"
+
+                opacity: 0.01
             }
 
             Show_words{
@@ -207,11 +269,17 @@ Rectangle{
                 x: -400
                 y: -170
 
-                color: "yellow"
+                //color: "yellow"
+
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: "#833e00"}
+                    GradientStop { position: 0.5; color: "#ffa555"}
+                    GradientStop { position: 1.0; color: "#833e00"}
+                }
 
                 scale: 0.3
 
-                textShow: "rightopacity"
+                textShow: "show"
 
                 opacity: 0.0
 
@@ -427,7 +495,7 @@ Rectangle{
                 width: 40
                 height: 40
 
-                x: 393
+                x: 366
                 y: -20
 
                 smooth: true
@@ -442,13 +510,36 @@ Rectangle{
             }
 
             Image {
+                id: helpBase_transfer
+                source: ":/picture/rotate"
+
+                width: 40
+                height: 40
+
+                x: helpBase.x + helpBase_transfer.width + 10
+                y: -20
+
+                smooth: true
+
+                scale: helpBase_transferMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: helpBase_transferMouse
+                    anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+                    onClicked: Qt_fun.setVisibleObjectLernWord()
+                }
+            }
+
+            Image {
                 id: languageBase
                 source: ":/picture/globe"
 
                 width: 40
                 height: 40
 
-                x: helpBase.x + helpBase.width + 10
+                x: helpBase_transfer.x + languageBase.width + 10
                 y: helpBase.y
 
                 smooth: true
