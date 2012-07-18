@@ -12,7 +12,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    facilityapplication.cpp
+    facilityapplication.cpp \
+    qzip/qzip.cpp \
+    slotapplication.cpp
 
 HEADERS  += mainwindow.h
 
@@ -33,4 +35,4 @@ OTHER_FILES += \
     RectagleInfo.qml \
     RectangleSetting.qml
 
-#include(include_directories(${QT_INCLUDES}))
+#INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib

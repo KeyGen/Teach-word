@@ -550,6 +550,9 @@ Rectangle{
                     id: languageBaseMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: {
+                        Qt_fun.showObjectdicInputanddicInfo()
+                    }
                 }
             }
 

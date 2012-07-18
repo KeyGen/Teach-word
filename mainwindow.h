@@ -17,6 +17,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QTextBrowser>
+#include <QDir>
 #include <phonon>
 
 class MainWindow : public QMainWindow
@@ -43,20 +44,23 @@ public:
     Q_INVOKABLE void setVisibleObjectsetupVolume(bool);             // Показать/скрыть setupVolume
     Q_INVOKABLE void setVisibleObjectsetupUpdate(bool);             // Показать/скрыть setupUpdate
     Q_INVOKABLE void setVisibleObjectLernWord();                    // Показывает/скрывает findWord transferWord
-
     Q_INVOKABLE bool inputShowWords(QString, QString); // Установка слов в qml / проверка правильности введенного ответа
+    Q_INVOKABLE void showObjectdicInputanddicInfo(); // Показать/скрыть dicInput и dicInfo
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason); // Вызывает WainWindow при клике на иконку в трее
+    void actionDict(QString);   // Вызывает WainWindow при выборе словаря
+    QString DictInHtml(QString word);                // Поиск слова в словаре и выдется результат в html
 
 private:
     QDeclarativeView *ui;               // Qml
     QObject *Root;                      // Корневой элемент QML модели
 
-    bool BL_move;                       // Нужна для правильного перемещения мышкой MainWindow
     int save_x;                         // Сохраняет X положение MainWindow на экране
     int save_y;                         // Сохраняет Y положение MainWindow на экране
+
     QStringList learn_word;             // Слова для обучения
+    QString activeDict;                 // Загруженный в оперативку активный словарь
 
     void setRoundedCorners(int,int,int,int); // Функция закругляет углы MainWindow
 
@@ -78,6 +82,9 @@ private:
     QLineEdit *findWord;                // Обьект QLineEdit предназначен для поиска слов по словарю
     QTextBrowser *transferWord;         // Обьект QTextBrowser предназначен для отображения перевода слов
 
+    QComboBox *dicInput;                // Обьект QComboBox предназначен для выбора словаря
+    QTextBrowser *dicInfo;              // Обьект QTextBrowser предназначен для отображения свойств словаря
+
     void SetupObjectSetup();            // Установка обьектов насторек qml
     int moveObjectSetup;                // Точка отчета позиции обьектов для настроек из Qml
 
@@ -87,8 +94,12 @@ private:
     Phonon::VolumeSlider   *setupVolume;        // Громкость звука
     QPushButton *setupUpdate;                   // Проверка обновлений
 
-    void bootDictionary();                      // Загрузка словарей StarDict
+    int bootDictionary();                       // Загрузка словарей StarDict
+    QMap<QString,QString> listDict;             // Запись информации и имя словоря
 
+    void connectObject();       // Функция для подсоединения сигналов и слотов
+
+    void ReadSetting();     // Чтение настроек
 };
 
 #endif // MAINWINDOW_H

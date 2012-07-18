@@ -72,13 +72,6 @@ MainWindow::MainWindow(QWidget *parent)
     // Вставляем меню в системный трей
     systemTray->setContextMenu(menuTrey);
 
-    /////// Подключаем актоны к слотам подготовленых для них ///////
-
-    // Вызывает WainWindow при клике на иконку в трее
-    connect(systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(treyProgrammShow(QSystemTrayIcon::ActivationReason)));
-
-    ///////                    the end                       ///////
-
     // Отображаем иконку в трее
     systemTray->show();
                             ///////////////////// The end ////////////////////
@@ -87,15 +80,32 @@ MainWindow::MainWindow(QWidget *parent)
     SetupLautWordsInput(); // Установка обьектов для редактора уроков
     SetupObjectSetup();            // Установка обьектов насторек qml
 
-    bootDictionary();
+    qDebug() << bootDictionary();
 
     learn_word << "hello" << "int" << "big" << "smoll" << "smooth" << "teach" << "learn" << "words";
+
+    connectObject();
+    ReadSetting();
 }
 
 // Деструктор
 MainWindow::~MainWindow()
 {
     delete ui; // Удаляем обькт qml
+
+    QDir dir("dic/tempdir");        // Создаем Qdir в папке tempdir
+
+    dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks); // Устанавливаем фильтры
+
+    QFileInfoList list = dir.entryInfoList(); // Чтение инфо о файлах
+
+    for (int i = 0; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);
+        dir.remove(fileInfo.fileName());    // Удаляем файлы из папки tempdir
+    }
+
+    dir.cdUp(); // Выходим в папку dic
+    qDebug() << dir.rmdir("tempdir");  // Удаляем temp папку
 }
 
 // Функция C++ вызываемая из QML вызывающая справку по адресу url
@@ -124,9 +134,16 @@ void MainWindow::SetupLautWordsInput()
 
     // Обьект QTextBrowser предназначен для отображения перевода слов
     transferWord = new QTextBrowser(this);
-    transferWord->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+    transferWord->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QTextBrowser
     transferWord->setVisible(false);
 
+    dicInput = new QComboBox(this);                // Обьект QComboBox предназначен для выбора словаря
+    dicInput->setGeometry(moveLautWordsInput + 200, 50, 225, 30); // Устанавливаем геометрию (положение/размер) обекта QComboBox
+    dicInput->setVisible(false);
+
+    dicInfo = new QTextBrowser(this);       // Обьект QTextBrowser предназначен для отображения свойств словаря
+    dicInfo->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QTextBrowser
+    dicInfo->setVisible(false);
 }
 
 // Функция C++ вызываемая из QML для перемещания обьектов редактора уроков обучения
@@ -140,6 +157,24 @@ void MainWindow::moveInputWords(int moveInt)
 
     findWord->move(moveLautWordsInput + 344, 50);  // Перемещаем обьект
     transferWord->move(moveLautWordsInput + 344, 80);       // Перемещаем обьект
+
+    dicInput->move(moveLautWordsInput + 344, 50);  // Перемещаем обьект
+    dicInfo->move(moveLautWordsInput + 344, 80);       // Перемещаем обьект
+}
+
+// Показать/скрыть dicInput и dicInfo
+void MainWindow::showObjectdicInputanddicInfo()
+{
+    if(dicInput->isVisible())
+    {
+        dicInput->setVisible(false);
+        dicInfo->setVisible(false);
+    }
+    else
+    {
+        dicInput->setVisible(true);
+        dicInfo->setVisible(true);
+    }
 }
 
 // Показывает/скрывает findWord transferWord
@@ -269,29 +304,20 @@ void MainWindow::setRoundedCorners(int radius_tl, int radius_tr, int radius_bl, 
 void MainWindow::cursor_down()
 {
     this->setCursor(QCursor(Qt::ArrowCursor));  // Востанавливает нормальный вид курсора
-    BL_move = true; // Нужна для правильного перемещения мышкой MainWindow
 }
 
 //Функция C++ вызываемая из QML изменяющие курсор
 void MainWindow::cursor_up()
 {
     this->setCursor(QCursor(Qt::SizeAllCursor));    // Изменяет вид курсора при клике на обьект
+
+    save_x = QCursor::pos().x() - this->pos().x();
+    save_y = QCursor::pos().y() - this->pos().y();
 }
 
 //Функция C++ вызываемая из QML премещающие окно
 void MainWindow::move_window()
 {
-    // При попытке переместить фиксирует положение мышки относительно окна
-    if(BL_move)
-    {
-        save_x = QCursor::pos().x() - this->pos().x();
-        save_y = QCursor::pos().y() - this->pos().y();
-    }
-
-    // Запрещаем фиксацию
-    if(BL_move)
-        BL_move = false;
-
     // Перемещаем окно
     this->move(QCursor::pos().x()-save_x , QCursor::pos().y() - save_y);
 }
