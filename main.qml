@@ -443,6 +443,10 @@ Rectangle{
                     id: helpAmountMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onPressed:
+                    {
+                        Qt_fun.showMassage("<br>Это отображение статистики.<br><br>Фиксирует правильные ответы.", "true")
+                    }
                 }
             }
 
@@ -464,6 +468,10 @@ Rectangle{
                     id: helpLearnWordMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onPressed:
+                    {
+                        Qt_fun.showMassage("<br>Отображение слов которые будем учить<br><br>Добавте слова и можно начинать урок", "true")
+                    }
                 }
             }
 
@@ -485,6 +493,8 @@ Rectangle{
                     id: trash_fullLearnWordMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+                    onClicked: Qt_fun.clearLearnWords()
                 }
             }
 
@@ -506,6 +516,10 @@ Rectangle{
                     id: helpBaseWordMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onPressed:
+                    {
+                        Qt_fun.showMassage("<br><b>Базовый словарь</b><br><br>Cловари из которых будем учить слова", "true")
+                    }
                 }
             }
 
@@ -574,6 +588,7 @@ Rectangle{
                     id: rightMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: Qt_fun.deleteWord()
                 }
             }
 
@@ -595,11 +610,11 @@ Rectangle{
                     id: leftMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    onClicked: Qt_fun.addLearnWords()
                 }
             }
        }
 
         onXChanged: Qt_fun.moveInputWords(inputLearnWords.x)
     }
-
 }

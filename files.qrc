@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
         <file>Quit.qml</file>
         <file>Show_words.qml</file>
         <file>TextInputQml.qml</file>
@@ -12,6 +11,8 @@
         <file>SaveSetting.qml</file>
         <file>RectagleInfo.qml</file>
         <file>RectangleSetting.qml</file>
+        <file>main.qml</file>
+        <file>ShowMessage.qml</file>
     </qresource>
     <qresource prefix="/picture">
         <file alias="quit">picture/quit.png</file>
@@ -51,5 +52,7 @@
         <file alias="ok128back">picture/ok128back.png</file>
         <file alias="mainbackground">picture/mainbackground.png</file>
         <file alias="rotate">picture/rotate.png</file>
+        <file alias="info128">picture/info128.png</file>
+        <file alias="yes">picture/yes.png</file>
     </qresource>
 </RCC>

@@ -14,15 +14,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     facilityapplication.cpp \
     qzip/qzip.cpp \
-    slotapplication.cpp
+    slotapplication.cpp \
+    showmessage.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    showmessage.h
 
 RESOURCES += \
     files.qrc
 
 OTHER_FILES += \
-    main.qml \
     Quit.qml \
     Show_words.qml \
     TextInputQml.qml \
@@ -33,6 +34,8 @@ OTHER_FILES += \
     Button_setting.qml \
     SaveSetting.qml \
     RectagleInfo.qml \
-    RectangleSetting.qml
+    RectangleSetting.qml \
+    main.qml \
+    ShowMessage.qml
 
 #INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib

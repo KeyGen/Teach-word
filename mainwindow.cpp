@@ -18,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     setRoundedCorners(20,20,20,20); // Вызываем функцию которая закруглит углы
 
-    //Включаем наш QML Background_qml
-    ui = new QDeclarativeView(this);
+    //Включаем наш QML
+    ui = new QDeclarativeView();
     ui->setSource(QUrl("qrc:/main.qml"));
 
     //Находим корневой элемент
@@ -28,6 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->rootContext()->setContextProperty("Qt_fun", this);
 
     this->setCentralWidget(ui); // Устанавливаем ui по центру
+
+    SetupLautWordsInput(); // Установка обьектов для редактора уроков
+    SetupObjectSetup();            // Установка обьектов насторек qml
+
+//    QPixmap pix = QPixmap::grabWindow(QWidget::winId(uiShowMessage)); // скрин под программой
+//    pix.save("kdjfk.png");
 
     //----------------------//////////////////////////////////////////////////----------------------//
                             ////////// Создаем иконку с меню в трее //////////
@@ -77,15 +83,14 @@ MainWindow::MainWindow(QWidget *parent)
                             ///////////////////// The end ////////////////////
     //----------------------//////////////////////////////////////////////////----------------------/
 
-    SetupLautWordsInput(); // Установка обьектов для редактора уроков
-    SetupObjectSetup();            // Установка обьектов насторек qml
+    //qDebug() << bootDictionary();
 
-    qDebug() << bootDictionary();
-
-    learn_word << "hello" << "int" << "big" << "smoll" << "smooth" << "teach" << "learn" << "words";
+    transferWord->setOpenLinks(false); // запрет на открытие url в transferWord
 
     connectObject();
     ReadSetting();
+
+    showmessage = new ShowMessage();           // Класс сообщения
 }
 
 // Деструктор
@@ -122,8 +127,8 @@ void MainWindow::SetupLautWordsInput()
     answerTrue = new QListWidget(this); // Создаем обект QListWidget
     answerTrue->setGeometry(moveLautWordsInput + 20, 50, 40, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
 
-    LestLearnWords = new QListWidget(this); // Создаем обект QListWidget
-    LestLearnWords->setGeometry(moveLautWordsInput + 100, 50, 225, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
+    ListLearnWords = new QListWidget(this); // Создаем обект QListWidget
+    ListLearnWords->setGeometry(moveLautWordsInput + 100, 50, 225, 185); // Устанавливаем геометрию (положение/размер) обекта QListWidget
 
     ListBase = new QListWidget(this); // Создаем обект QListWidget
     ListBase->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QListWidget
@@ -152,7 +157,7 @@ void MainWindow::moveInputWords(int moveInt)
     moveLautWordsInput = moveInt; // Приравниваем полученное число из qml к нашей точки отчета позиции
 
     answerTrue->move(moveLautWordsInput + 30, 50);      // Перемещаем обьект
-    LestLearnWords->move(moveLautWordsInput + 77, 50);  // Перемещаем обьект
+    ListLearnWords->move(moveLautWordsInput + 77, 50);  // Перемещаем обьект
     ListBase->move(moveLautWordsInput + 344, 80);       // Перемещаем обьект
 
     findWord->move(moveLautWordsInput + 344, 50);  // Перемещаем обьект
@@ -270,10 +275,12 @@ void MainWindow::setVisibleObjectsetupUpdate(bool BL)
 void MainWindow::quit()
 {
     this->close(); // Завершает выполнение программы
+    showmessage->close();
 }
 
 // Функция закругляет углы MainWindow
-void MainWindow::setRoundedCorners(int radius_tl, int radius_tr, int radius_bl, int radius_br) {
+void MainWindow::setRoundedCorners(int radius_tl, int radius_tr, int radius_bl, int radius_br)
+{
     QRegion region(0, 0, width(), height(), QRegion::Rectangle);
 
     // top left
@@ -296,7 +303,6 @@ void MainWindow::setRoundedCorners(int radius_tl, int radius_tr, int radius_bl, 
     corner = QRegion(0, height()-radius_bl, radius_bl, radius_bl, QRegion::Rectangle);
     region = region.subtracted(corner.subtracted(round));
 
-    // Отображает созданный регион все лишнее скрывает
     setMask(region);
 }
 
@@ -320,6 +326,7 @@ void MainWindow::move_window()
 {
     // Перемещаем окно
     this->move(QCursor::pos().x()-save_x , QCursor::pos().y() - save_y);
+    showmessage->move(QCursor::pos().x()-save_x , QCursor::pos().y() - save_y);
 }
 
 // Функция C++ вызываемая из QML для скрытия MainWindow

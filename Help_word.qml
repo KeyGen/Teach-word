@@ -19,6 +19,10 @@ Image {
         id: help_wordMouse
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: Qt_fun.quit()
+        onClicked:
+        {
+            Qt_fun.qmlRaise()
+            Qt_fun.showMassage("<br>Скоро будет готава подсказка!<br><br>Цетр отредактирован :)")
+        }
     }
 }

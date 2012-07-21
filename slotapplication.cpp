@@ -49,17 +49,23 @@ void MainWindow::actionDict(QString str)
                 activeDict = out.readAll();       // Считываем весь файл в QString
             }
 
-
             ListBase->clear();
+            baseWord.clear();
+            findWord->clear();
+            transferWord->clear();
+
             QRegExp rx("<k>([^<]*)<\/k>");
             rx.setMinimal(true);
 
              int pos = 0;
              while ((pos = rx.indexIn(activeDict, pos)) != -1)
              {
-                 ListBase->addItem(rx.cap(1));
+                 baseWord << rx.cap(1);
                  pos += rx.matchedLength();
              }
+
+             ListBase->addItems(baseWord);
+             ListBase->setCurrentRow(0);
 
              for(int i=0; i<ListBase->count(); i++)
              {
@@ -72,4 +78,55 @@ void MainWindow::actionDict(QString str)
             break;
         }
     }
+}
+
+// Слот для поиска слов по загруженному словарю
+void MainWindow::slotFindWord(QString find)
+{
+    if(!find.isEmpty())
+    {
+        int i;
+
+        for(i = 0; i<baseWord.size(); i++)
+        {
+            if(baseWord.at(i).left(find.size()).contains(find, Qt::CaseInsensitive))
+            {
+                transferWord->setText(DictInHtml(baseWord.at(i)));
+
+                ListBase->setCurrentRow(i+7);
+                ListBase->setCurrentRow(i);
+
+                break;
+            }
+        }
+    }
+    else
+    {
+        ListBase->setCurrentRow(0);
+        transferWord->clear();
+    }
+}
+
+// Ввод в findWord url
+void MainWindow::slotFindWordUrl(QUrl url)
+{
+    QString temp;
+    temp = url.toString();
+
+    temp.replace("-----------", " ");
+
+    findWord->setText(temp);
+}
+
+// Слот активируется двойным щелчком по baseWord для поиска слова
+void MainWindow::slotInputWordInFindWord(QModelIndex model)
+{
+    findWord->clear();
+    findWord->setText(model.data().toString());
+}
+
+// Слот перемещает MainWindow
+void MainWindow::setNewMove(QPoint point)
+{
+    this->move(point);
 }
