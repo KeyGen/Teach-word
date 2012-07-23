@@ -90,13 +90,11 @@ Rectangle{
 
             Show_words{
                 id: showleftopacity
-                objectName: "minusfive"
+                objectName: "show_5"
 
                 z: -4
                 x: 97
                 y: -170
-
-                //color: "yellow"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#00358c"}
@@ -106,7 +104,7 @@ Rectangle{
 
                 scale: 0.3
 
-                textShow: "show"
+                textShow: "show_5"
 
                 opacity: 0.0
 
@@ -114,13 +112,12 @@ Rectangle{
 
             Show_words{
                 id: show1
-                objectName: "minusfour"
+                objectName: "show_4"
 
                 z: -3
 
                 y: -153
                 x: 72
-                //color: "white"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#5f005e"}
@@ -130,20 +127,18 @@ Rectangle{
 
                 scale: 0.4
 
-                textShow: "show"
+                textShow: "show_4"
 
             }
 
             Show_words{
                 id: show2
-                objectName: "minusthree"
+                objectName: "show_3"
 
                 z: -2
 
                 y: -128
                 x: 30
-
-                //color: "magenta"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#0e6600"}
@@ -153,18 +148,16 @@ Rectangle{
 
                 scale: 0.6
 
-                textShow: "show"
+                textShow: "show_3"
             }
 
             Show_words{
                 id: show3
-                objectName: "minustwo"
+                objectName: "show_2"
 
                 z: -1
                 x: -280 + 20 + show3.width*0.8
                 y: -100
-
-                //color: "blue"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#005c71"}
@@ -174,14 +167,14 @@ Rectangle{
 
                 scale: 0.8
 
-                textShow: "show"
+                textShow: "show_2"
             }
 
             Show_words{
                 id: show4
-                objectName: "one"
+                objectName: "show_1"
 
-                textShow: "show"
+                textShow: "show_1"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#00562c"}
@@ -196,13 +189,11 @@ Rectangle{
 
             Show_words{
                 id: show5
-                objectName: "two"
+                objectName: "show_9"
 
                 z: -1
                 x: -40 + ((show5.width)*-1)*0.8
                 y: -100
-
-                //color: "yellow"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#007a25"}
@@ -212,20 +203,18 @@ Rectangle{
 
                 scale: 0.8
 
-                textShow: "show"
+                textShow: "show_9"
 
                 opacity: 0.01
             }
 
             Show_words{
                 id: show6
-                objectName: "three"
+                objectName: "show_8"
 
                 z: -2
                 x: -332
                 y: -128
-
-                //color: "red"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#625800"}
@@ -235,14 +224,14 @@ Rectangle{
 
                 scale: 0.6
 
-                textShow: "show"
+                textShow: "show_8"
 
                 opacity: 0.01
             }
 
             Show_words{
                 id: show7
-                objectName: "four"
+                objectName: "show_7"
 
                 z: -3
                 x: -374
@@ -256,20 +245,18 @@ Rectangle{
                     GradientStop { position: 1.0; color: "#2e5a00"}
                 }
 
-                textShow: "show"
+                textShow: "show_7"
 
                 opacity: 0.01
             }
 
             Show_words{
                 id: showrightopacity
-                objectName: "five"
+                objectName: "show_6"
 
                 z: -4
                 x: -400
                 y: -170
-
-                //color: "yellow"
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#833e00"}
@@ -279,7 +266,7 @@ Rectangle{
 
                 scale: 0.3
 
-                textShow: "show"
+                textShow: "show6"
 
                 opacity: 0.0
 
@@ -291,7 +278,9 @@ Rectangle{
 
         Quit{}
         Down{}
-        Setting{}
+        Setting{
+            objectName: "show"
+        }
     }
 
     Rectangle{
@@ -316,7 +305,9 @@ Rectangle{
 
         smooth: true
 
-        Back{}
+        Back{
+            objectName: "setting"
+        }
 
         Button_setting{
             id: settingButton
@@ -354,11 +345,13 @@ Rectangle{
         SaveSetting{}
 
         Back{
+            objectName: "inputSetting"
             x: parent.width - 110
             y: mainAll.height - 50
         }
 
         Setting{
+            objectName: "inputSetting"
             x: parent.width - 160
             y: mainAll.height - 50
         }
@@ -376,11 +369,13 @@ Rectangle{
         RectagleInfo{}
 
         Back{
+            objectName: "Backrectagleinfo"
             x: parent.width - 60
             y: mainAll.height - 50
         }
 
         Setting{
+            objectName: "Settingrectagleinfo"
             x: parent.width - 110
             y: mainAll.height - 50
         }
@@ -490,6 +485,30 @@ Rectangle{
                 scale: trash_fullLearnWordMouse.pressed? 0.8 : 1.0
 
                 MouseArea {
+                    id: trash_fullLearnWordhelpMouse
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        trash_fullLearnWordtimerhelpshow.running = true
+                    }
+                    onExited:
+                    {
+                        trash_fullLearnWordtimerhelpshow.running = false
+                    }
+                }
+
+                Timer {
+                    id: trash_fullLearnWordtimerhelpshow
+                    interval: 1000
+                    onTriggered:
+                    {
+                        Qt_fun.helpButton("Очистить базу слов для обучения",206, 35);
+                    }
+                }
+
+                MouseArea {
                     id: trash_fullLearnWordMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -538,6 +557,30 @@ Rectangle{
                 scale: helpBase_transferMouse.pressed? 0.8 : 1.0
 
                 MouseArea {
+                    id: helpBase_transferhelpMouse
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        helpBase_transfertimerhelpshow.running = true
+                    }
+                    onExited:
+                    {
+                        helpBase_transfertimerhelpshow.running = false
+                    }
+                }
+
+                Timer {
+                    id: helpBase_transfertimerhelpshow
+                    interval: 1000
+                    onTriggered:
+                    {
+                        Qt_fun.helpButton("Отобразить/скрыть перевод",450, 35);
+                    }
+                }
+
+                MouseArea {
                     id: helpBase_transferMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -559,6 +602,30 @@ Rectangle{
                 smooth: true
 
                 scale: languageBaseMouse.pressed? 0.8 : 1.0
+
+                MouseArea {
+                    id: languageBasehelpMouse
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        languageBasetimerhelpshow.running = true
+                    }
+                    onExited:
+                    {
+                        languageBasetimerhelpshow.running = false
+                    }
+                }
+
+                Timer {
+                    id: languageBasetimerhelpshow
+                    interval: 1000
+                    onTriggered:
+                    {
+                        Qt_fun.helpButton("Выбор словаря",500, 35);
+                    }
+                }
 
                 MouseArea {
                     id: languageBaseMouse
@@ -585,10 +652,34 @@ Rectangle{
                 scale: rightMouse.pressed? 0.8 : 1.0
 
                 MouseArea {
+                    id: righthelpMouse
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        righttimerhelpshow.running = true
+                    }
+                    onExited:
+                    {
+                        righttimerhelpshow.running = false
+                    }
+                }
+
+                Timer {
+                    id: righttimerhelpshow
+                    interval: 1000
+                    onTriggered:
+                    {
+                        Qt_fun.helpButton("Убрать слово",277, 175);
+                    }
+                }
+
+                MouseArea {
                     id: rightMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    onClicked: Qt_fun.deleteWord()
+                    onPressed: Qt_fun.deleteWord()
                 }
             }
 
@@ -607,10 +698,34 @@ Rectangle{
                 scale: leftMouse.pressed? 0.8 : 1.0
 
                 MouseArea {
+                    id: lefthelpMouse
+                    anchors.fill: parent
+
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        lefttimerhelpshow.running = true
+                    }
+                    onExited:
+                    {
+                        lefttimerhelpshow.running = false
+                    }
+                }
+
+                Timer {
+                    id: lefttimerhelpshow
+                    interval: 1000
+                    onTriggered:
+                    {
+                        Qt_fun.helpButton("Добавить слово",271, 53);
+                    }
+                }
+
+                MouseArea {
                     id: leftMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    onClicked: Qt_fun.addLearnWords()
+                    onPressed: Qt_fun.addLearnWords()
                 }
             }
        }

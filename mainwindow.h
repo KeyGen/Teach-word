@@ -52,7 +52,7 @@ public:
     Q_INVOKABLE void deleteWord();                                  // Удаление выделенного слова из изучаемых слов
 
     Q_INVOKABLE bool showMassage(QString text = "On text", QString button = "true, false");     // Форма для сообщения общается с qml
-    Q_INVOKABLE void qmlRaise(); // Служит для отображения WhowMessage
+    Q_INVOKABLE void helpButton(QString text, int, int); // Срабатывает при навидении на кнопку показывает подсказку
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason);   // Вызывает WainWindow при клике на иконку в трее
@@ -109,6 +109,8 @@ private:
 
     int bootDictionary();                       // Загрузка словарей StarDict
     QMap<QString,QString> listDict;             // Запись информации и имя словоря
+    QMap<QVariant, QVariant> statistics;        // Запись статистики первая-слово вторая-количество правильных ответов
+    void StatisticsFunction(QStringList);       // Проверка/запись статистики
 
     void connectObject();       // Функция для подсоединения сигналов и слотов
 

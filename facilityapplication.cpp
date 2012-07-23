@@ -3,6 +3,7 @@
 #include "qzip/qzipwriter_p.h"
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QToolTip> // Подсказка для кнопки
 
 // Загрузка словарей StarDict
 int MainWindow::bootDictionary()
@@ -167,17 +168,60 @@ void MainWindow::addLearnWords()
     qDebug() << "Количество слов в словаре: " << baseWord.count();
 
 
-    learn_word << ListBase->item(ListBase->currentRow())->text();
-
-    ListLearnWords->clear();
-    ListLearnWords->addItems(learn_word);
-
-    for(int i=0; i<ListLearnWords->count(); i++)
+    if(!learn_word.contains(ListBase->item(ListBase->currentRow())->text()))
     {
-        if(i%2)
+        learn_word << ListBase->item(ListBase->currentRow())->text();
+
+        ///////////////////////////////////////////////////////////////
+
+        for(int i = 0; i<learn_word.size(); i++)
         {
-            ListLearnWords->item(i)->setBackgroundColor(QColor(187, 255, 255));
+            QString tempstrone;
+            tempstrone.setNum(i+1);
+
+            QString tempstrtwo;
+
+            if(learn_word.at(i).size()>14)
+            {
+                tempstrtwo = "<center>";
+                tempstrtwo += "<span style=\" font-size:13pt;\">" + learn_word.at(i) + "</span>";
+                tempstrtwo += "</center>";
+            }
+            else
+            {
+                tempstrtwo = learn_word.at(i);
+            }
+
+            // Достум из С++ к qml
+            QObject *rect = Root->findChild<QObject*>("show_" + tempstrone.toAscii());
+            rect->setProperty("textShow", tempstrtwo);
         }
+
+        ///////////////////////////////////////////////////////////////
+
+        StatisticsFunction(learn_word);
+
+        ///////////////////////////////////////////////////////////////
+
+        ListLearnWords->clear();
+        ListLearnWords->addItems(learn_word);
+
+        for(int i=0; i<ListLearnWords->count(); i++)
+        {
+            if(i%2)
+            {
+                ListLearnWords->item(i)->setBackgroundColor(QColor(187, 255, 255));
+            }
+        }
+
+        int temp = ListBase->currentRow();
+
+        if(temp < ListBase->count())
+        ListBase->setCurrentRow(ListBase->currentRow()+1);
+    }
+    else
+    {
+        showMassage("<center><br>Cлово<br>" + ListBase->item(ListBase->currentRow())->text() + "<br>уже добавленно</center>", "true");
     }
 }
 
@@ -186,22 +230,45 @@ void MainWindow::clearLearnWords()
 {
     ListLearnWords->clear();
     learn_word.clear();
+    answerTrue->clear();
 }
 
 // Удаление выделенного слова из изучаемых слов
 void MainWindow::deleteWord()
 {
-    learn_word.removeAt(ListLearnWords->currentRow());
-
-    ListLearnWords->clear();
-    ListLearnWords->addItems(learn_word);
-
-    for(int i=0; i<ListLearnWords->count(); i++)
+    if(ListLearnWords->currentRow() != -1)
     {
-        if(i%2)
+        int temp = ListLearnWords->currentRow();
+        learn_word.removeAt(temp);
+
+        ListLearnWords->clear();
+        ListLearnWords->addItems(learn_word);
+
+        if(!learn_word.isEmpty())
+            StatisticsFunction(learn_word);
+        else
+            answerTrue->clear();
+
+        for(int i=0; i<ListLearnWords->count(); i++)
         {
-            ListLearnWords->item(i)->setBackgroundColor(QColor(187, 255, 255));
+            if(i%2)
+            {
+                ListLearnWords->item(i)->setBackgroundColor(QColor(187, 255, 255));
+            }
         }
+
+        if(learn_word.size() > 0)
+        {
+            ListLearnWords->setCurrentRow(temp - 1);
+            qDebug() << "yes";
+        }
+    }
+    else
+    {
+        if(!learn_word.isEmpty())
+            showMassage("<center><br>Выберите слово для удаления</center>", "true");
+        else
+            showMassage("<center><br>Список изучаемых слов пуст!<br><br>Удалять нечего!</center>", "true");
     }
 }
 
@@ -220,9 +287,34 @@ bool MainWindow::showMassage(QString text, QString button)
     return true;
 }
 
-// Служит для отображения WhowMessage
-void MainWindow::qmlRaise()
+// Срабатывает при навидении на кнопку показывает подсказку
+void MainWindow::helpButton(QString text,int x, int y)
 {
-    //uiShowMessage->setGeometry(300,300,300,300);
-    //uiShowMessage->show();
+    QToolTip::showText(QPoint(this->pos().x() + x, this->pos().y() + y),text,this,QRect(0,0,100,30));
+}
+
+// Проверка/запись статистики
+void MainWindow::StatisticsFunction(QStringList list)
+{
+    if(!statistics.isEmpty())
+    {
+        //statistics[ListBase->item(ListBase->currentRow())->text()] = 0;
+        //QMap<QVariant,QVariant>::iterator it = statistics.begin();
+    }
+    else
+    {
+        if(!list.isEmpty())
+        {
+            answerTrue->clear();
+            for(int i=0; i<list.size(); i++)
+            {
+                answerTrue->addItem("0");
+
+                if(i%2)
+                {
+                    answerTrue->item(i)->setBackgroundColor(QColor(187, 255, 255));
+                }
+            }
+        }
+    }
 }

@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
                             ///////////////////// The end ////////////////////
     //----------------------//////////////////////////////////////////////////----------------------/
 
-    //qDebug() << bootDictionary();
+    qDebug() << bootDictionary();
 
     transferWord->setOpenLinks(false); // запрет на открытие url в transferWord
 
@@ -350,7 +350,7 @@ void MainWindow::treyProgrammShow(QSystemTrayIcon::ActivationReason temp)
 // Установка слов в qml / проверка правильности введенного ответа
 bool MainWindow::inputShowWords(QString str, QString strinput)
 {
-    if(str == strinput)
+    if(str != strinput)
         return true;
     else
         return false;

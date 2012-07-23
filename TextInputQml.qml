@@ -39,20 +39,20 @@ Rectangle
 
         Timer {
             id: timerFocus
-            interval: 800;
+            interval: 600;
             onTriggered:
             {
-                if(show4.objectName=="one" && show5.objectName == "one")
+                if(show4.objectName=="show_1" && show5.objectName == "show_1")
                 {
-                    showleftopacity.objectName = "minusfive"
-                    show1.objectName = "minusfour"
-                    show2.objectName = "minusthree"
-                    show3.objectName = "minustwo"
-                    show4.objectName = "one"
-                    show5.objectName = "two"
-                    show6.objectName = "three"
-                    show7.objectName = "four"
-                    showrightopacity.objectName = "five"
+                    showleftopacity.objectName = "show_5"
+                    show1.objectName = "show_4"
+                    show2.objectName = "show_3"
+                    show3.objectName = "show_2"
+                    show4.objectName = "show_1"
+                    show5.objectName = "show_9"
+                    show6.objectName = "show_8"
+                    show7.objectName = "show_7"
+                    showrightopacity.objectName = "show_6"
 
                     showleftopacity.z = -4
                     show1.z = -3
@@ -167,7 +167,7 @@ Rectangle
                     show4.opacity = show5.opacity
                     show4.objectName = show5.objectName
 
-                    if(showleftopacity.objectName == "one")
+                    if(showleftopacity.objectName == "show_1")
                     {
                         showleftopacity.z = -0
                         show1.z = -1
@@ -180,7 +180,7 @@ Rectangle
                         showrightopacity.z = -1
                     }
 
-                    if(show1.objectName == "one")
+                    if(show1.objectName == "show_1")
                     {
                         showleftopacity.z = -1
                         show1.z = 0
@@ -193,7 +193,7 @@ Rectangle
                         showrightopacity.z = -2
                     }
 
-                    if(show2.objectName == "one")
+                    if(show2.objectName == "show_1")
                     {
                         showleftopacity.z = -2
                         show1.z = -1
@@ -206,7 +206,7 @@ Rectangle
                         showrightopacity.z = -3
                     }
 
-                    if(show3.objectName == "one")
+                    if(show3.objectName == "show_1")
                     {
                         showleftopacity.z = -3
                         show1.z = -2
@@ -219,7 +219,7 @@ Rectangle
                         showrightopacity.z = -4
                     }
 
-                    if(show4.objectName == "one")
+                    if(show4.objectName == "show_1")
                     {
                         showleftopacity.z = -4
                         show1.z = -3
@@ -232,7 +232,7 @@ Rectangle
                         showrightopacity.z = -4
                     }
 
-                    if(show5.objectName == "one")
+                    if(show5.objectName == "show_1")
                     {
                         showleftopacity.z = -4
                         show1.z = -4
@@ -245,7 +245,7 @@ Rectangle
                         showrightopacity.z = -3
                     }
 
-                    if(show6.objectName == "one")
+                    if(show6.objectName == "show_1")
                     {
                         showleftopacity.z = -3
                         show1.z = -4
@@ -258,7 +258,7 @@ Rectangle
                         showrightopacity.z = -2
                     }
 
-                    if(show7.objectName == "one")
+                    if(show7.objectName == "show_1")
                     {
                         showleftopacity.z = -2
                         show1.z = -3
@@ -271,7 +271,7 @@ Rectangle
                         showrightopacity.z = -1
                     }
 
-                    if(showrightopacity.objectName == "one")
+                    if(showrightopacity.objectName == "show_1")
                     {
                         showleftopacity.z = -1
                         show1.z = -2
@@ -284,7 +284,6 @@ Rectangle
                         showrightopacity.z = 0
                     }
                 }
-
                 timerFocus.running = false
             }
         }
@@ -294,47 +293,47 @@ Rectangle
             interval: 300;
             onTriggered:
             {
-                if(showleftopacity.objectName == "one")
+                if(showleftopacity.objectName == "show_1")
                 {
                     showleftopacity.scale = 1.0
                 }
 
-                else if(show1.objectName == "one")
+                else if(show1.objectName == "show_1")
                 {
                     show1.scale = 1.0
                 }
 
-                else if(show2.objectName == "one")
+                else if(show2.objectName == "show_1")
                 {
                     show2.scale = 1.0
                 }
 
-                else if(show3.objectName == "one")
+                else if(show3.objectName == "show_1")
                 {
                     show3.scale = 1.0
                 }
 
-                else if(showrightopacity.objectName == "one")
+                else if(showrightopacity.objectName == "show_1")
                 {
                     showrightopacity.scale = 1.0
                 }
 
-                else if(show5.objectName == "one")
+                else if(show5.objectName == "show_1")
                 {
                     show5.scale = 1.0
                 }
 
-                else if(show4.objectName == "one")
+                else if(show4.objectName == "show_1")
                 {
                     show4.scale = 1.0
                 }
 
-                else if(show6.objectName == "one")
+                else if(show6.objectName == "show_1")
                 {
                     show6.scale = 1.0
                 }
 
-                else if(show7.objectName == "one")
+                else if(show7.objectName == "show_1")
                 {
                     show7.scale = 1.0
                 }
@@ -357,94 +356,94 @@ Rectangle
             if(timerThreeFocus.running != true)
             {
                 var textOne;
-                if(showleftopacity.objectName == "one")
+                if(showleftopacity.objectName == "show_1")
                 {
                     textOne = showleftopacity.textShow
                 }
 
-                else if(show1.objectName == "one")
+                else if(show1.objectName == "show_1")
                 {
                     textOne = show1.textShow
                 }
 
-                else if(show2.objectName == "one")
+                else if(show2.objectName == "show_1")
                 {
                     textOne = show2.textShow
                 }
 
-                else if(show3.objectName == "one")
+                else if(show3.objectName == "show_1")
                 {
                     textOne = show3.textShow
                 }
 
-                else if(showrightopacity.objectName == "one")
+                else if(showrightopacity.objectName == "show_1")
                 {
                     textOne = showrightopacity.textShow
                 }
 
-                else if(show5.objectName == "one")
+                else if(show5.objectName == "show_1")
                 {
                     textOne = show5.textShow
                 }
 
-                else if(show4.objectName == "one")
+                else if(show4.objectName == "show_1")
                 {
                     textOne = show4.textShow
                 }
 
-                else if(show6.objectName == "one")
+                else if(show6.objectName == "show_1")
                 {
                     textOne = show6.textShow
                 }
 
-                else if(show7.objectName == "one")
+                else if(show7.objectName == "show_1")
                 {
                     textOne = show7.textShow
                 }
 
                 if(Qt_fun.inputShowWords(textOne, textInput.text))
                 {
-                    if(showleftopacity.objectName == "one")
+                    if(showleftopacity.objectName == "show_1")
                     {
                         showleftopacity.scale = 1.3
                     }
 
-                    else if(show1.objectName == "one")
+                    else if(show1.objectName == "show_1")
                     {
                         show1.scale = 1.3
                     }
 
-                    else if(show2.objectName == "one")
+                    else if(show2.objectName == "show_1")
                     {
                         show2.scale = 1.3
                     }
 
-                    else if(show3.objectName == "one")
+                    else if(show3.objectName == "show_1")
                     {
                         show3.scale = 1.3
                     }
 
-                    else if(showrightopacity.objectName == "one")
+                    else if(showrightopacity.objectName == "show_1")
                     {
                         showrightopacity.scale = 1.3
                     }
 
-                    else if(show5.objectName == "one")
+                    else if(show5.objectName == "show_1")
                     {
                         show5.scale = 1.3
                     }
 
-                    else if(show4.objectName == "one")
+                    else if(show4.objectName == "show_1")
                     {
                         show4.scale = 1.3
                     }
 
-                    else if(show6.objectName == "one")
+                    else if(show6.objectName == "show_1")
                     {
                         show6.scale = 1.3
                     }
 
-                    else if(show7.objectName == "one")
+                    else if(show7.objectName == "show_1")
                     {
                         show7.scale = 1.3
                     }

@@ -16,6 +16,35 @@ Image {
     scale: quitMouse.pressed? 0.8 : 1.0
 
     MouseArea {
+        id: helpMouse
+        anchors.fill: parent
+
+        hoverEnabled: true
+        onEntered:
+        {
+            timerhelpshow.running = true
+        }
+        onExited:
+        {
+            timerhelpshow.running = false
+        }
+    }
+
+    Timer {
+        id: timerhelpshow
+        interval: 1000
+        onTriggered:
+        {
+            if(quit.objectName == "setting")
+                Qt_fun.helpButton("Назад",276, 35);
+            else if(quit.objectName == "Backrectagleinfo")
+                Qt_fun.helpButton("Назад",536, 208);
+            else
+                Qt_fun.helpButton("Назад",486, 208);
+        }
+    }
+
+    MouseArea {
         id: quitMouse
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton

@@ -16,6 +16,35 @@ Image {
     scale: settingMouse.pressed? 0.8 : 1.0
 
     MouseArea {
+        id: helpMouse
+        anchors.fill: parent
+
+        hoverEnabled: true
+        onEntered:
+        {
+            timerhelpshow.running = true
+        }
+        onExited:
+        {
+            timerhelpshow.running = false
+        }
+    }
+
+    Timer {
+        id: timerhelpshow
+        interval: 1000
+        onTriggered:
+        {
+            if(setting.objectName == "show")
+            Qt_fun.helpButton("Настойки",266, 35);
+            else if(setting.objectName == "Settingrectagleinfo")
+                Qt_fun.helpButton("Настойки",476, 208);
+            else
+            Qt_fun.helpButton("Настойки",426, 208);
+        }
+    }
+
+    MouseArea {
         id: settingMouse
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton

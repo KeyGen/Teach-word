@@ -16,6 +16,30 @@ Image {
     scale: downMouse.pressed? 0.8 : 1.0
 
     MouseArea {
+        id: helpMouse
+        anchors.fill: parent
+
+        hoverEnabled: true
+        onEntered:
+        {
+            timerhelpshow.running = true
+        }
+        onExited:
+        {
+            timerhelpshow.running = false
+        }
+    }
+
+    Timer {
+        id: timerhelpshow
+        interval: 1000
+        onTriggered:
+        {
+            Qt_fun.helpButton("Скрыть",373, 2);
+        }
+    }
+
+    MouseArea {
         id: downMouse
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
