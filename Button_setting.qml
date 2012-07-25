@@ -53,8 +53,6 @@ Rectangle{
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked:
         {
-            console.log(textButton.text)
-
             if(textButton.text == "Общие натройки")
             mainAll.state = "shiftSetting"
 

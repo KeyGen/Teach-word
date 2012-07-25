@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QToolTip> // Подсказка для кнопки
+#include <QTimer>
 
 // Загрузка словарей StarDict
 int MainWindow::bootDictionary()
@@ -93,8 +94,11 @@ void MainWindow::connectObject()
     connect(transferWord,SIGNAL(anchorClicked(QUrl)), findWord,SLOT(clear()));
     connect(transferWord,SIGNAL(anchorClicked(QUrl)), this,SLOT(slotFindWordUrl(QUrl)));
     connect(ListBase,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotInputWordInFindWord(QModelIndex)));
+    connect(ListLearnWords,SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotInputWordInFindWord(QModelIndex)));
 
-    //connect(showmessage, SIGNAL(signalMove(QPoint)),this,SLOT(setNewMove(QPoint)));
+    connect(oneRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
+    connect(twoRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
+    connect(threeRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
 }
 
 // Чтение настроек
@@ -165,7 +169,7 @@ QString MainWindow::DictInHtml(QString word)
 // Добавление слова из базы для обучения
 void MainWindow::addLearnWords()
 {
-    qDebug() << "Количество слов в словаре: " << baseWord.count();
+    //qDebug() << "Количество слов в словаре: " << baseWord.count();
 
 
     if(!learn_word.contains(ListBase->item(ListBase->currentRow())->text()))
@@ -174,32 +178,11 @@ void MainWindow::addLearnWords()
 
         ///////////////////////////////////////////////////////////////
 
-        for(int i = 0; i<learn_word.size(); i++)
-        {
-            QString tempstrone;
-            tempstrone.setNum(i+1);
-
-            QString tempstrtwo;
-
-            if(learn_word.at(i).size()>14)
-            {
-                tempstrtwo = "<center>";
-                tempstrtwo += "<span style=\" font-size:13pt;\">" + learn_word.at(i) + "</span>";
-                tempstrtwo += "</center>";
-            }
-            else
-            {
-                tempstrtwo = learn_word.at(i);
-            }
-
-            // Достум из С++ к qml
-            QObject *rect = Root->findChild<QObject*>("show_" + tempstrone.toAscii());
-            rect->setProperty("textShow", tempstrtwo);
-        }
+        setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
 
         ///////////////////////////////////////////////////////////////
 
-        StatisticsFunction(learn_word);
+        StatisticsFunction(learn_word); // Проверка/запись статистики
 
         ///////////////////////////////////////////////////////////////
 
@@ -218,6 +201,8 @@ void MainWindow::addLearnWords()
 
         if(temp < ListBase->count())
         ListBase->setCurrentRow(ListBase->currentRow()+1);
+
+        fixedChanges = true; // Фиксирует были или нет изменения в learn_word (Слова для обучения)
     }
     else
     {
@@ -231,6 +216,8 @@ void MainWindow::clearLearnWords()
     ListLearnWords->clear();
     learn_word.clear();
     answerTrue->clear();
+
+    fixedChanges = true; // Фиксирует были или нет изменения в learn_word (Слова для обучения)
 }
 
 // Удаление выделенного слова из изучаемых слов
@@ -257,10 +244,11 @@ void MainWindow::deleteWord()
             }
         }
 
+        fixedChanges = true; // Фиксирует были или нет изменения в learn_word (Слова для обучения)
+
         if(learn_word.size() > 0)
         {
             ListLearnWords->setCurrentRow(temp - 1);
-            qDebug() << "yes";
         }
     }
     else
@@ -317,4 +305,156 @@ void MainWindow::StatisticsFunction(QStringList list)
             }
         }
     }
+}
+
+// Функция устанавливающая размер шрифта относительно размера окна
+QString MainWindow::setWidthFont(QString str, int maxwidth, int maxfont)
+{
+    QString newHtml;
+
+    QFont font;
+
+    int i;
+    for(i = maxfont; i>0; i--)
+    {
+        font.setPixelSize(i);
+
+        if(QFontMetrics(font).width(str) < maxwidth-10) // Если ширина шрифта меньше меньше ширины mazwidth
+        {
+            break;
+        }
+    }
+
+    newHtml = "<center>";
+    newHtml += "<span style=\" font-size:" + QString::number(i,10) + "px;\">" + str + "</span>";
+    newHtml += "</center>";
+
+    return newHtml;
+}
+
+// Установка слов в qml / проверка правильности введенного ответа
+bool MainWindow::inputShowWords(QString str, QString strinput)
+{
+    if(str != strinput)
+    {
+        setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
+        return true;
+    }
+    else
+        return false;
+}
+
+// Функция регулирует вывод изучаемых слов на qml из learn_word
+void MainWindow::setWords()
+{
+    QObject *rectBLTwo = Root->findChild<QObject*>("show_" + QString::number(8,10));
+
+    if(rectBLTwo->property("textShow").toString().isEmpty())
+    {
+        for(int i = 0; i < 5 && i < learn_word.size(); i++)
+        {
+            // Достум из С++ к qml
+            QObject *rect = Root->findChild<QObject*>("show_" + QString::number(i+1,10));
+
+            rect->setProperty("textShow", setWidthFont(learn_word.at(i),300,35));
+        }
+    }
+    else
+    {
+        rectBLTwo = Root->findChild<QObject*>("show_" + QString::number(5,10));
+        rectBLTwo->setProperty("textShow","");
+
+        if(rectBLTwo->property("textShow").toString().isEmpty())
+        {
+            QObject *rect = Root->findChild<QObject*>("show_" + QString::number(4,10));
+            QTextEdit *temp = new QTextEdit(rect->property("textShow").toString(), this);
+
+            QObject *rectTwo = Root->findChild<QObject*>("show_" + QString::number(5,10));
+
+            if(rectTwo)
+            {
+                if(learn_word.indexOf(temp->toPlainText()) + 1 >= learn_word.size())
+                    rectTwo->setProperty("textShow", setWidthFont(learn_word.at(0),300,35));
+                else
+                    rectTwo->setProperty("textShow", setWidthFont(learn_word.at(learn_word.indexOf(temp->toPlainText()) + 1),300,35));
+
+
+                QObject *one = Root->findChild<QObject*>("show_" + QString::number(5,10));
+
+                temp->setHtml(one->property("textShow").toString());
+
+                if(temp->toPlainText() == learn_word.at(3)) //Если все слова повторили
+                {
+                    QTimer *message = new QTimer(this);
+                    message->setInterval(1180);
+                    message->start();
+
+                    connect(message,SIGNAL(timeout()),this,SLOT(slotshowMassage()));
+                    connect(message,SIGNAL(timeout()),message,SLOT(stop()));
+                }
+            }
+        }
+    }
+}
+
+// Функция устанавливает пумолчанию главное окно программы
+void MainWindow::setShowOnDefault()
+{
+    if(fixedChanges) // Фиксирует были или нет изменения в learn_word (Слова для обучения)
+    {
+        QObject *rect = Root->findChild<QObject*>("defaultQml");
+        rect->setProperty("running","true");
+
+        setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
+
+        fixedChanges = false; // Фиксирует были или нет изменения в learn_word (Слова для обучения)
+    }
+}
+
+// Функция проверяет сколько загружено слов для обучения (минимум 5)
+int MainWindow::controlSize()
+{
+    if(learn_word.isEmpty())
+        return 0;
+    else if(learn_word.size()>= 5)
+        return 1;
+    else
+        return 2;
+}
+
+// Подсказка по словам
+void MainWindow::helpWord()
+{
+    // Достум из С++ к qml
+    QObject *rect = Root->findChild<QObject*>("recOne");
+    rect->setProperty("state", "normal");
+
+    rect = Root->findChild<QObject*>("recTwo");
+    rect->setProperty("state", "normal");
+
+    rect = Root->findChild<QObject*>("recThree");
+    rect->setProperty("state", "normal");
+
+    rect = Root->findChild<QObject*>("recFour");
+    rect->setProperty("state", "normal");
+
+    rect = Root->findChild<QObject*>("massegeBackground");
+    rect->setProperty("opacity", "0.7");
+
+    rect = Root->findChild<QObject*>("messageText");
+    rect->setProperty("text", "<center>Выберите правильный вариант:</center>");
+
+    rect = Root->findChild<QObject*>("timerMessage");
+    rect->setProperty("running", "true");
+
+    rect = Root->findChild<QObject*>("timerhelpWords");
+    rect->setProperty("running", "true");
+}
+
+// Показыват/скрывает QRadioButton
+void MainWindow::setVisibleQRadioButton(bool BL)
+{
+    oneRadio->setVisible(BL);
+    twoRadio->setVisible(BL);
+    threeRadio->setVisible(BL);
 }

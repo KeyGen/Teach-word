@@ -49,6 +49,8 @@ void MainWindow::actionDict(QString str)
                 activeDict = out.readAll();       // Считываем весь файл в QString
             }
 
+            activeDict.replace("&apos;", "\'"); // Уберем thml замашки
+
             ListBase->clear();
             baseWord.clear();
             findWord->clear();
@@ -129,4 +131,29 @@ void MainWindow::slotInputWordInFindWord(QModelIndex model)
 void MainWindow::setNewMove(QPoint point)
 {
     this->move(point);
+}
+
+// При завершении урока вывод сообщения
+void MainWindow::slotshowMassage()
+{
+    showMassage("<br>Вы закончили урок<br><br>Выберите ваши дальнейшее действие", "true");
+}
+
+// Обрабатывает нажатие RadioButton из подсказки
+void MainWindow::slotRadioButtonClick()
+{
+    QObject *rect = Root->findChild<QObject*>("textInput");
+
+    if(oneRadio->isChecked())
+    {
+        rect->setProperty("text", oneRadioStr);
+    }
+    else if(twoRadio->isChecked())
+    {
+        rect->setProperty("text", twoRadioStr);
+    }
+    else if(threeRadio->isChecked())
+    {
+        rect->setProperty("text", threeRadioStr);
+    }
 }

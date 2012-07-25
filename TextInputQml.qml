@@ -21,8 +21,12 @@ Rectangle
     anchors.horizontalCenter: parent.horizontalCenter
     y: mainAll.height - 50
 
+    // Разрешаем доступ textButton
+   // property alias setTextInput: textInput.text
+
     TextInput {
         id: textInput
+        objectName: "textInput"
 
         width: 200
         x: 10
@@ -285,6 +289,56 @@ Rectangle
                     }
                 }
                 timerFocus.running = false
+
+                if(show4.objectName == "show_5" && show5.objectName == "show_5")
+                {
+                    showleftopacity.objectName = "show_1"
+                    show1.objectName = "show_9"
+                    show2.objectName = "show_8"
+                    show3.objectName = "show_7"
+                    show4.objectName = "show_6"
+                    show5.objectName = "show_5"
+                    show6.objectName = "show_4"
+                    show7.objectName = "show_3"
+                    showrightopacity.objectName = "show_2"
+                }
+
+                if(show4.objectName == "show_4" && show5.objectName == "show_4")
+                {
+                    showleftopacity.objectName = "show_9"
+                    show1.objectName = "show_8"
+                    show2.objectName = "show_7"
+                    show3.objectName = "show_6"
+                    show4.objectName = "show_5"
+                    show5.objectName = "show_4"
+                    show6.objectName = "show_3"
+                    show7.objectName = "show_2"
+                    showrightopacity.objectName = "show_1"
+                }
+
+                if(show4.objectName == "show_3" && show5.objectName == "show_3")
+                {
+                    showleftopacity.objectName = "show_8"
+                    show1.objectName = "show_7"
+                    show2.objectName = "show_6"
+                    show3.objectName = "show_5"
+                    show4.objectName = "show_4"
+                    show5.objectName = "show_3"
+                    show6.objectName = "show_2"
+                    show7.objectName = "show_1"
+                    showrightopacity.objectName = "show_9"
+                }
+
+//                console.log("showleftopacity", showleftopacity.objectName)
+//                console.log("show1", show1.objectName)
+//                console.log("show2", show2.objectName)
+//                console.log("show3", show3.objectName)
+//                console.log("show4", show4.objectName)
+//                console.log("show5", show5.objectName)
+//                console.log("show6", show6.objectName)
+//                console.log("show7", show7.objectName)
+//                console.log("showrightopacity", showrightopacity.objectName)
+
             }
         }
 
@@ -453,7 +507,6 @@ Rectangle
                     timerThreeFocus.running = true
 
                     textInput.text = ""
-                    console.log("Enter")
                 }
             }
         }

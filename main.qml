@@ -46,7 +46,6 @@ Rectangle{
             PropertyChanges {target: setting; x: -600}
             PropertyChanges {target: main; x: -600}
         }
-
     ]
 
     transitions: Transition {
@@ -104,7 +103,7 @@ Rectangle{
 
                 scale: 0.3
 
-                textShow: "show_5"
+                textShow: ""
 
                 opacity: 0.0
 
@@ -127,7 +126,7 @@ Rectangle{
 
                 scale: 0.4
 
-                textShow: "show_4"
+                textShow: ""
 
             }
 
@@ -148,7 +147,7 @@ Rectangle{
 
                 scale: 0.6
 
-                textShow: "show_3"
+                textShow: ""
             }
 
             Show_words{
@@ -167,14 +166,17 @@ Rectangle{
 
                 scale: 0.8
 
-                textShow: "show_2"
+                textShow: ""
             }
 
             Show_words{
                 id: show4
                 objectName: "show_1"
 
-                textShow: "show_1"
+                textShow: ""
+
+                x: -show4.width/2
+                y: main.height/2 - 75
 
                 gradient: Gradient {
                     GradientStop { position: 0.0; color: "#00562c"}
@@ -203,7 +205,7 @@ Rectangle{
 
                 scale: 0.8
 
-                textShow: "show_9"
+                textShow: ""
 
                 opacity: 0.01
             }
@@ -224,7 +226,7 @@ Rectangle{
 
                 scale: 0.6
 
-                textShow: "show_8"
+                textShow: ""
 
                 opacity: 0.01
             }
@@ -245,7 +247,7 @@ Rectangle{
                     GradientStop { position: 1.0; color: "#2e5a00"}
                 }
 
-                textShow: "show_7"
+                textShow: ""
 
                 opacity: 0.01
             }
@@ -266,7 +268,7 @@ Rectangle{
 
                 scale: 0.3
 
-                textShow: "show6"
+                textShow: ""
 
                 opacity: 0.0
 
@@ -275,6 +277,10 @@ Rectangle{
         }
 
         TextInputQml{}
+
+        StartLearnWord{
+            id: start
+        }
 
         Quit{}
         Down{}
@@ -391,6 +397,7 @@ Rectangle{
         }
 
         Back{
+            objectName: "inputLearnWordsBack"
             x: parent.width - 110
             y: mainAll.height - 50
         }
@@ -732,4 +739,110 @@ Rectangle{
 
         onXChanged: Qt_fun.moveInputWords(inputLearnWords.x)
     }
+
+    function setShowOnDefaultintQml()
+    {
+        showleftopacity.objectName = "show_5"
+        show1.objectName = "show_4"
+        show2.objectName = "show_3"
+        show3.objectName = "show_2"
+        show4.objectName = "show_1"
+        show5.objectName = "show_9"
+        show6.objectName = "show_8"
+        show7.objectName = "show_7"
+        showrightopacity.objectName = "show_6"
+
+        showleftopacity.textShow = ""
+        show1.textShow = ""
+        show2.textShow = ""
+        show3.textShow = ""
+        show4.textShow = ""
+        show5.textShow = ""
+        show6.textShow = ""
+        show7.textShow = ""
+        showrightopacity.textShow = ""
+
+        showleftopacity.z = -4
+        show1.z = -3
+        show2.z = -2
+        show3.z = -1
+        show4.z = 0
+        show5.z = -1
+        show6.z = -2
+        show7.z = -3
+        showrightopacity.z = -4
+
+        showleftopacity.scale = 0.3
+        show1.scale = 0.4
+        show2.scale = 0.6
+        show3.scale = 0.8
+        show4.scale = 1.0
+        show5.scale = 0.8
+        show6.scale = 0.6
+        show7.scale = 0.4
+        showrightopacity.scale = 0.3
+
+        show5.x = -40 + ((show5.width)*-1)*0.8
+        show5.y = -100
+        show5.opacity = 0.01
+
+        show6.x = -332
+        show6.y = -128
+        show6.opacity = 0.01
+
+        show7.x = -374
+        show7.y = -153
+        show7.opacity = 0.01
+
+        showrightopacity.x = -400
+        showrightopacity.y = -170
+        showrightopacity.opacity = 0.0
+
+        showleftopacity.x = 97
+        showleftopacity.y = -170
+        showleftopacity.opacity = 0.0
+
+        show1.x = 72
+        show1.y = -153
+        show1.opacity = 1.0
+
+        show2.x = 30
+        show2.y = -128
+        show2.opacity = 1.0
+
+        show3.x = -280 + 20 + show3.width*0.8
+        show3.y = -100
+        show3.opacity = 1.0
+
+        show4.x = -show4.width/2
+        show4.y = main.height/2 - 75
+        show4.opacity = 1.0
+        }
+
+    Timer {
+        id: defaultQml
+        objectName: "defaultQml"
+        interval: 0
+        onTriggered:
+        {
+            setShowOnDefaultintQml();
+        }
+    }
+
+    ShowMessage{
+        id: helpWords
+        objectName: "help"
+        iconImageInfo: ":/picture/idea"
+
+        Timer {
+            id: timerhelpWords
+            objectName: "timerhelpWords"
+            interval: 360
+            onTriggered:
+            {
+                Qt_fun.setVisibleQRadioButton(true);
+            }
+        }
+    }
+
 }

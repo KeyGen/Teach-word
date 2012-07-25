@@ -13,6 +13,7 @@
         <file>RectangleSetting.qml</file>
         <file>main.qml</file>
         <file>ShowMessage.qml</file>
+        <file>StartLearnWord.qml</file>
     </qresource>
     <qresource prefix="/picture">
         <file alias="quit">picture/quit.png</file>
@@ -54,5 +55,6 @@
         <file alias="rotate">picture/rotate.png</file>
         <file alias="info128">picture/info128.png</file>
         <file alias="yes">picture/yes.png</file>
+        <file alias="idea">picture/idea.png</file>
     </qresource>
 </RCC>

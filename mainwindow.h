@@ -18,6 +18,7 @@
 #include <QLineEdit>
 #include <QTextBrowser>
 #include <QDir>
+#include <QRadioButton>
 #include "showmessage.h"
 #include <phonon>
 
@@ -53,6 +54,10 @@ public:
 
     Q_INVOKABLE bool showMassage(QString text = "On text", QString button = "true, false");     // Форма для сообщения общается с qml
     Q_INVOKABLE void helpButton(QString text, int, int); // Срабатывает при навидении на кнопку показывает подсказку
+    Q_INVOKABLE void setShowOnDefault();    // Функция устанавливает пумолчанию главное окно программы
+    Q_INVOKABLE int controlSize();         // Функция проверяет сколько загружено слов для обучения (минимум 5)
+    Q_INVOKABLE void helpWord();            // Подсказка по словам
+    Q_INVOKABLE void setVisibleQRadioButton(bool); // Показыват/скрывает QRadioButton
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason);   // Вызывает WainWindow при клике на иконку в трее
@@ -62,6 +67,8 @@ private slots:
     void slotFindWordUrl(QUrl);                                 // Ввод в findWord url
     void slotInputWordInFindWord(QModelIndex);                  // Слот активируется двойным щелчком по baseWord для поиска слова
     void setNewMove(QPoint);                                    // Слот перемещает MainWindow
+    void slotshowMassage();                                     // При завершении урока вывод сообщения
+    void slotRadioButtonClick();                                // Обрабатывает нажатие RadioButton из подсказки
 
 private:
     QDeclarativeView *ui;               // Qml
@@ -97,6 +104,7 @@ private:
     QTextBrowser *transferWord;         // Обьект QTextBrowser предназначен для отображения перевода слов
     QComboBox *dicInput;                // Обьект QComboBox предназначен для выбора словаря
     QTextBrowser *dicInfo;              // Обьект QTextBrowser предназначен для отображения свойств словаря
+    bool fixedChanges;                  // Фиксирует были или нет изменения в learn_word (Слова для обучения)
 
     void SetupObjectSetup();            // Установка обьектов насторек qml
     int moveObjectSetup;                // Точка отчета позиции обьектов для настроек из Qml
@@ -107,12 +115,22 @@ private:
     Phonon::VolumeSlider   *setupVolume;        // Громкость звука
     QPushButton *setupUpdate;                   // Проверка обновлений
 
+    QRadioButton *oneRadio;                     // При подсказке выбор варианта ответа
+    QRadioButton *twoRadio;                     // При подсказке выбор варианта ответа
+    QRadioButton *threeRadio;                   // При подсказке выбор варианта ответа
+    QString oneRadioStr;                        // Текст на QRadioButton
+    QString twoRadioStr;                        // Текст на QRadioButton
+    QString threeRadioStr;                      // Текст на QRadioButton
+
     int bootDictionary();                       // Загрузка словарей StarDict
     QMap<QString,QString> listDict;             // Запись информации и имя словоря
     QMap<QVariant, QVariant> statistics;        // Запись статистики первая-слово вторая-количество правильных ответов
     void StatisticsFunction(QStringList);       // Проверка/запись статистики
 
     void connectObject();       // Функция для подсоединения сигналов и слотов
+    QString setWidthFont(QString, int maxwidth = 100, int maxfont = 40); // Функция устанавливающая размер шрифта относительно размера окна
+    void setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
+
 
     void ReadSetting();     // Чтение настроек
 };

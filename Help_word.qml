@@ -45,7 +45,8 @@ Image {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked:
         {
-            Qt_fun.showMassage("<br>Скоро будет готава подсказка!<br><br>Цетр отредактирован :)")
+            //Qt_fun.showMassage("<br>Скоро будет готава подсказка!<br><br>Цетр отредактирован :)")
+            Qt_fun.helpWord()
         }
     }
 }

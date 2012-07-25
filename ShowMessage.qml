@@ -109,7 +109,6 @@ Rectangle {
         Behavior on y { PropertyAnimation {duration: 305; easing.type: Easing.InCurve} }
         Behavior on opacity { PropertyAnimation {duration: 305; easing.type: Easing.InCurve} }
 
-        onOpacityChanged: Qt_fun.setQmlWindowOpacity(recOne.opacity)
     }
 
     Rectangle{
@@ -247,6 +246,9 @@ Rectangle {
                     massegeBackground.opacity = 0.0
 
                     timerMessageTwo.running = true
+
+                    if(message.objectName == "help")
+                        Qt_fun.setVisibleQRadioButton(false);
                 }
             }
         }
@@ -290,11 +292,15 @@ Rectangle {
                     massegeBackground.opacity = 0.0
 
                     timerMessageTwo.running = true
+
+                    if(message.objectName == "help")
+                        Qt_fun.setVisibleQRadioButton(false);
                 }
             }
         }
     }
 
+    property alias iconImageInfo: imageInfo.source
     Image {
         id: imageInfo
         objectName: "imageInfo"
@@ -373,6 +379,7 @@ Rectangle {
         interval: 305
         onTriggered:
         {
+            if(message.objectName != "help")
             Qt_fun.quit()
         }
     }

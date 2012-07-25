@@ -36,6 +36,7 @@ OTHER_FILES += \
     RectagleInfo.qml \
     RectangleSetting.qml \
     main.qml \
-    ShowMessage.qml
+    ShowMessage.qml \
+    StartLearnWord.qml
 
 #INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib

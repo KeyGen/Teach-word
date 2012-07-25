@@ -83,14 +83,42 @@ MainWindow::MainWindow(QWidget *parent)
                             ///////////////////// The end ////////////////////
     //----------------------//////////////////////////////////////////////////----------------------/
 
+    showmessage = new ShowMessage();           // Класс сообщения
+    fixedChanges = false;                  // Фиксирует были или нет изменения в learn_word (Слова для обучения)
+
+    oneRadioStr = "test one";                        // Текст на QRadioButton
+    twoRadioStr = "test two";                        // Текст на QRadioButton
+    threeRadioStr = "test three";                      // Текст на QRadioButton
+
+    oneRadio = new QRadioButton(oneRadioStr,this);                     // При подсказке выбор варианта ответа
+    twoRadio = new QRadioButton(twoRadioStr,this);                     // При подсказке выбор варианта ответа
+    threeRadio = new QRadioButton(threeRadioStr,this);                   // При подсказке выбор варианта ответа
+
+    oneRadio->setFixedWidth(320);
+    twoRadio->setFixedWidth(320);
+    threeRadio->setFixedWidth(320);
+
+    oneRadio->move(this->width()/2-oneRadio->width()/2,125);
+    twoRadio->move(this->width()/2-twoRadio->width()/2,150);
+    threeRadio->move(this->width()/2-threeRadio->width()/2,175);
+
+    QFont font;
+    font.setPixelSize(18);
+
+    oneRadio->setFont(font);
+    twoRadio->setFont(font);
+    threeRadio->setFont(font);
+
+    // Показыват/скрывает QRadioButton
+    setVisibleQRadioButton(false);
+
+
     qDebug() << bootDictionary();
 
     transferWord->setOpenLinks(false); // запрет на открытие url в transferWord
 
     connectObject();
     ReadSetting();
-
-    showmessage = new ShowMessage();           // Класс сообщения
 }
 
 // Деструктор
@@ -345,13 +373,4 @@ void MainWindow::treyProgrammShow(QSystemTrayIcon::ActivationReason temp)
             this->setVisible(true); // отображает
         }
     }
-}
-
-// Установка слов в qml / проверка правильности введенного ответа
-bool MainWindow::inputShowWords(QString str, QString strinput)
-{
-    if(str != strinput)
-        return true;
-    else
-        return false;
 }

@@ -48,6 +48,32 @@ Image {
         id: quitMouse
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        onClicked: mainAll.state = "normal"
+        onClicked: {
+
+            if(quit.objectName == "inputLearnWordsBack")
+            {
+                var temp = Qt_fun.controlSize()
+
+                if(temp == 0)
+                {
+                    mainAll.state = "normal"
+                    start.state = "normal"
+                }
+                else if(temp == 1)
+                {
+                    mainAll.state = "normal"
+                    start.state = "shift"
+                    Qt_fun.setShowOnDefault()
+                }
+                else if(temp == 2)
+                {
+                    Qt_fun.showMassage("<br>Нужно выбрать минимум 5 слов.<br><br>Максимума нет!", "true")
+                }
+            }
+            else
+            {
+                mainAll.state = "normal"
+            }
+        }
     }
 }
