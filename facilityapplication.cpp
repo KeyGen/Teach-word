@@ -11,7 +11,7 @@ int MainWindow::bootDictionary()
 {
     QDir dir("dic");                    // Создаем Qdir в папке dic
 
-    qDebug() << dir.mkdir("tempdir");   // Создаем временную папку
+    dir.mkdir("tempdir");   // Создаем временную папку
 
     QStringList filters;                // Устанавливаем фильтры
     filters << "*.dict.zip" << "*.ifo"; // Устанавливаем фильтры
@@ -335,13 +335,221 @@ QString MainWindow::setWidthFont(QString str, int maxwidth, int maxfont)
 // Установка слов в qml / проверка правильности введенного ответа
 bool MainWindow::inputShowWords(QString str, QString strinput)
 {
-    if(str != strinput)
+    QTextEdit *temp = new QTextEdit(str, this);
+    str = temp->toPlainText();
+    delete temp;
+
+    QString conversion = wordConversion(str);
+
+    if(containsWord(conversion, strinput))
     {
         setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
         return true;
     }
     else
+    {
+        if(strinput.isEmpty())
+        {
+            showMassage("<center><br><br>Введите слово</center>", "true");
+        }
+        else
+        {
+            QObject *rect = Root->findChild<QObject*>("textInput");
+            rect->setProperty("color","red");
+
+            startSoundShow();
+        }
+
         return false;
+    }
+}
+
+// Функция осуществляющая проверку на идентицность без учета регистра
+bool MainWindow::containsWord(QString one, QString two)
+{
+    one = one.toLower();
+    two = two.toLower();
+
+    if(two.size() != one.size())
+    {
+        if(one.contains(";"))
+        {
+            QStringList templist = one.split(";");
+
+            for(int i = 0; i<templist.size(); i++)
+            {
+                QString tempstr = templist.at(i);
+
+                if(tempstr.at(tempstr.size()-1) == ' ')
+                    tempstr.chop(1);
+
+                if(tempstr.at(0) == ' ')
+                    tempstr = tempstr.right(tempstr.size()-1);
+
+                if(tempstr == two)
+                    return true;
+            }
+
+            return false;
+        }
+        else if(one.contains(","))
+        {
+            QStringList templist = one.split(",");
+
+            for(int i = 0; i<templist.size(); i++)
+            {
+                QString tempstr = templist.at(i);
+
+                if(tempstr.at(tempstr.size()-1) == ' ')
+                    tempstr.chop(1);
+
+                if(tempstr.at(0) == ' ')
+                    tempstr = tempstr.right(tempstr.size()-1);
+
+                if(tempstr == two)
+                    return true;
+            }
+
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if(one == two)
+            return true;
+    }
+}
+
+// Поиск слова в словаре и выдется перевод
+QString MainWindow::wordConversion(QString str)
+{
+    QString tempStr;
+    QString conversion;
+
+    int i =  activeDict.lastIndexOf("<k>" + str + "</k>") + 3;
+
+    for(; tempStr != "<k>" ;i++)
+    {
+        conversion += activeDict.at(i);
+
+        tempStr.clear();
+
+        if(i < activeDict.size() - 4)
+        {
+            tempStr += activeDict.at(i+1);
+            tempStr += activeDict.at(i+2);
+            tempStr += activeDict.at(i+3);
+        }
+        else
+            break;
+    }
+
+    if(!conversion.contains("<dtrn>"))
+    {
+        QRegExp rx("<kref>(.*)</kref>");
+        QString kref = str;
+
+         int pos = 0;
+         while ((pos = rx.indexIn(conversion, pos)) != -1)
+         {
+             kref = rx.cap(1);
+             pos += rx.matchedLength();
+         }
+
+         int i =  activeDict.lastIndexOf("<k>" + kref + "</k>") + 3;
+         tempStr.clear();
+
+         for(; tempStr != "<k>" ;i++)
+         {
+             conversion += activeDict.at(i);
+
+             tempStr.clear();
+
+             if(i < activeDict.size() - 4)
+             {
+                 tempStr += activeDict.at(i+1);
+                 tempStr += activeDict.at(i+2);
+                 tempStr += activeDict.at(i+3);
+             }
+             else
+                 break;
+         }
+    }
+
+    QStringList tempList;
+    if(conversion.contains("<dtrn>"))
+    {
+        QRegExp rx("<dtrn>(.*)</dtrn>");
+
+         int pos = 0;
+         while ((pos = rx.indexIn(conversion, pos)) != -1)
+         {
+             tempList << rx.cap(1);
+             pos += rx.matchedLength();
+         }
+
+         for(int i = 0;  i<tempList.size(); i++)
+         {
+             QString tempstr = tempList.at(i);
+             tempstr.replace(QRegExp("<c>(.*)</c>"),"");
+
+             tempstr.replace(QRegExp("<co>(.*)</co>"),"");
+
+             tempstr.replace(QRegExp("<i>(.*)</i>"),"");
+
+             tempstr.replace(QRegExp("<abr>(.*)</abr>"),"");
+
+             tempstr.replace(QRegExp("</dtrn>(.*)<dtrn>"),"; ");
+
+             tempstr.replace(QRegExp("<sub>(.*)</sub>"),"");
+
+             tempstr.replace(QRegExp("<kref>(.*)</kref>"),"");
+
+             tempstr.replace("\n","");
+             tempstr.replace("  "," ");
+             tempstr.replace("   "," ");
+
+             if(tempstr.at(0) == ';')
+                 tempstr = tempstr.right(tempstr.size()-1);
+
+             if(tempstr.at(tempstr.size()-1) == ' ')
+                 tempstr.chop(1);
+
+             if(tempstr.at(0) == ' ')
+                 tempstr = tempstr.right(tempstr.size()-1);
+
+             if(tempstr.at(tempstr.size()-1) == ';')
+                 tempstr.chop(1);
+
+             tempList.replace(i, tempstr);
+         }
+    }
+    else
+    {
+        QRegExp rx("<kref>(.*)</kref>");
+
+         int pos = 0;
+         while ((pos = rx.indexIn(conversion, pos)) != -1)
+         {
+             tempList << rx.cap(1);
+             pos += rx.matchedLength();
+         }
+
+         qDebug() << conversion;
+         qDebug() << "<kref>";
+    }
+
+    conversion.clear();
+    conversion = tempList.at(0);
+
+    if(tempList.size()>1)
+        qDebug() << tempList.size();
+
+    return conversion;
 }
 
 // Функция регулирует вывод изучаемых слов на qml из learn_word
@@ -349,7 +557,7 @@ void MainWindow::setWords()
 {
     QObject *rectBLTwo = Root->findChild<QObject*>("show_" + QString::number(8,10));
 
-    if(rectBLTwo->property("textShow").toString().isEmpty())
+    if(rectBLTwo->property("textShow").toString().isEmpty() || learn_word.size()<5)
     {
         for(int i = 0; i < 5 && i < learn_word.size(); i++)
         {
@@ -457,4 +665,70 @@ void MainWindow::setVisibleQRadioButton(bool BL)
     oneRadio->setVisible(BL);
     twoRadio->setVisible(BL);
     threeRadio->setVisible(BL);
+}
+
+// Отобразить системное меню
+void MainWindow::showSistemsTrey()
+{
+    // Отображаем иконку в трее
+    systemTray->show();
+}
+
+// Установка значений в QRadioButton для помощи
+void MainWindow::wordHelpTest(QString word)
+{
+    QTextEdit *temp = new QTextEdit(word, this);
+    word = temp->toPlainText();
+    delete temp;
+
+    qsrand(QDateTime::currentDateTime().toMSecsSinceEpoch());// Разный старт qrand
+
+    QStringList templist;
+
+    while(true)  // Если совпадает с word
+    {
+        templist.clear();
+        templist << wordConversion(baseWord.at(qrand()%(baseWord.size()-1)));   // Случайное число в перделах размера baseWord
+        templist << wordConversion(baseWord.at(qrand()%(baseWord.size()-1)));   // Случайное число в перделах размера baseWord
+
+        if(!templist.contains(wordConversion(word)))
+            break;
+    }
+
+    templist << wordConversion(word);
+
+    int one = 0;
+    int two = 1;
+    int three = 2;
+
+    for(int i = 0; one!=-1 || two!=-1 || three!=-1;)
+    {
+        int tempqrand = qrand()%3;
+
+        if(one == tempqrand)
+        {
+            one = -1;
+            oneRadioStr = templist.at(i);
+            i++;
+        }
+        else if(two == tempqrand)
+        {
+            two = -1;
+            twoRadioStr = templist.at(i);
+            i++;
+        }
+        else if(three == tempqrand)
+        {
+            three = -1;
+            threeRadioStr = templist.at(i);
+            i++;
+        }
+    }
+
+    oneRadio->setText(oneRadioStr);                     // При подсказке выбор варианта ответа
+    twoRadio->setText(twoRadioStr);                     // При подсказке выбор варианта ответа
+    threeRadio->setText(threeRadioStr);                 // При подсказке выбор варианта ответа
+
+    oneRadio->click();
+
 }

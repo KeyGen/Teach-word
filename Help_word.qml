@@ -45,7 +45,51 @@ Image {
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked:
         {
-            //Qt_fun.showMassage("<br>Скоро будет готава подсказка!<br><br>Цетр отредактирован :)")
+            if(showleftopacity.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(showleftopacity.textShow)
+            }
+
+            else if(show1.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show1.textShow)
+            }
+
+            else if(show2.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show2.textShow)
+            }
+
+            else if(show3.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show3.textShow)
+            }
+
+            else if(showrightopacity.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(showrightopacity.textShow)
+            }
+
+            else if(show5.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show5.textShow)
+            }
+
+            else if(show4.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show4.textShow)
+            }
+
+            else if(show6.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show6.textShow)
+            }
+
+            else if(show7.objectName == "show_1")
+            {
+                Qt_fun.wordHelpTest(show7.textShow)
+            }
+
             Qt_fun.helpWord()
         }
     }

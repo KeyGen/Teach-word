@@ -57,4 +57,9 @@
         <file alias="yes">picture/yes.png</file>
         <file alias="idea">picture/idea.png</file>
     </qresource>
+    <qresource prefix="/sound">
+        <file>sound/enter_button.mp3</file>
+        <file alias="error">sound/error.mp3</file>
+        <file alias="start">sound/start.mp3</file>
+    </qresource>
 </RCC>

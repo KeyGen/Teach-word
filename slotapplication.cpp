@@ -49,7 +49,8 @@ void MainWindow::actionDict(QString str)
                 activeDict = out.readAll();       // Считываем весь файл в QString
             }
 
-            activeDict.replace("&apos;", "\'"); // Уберем thml замашки
+            activeDict.replace("&apos;", "\'"); // Уберем html замашки
+            activeDict.replace("&quot;", "");   // Уберем html замашки
 
             ListBase->clear();
             baseWord.clear();
@@ -156,4 +157,12 @@ void MainWindow::slotRadioButtonClick()
     {
         rect->setProperty("text", threeRadioStr);
     }
+}
+
+// Слот активации звука при открытии программы
+void MainWindow::startSoundShow()
+{
+    mediaObject->setCurrentSource(Phonon::MediaSource(":/sound/error"));
+
+    mediaObject->play();
 }

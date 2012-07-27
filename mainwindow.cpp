@@ -8,6 +8,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
     this->setWindowFlags(Qt::CustomizeWindowHint);  // Отключаем обводку
 
     this->setFixedSize(600,300);    // Фиксируем размер окна
@@ -77,9 +78,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Вставляем меню в системный трей
     systemTray->setContextMenu(menuTrey);
-
-    // Отображаем иконку в трее
-    systemTray->show();
                             ///////////////////// The end ////////////////////
     //----------------------//////////////////////////////////////////////////----------------------/
 
@@ -112,11 +110,14 @@ MainWindow::MainWindow(QWidget *parent)
     // Показыват/скрывает QRadioButton
     setVisibleQRadioButton(false);
 
-
-    qDebug() << bootDictionary();
-
     transferWord->setOpenLinks(false); // запрет на открытие url в transferWord
 
+    // phonon
+    mediaObject = new Phonon::MediaObject(this);
+    audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+    Phonon::createPath(mediaObject, audioOutput);
+
+    bootDictionary();
     connectObject();
     ReadSetting();
 }
@@ -138,7 +139,7 @@ MainWindow::~MainWindow()
     }
 
     dir.cdUp(); // Выходим в папку dic
-    qDebug() << dir.rmdir("tempdir");  // Удаляем temp папку
+    dir.rmdir("tempdir");  // Удаляем temp папку
 }
 
 // Функция C++ вызываемая из QML вызывающая справку по адресу url

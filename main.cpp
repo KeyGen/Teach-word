@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 
     // Отображаем
     w.show();
+    w.showSistemsTrey(); // Отображаем трей
     
     return a.exec();
 }

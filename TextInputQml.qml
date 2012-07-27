@@ -510,9 +510,19 @@ Rectangle
                 }
             }
         }
+
+
+        onTextChanged: // Срабатывает при изменении текста textInput
+        {
+            if(textInput.color != "black")
+                textInput.color = "black"
+        }
     }
 
-    Keys.onRightPressed: console.log("move left stop")
+    Keys.onRightPressed: idhelp.objectName = "temp"
 
-    Help_word{}
+    Help_word{
+        id: idhelp
+        objectName: "temp"
+    }
 }

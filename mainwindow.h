@@ -58,6 +58,9 @@ public:
     Q_INVOKABLE int controlSize();         // Функция проверяет сколько загружено слов для обучения (минимум 5)
     Q_INVOKABLE void helpWord();            // Подсказка по словам
     Q_INVOKABLE void setVisibleQRadioButton(bool); // Показыват/скрывает QRadioButton
+    Q_INVOKABLE void wordHelpTest(QString); // Установка значений в QRadioButton для помощи
+
+    void showSistemsTrey(); // Отобразить системное меню
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason);   // Вызывает WainWindow при клике на иконку в трее
@@ -70,9 +73,14 @@ private slots:
     void slotshowMassage();                                     // При завершении урока вывод сообщения
     void slotRadioButtonClick();                                // Обрабатывает нажатие RadioButton из подсказки
 
+    void startSoundShow();  // Слот активации звука при открытии программы
+
 private:
     QDeclarativeView *ui;               // Qml
     QObject *Root;                      // Корневой элемент QML модели
+
+    Phonon::MediaObject *mediaObject;
+    Phonon::AudioOutput *audioOutput;
 
     ShowMessage *showmessage;           // Класс сообщения
 
@@ -127,9 +135,13 @@ private:
     QMap<QVariant, QVariant> statistics;        // Запись статистики первая-слово вторая-количество правильных ответов
     void StatisticsFunction(QStringList);       // Проверка/запись статистики
 
+    bool containsWord(QString one, QString two); // Функция осуществляющая проверку на идентицность без учета регистра
+
     void connectObject();       // Функция для подсоединения сигналов и слотов
     QString setWidthFont(QString, int maxwidth = 100, int maxfont = 40); // Функция устанавливающая размер шрифта относительно размера окна
     void setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
+
+    QString wordConversion(QString word);                           // Поиск слова в словаре и выдется перевод
 
 
     void ReadSetting();     // Чтение настроек
