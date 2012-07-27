@@ -56,9 +56,9 @@ Rectangle {
     <span style=\" font-size:16pt;\"><b>Добро пожаловать в программу Learn words!</b></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
-    <span style=\" font-size:11pt;\">Выберите слова для обучения в настойках.</span>
+    <span style=\" font-size:11pt;\">Выберите слова для обучения в настройках,</span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
-    <span style=\" font-size:11pt;\">И можно приступать к изучению.</span>
+    <span style=\" font-size:11pt;\">и можно приступать к изучению.</span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
     </center>"

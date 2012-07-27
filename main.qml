@@ -317,7 +317,7 @@ Rectangle{
 
         Button_setting{
             id: settingButton
-            textButton: "Общие натройки"
+            textButton: "Общие наcтройки"
         }
 
         Button_setting{

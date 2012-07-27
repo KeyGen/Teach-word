@@ -42,9 +42,9 @@ Rectangle {
 <span style=\" font-size:14pt;\"><b>Learn words v 2.0</b></span>
 <span style=\" font-size:6pt;\">&#32;<br></span>
 <span style=\" font-size:6pt;\">&#32;<br></span>
-<span style=\" font-size:11pt;\">Халявная прога т.е <span style=\" color:#004000;\">OpenSours</span></span>
+<span style=\" font-size:11pt;\">Халявная прога, т.е <span style=\" color:#004000;\">OpenSours</span></span>
 <span style=\" font-size:6pt;\">&#32;<br></span>
-<span style=\" font-size:11pt;\">Написана на Qt 4.8 т.е межплатформенная</span>
+<span style=\" font-size:11pt;\">Написана на Qt 4.8, т.е межплатформенная</span>
 <span style=\" font-size:6pt;\">&#32;<br></span>
 <span style=\" font-size:11pt;\">Написал KeyGen</span>
 <span style=\" font-size:6pt;\">&#32;<br></span>
