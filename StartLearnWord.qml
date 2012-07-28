@@ -49,6 +49,7 @@ Rectangle {
 
         Text {
             id: text
+            objectName: "objectTextStart"
             text:
     "<center>
     <span style=\" font-size:16pt;\">&#32;<br></span>
@@ -63,12 +64,9 @@ Rectangle {
     <span style=\" font-size:6pt;\">&#32;<br></span>
     </center>"
 
-            //anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
-
-    //<img src=\":/picture/setting\"> </img>
 
     Setting{
         objectName: "settingstartLearnWords"

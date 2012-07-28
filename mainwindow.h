@@ -72,8 +72,16 @@ private slots:
     void setNewMove(QPoint);                                    // Слот перемещает MainWindow
     void slotshowMassage();                                     // При завершении урока вывод сообщения
     void slotRadioButtonClick();                                // Обрабатывает нажатие RadioButton из подсказки
+    void startSoundShow();                                      // Слот активации звука при открытии программы
+    void downloadLanguageProgramm(QString);                     // Загрузка перевода в программу
 
-    void startSoundShow();  // Слот активации звука при открытии программы
+    void slotTreySetting();     // Вызов настроек из трея
+    void slotTreySound(bool);   // Включить/выключить звук из трея
+    void slotTreyHelp();        // Вызов помощи из трея
+    void slotTreyInfo();        // Вызов информации о программе из трея
+    void slotTreyShow();        // Показать программу из трея
+    void slotTreyMask();        // Скрыть программу из трея
+    void slotTreyClose();       // Закрыть программу из трея
 
 private:
     QDeclarativeView *ui;               // Qml
@@ -120,7 +128,7 @@ private:
     QTimeEdit *setupTime;                       // Установка времени отображения программы
     QSpinBox  *setupSinBoxInputAmountCorrect;   // Установка статистики правильных ответов
     QComboBox *setupLanguageComboBox;           // Установка языка
-    Phonon::VolumeSlider   *setupVolume;        // Громкость звука
+    Phonon::VolumeSlider *setupVolume;          // Громкость звука
     QPushButton *setupUpdate;                   // Проверка обновлений
 
     QRadioButton *oneRadio;                     // При подсказке выбор варианта ответа
@@ -132,6 +140,8 @@ private:
 
     int bootDictionary();                       // Загрузка словарей StarDict
     QMap<QString,QString> listDict;             // Запись информации и имя словоря
+    QMap<QString,QString> listLanguage;         // Переводы программы
+    QMap<QString,QString> downloadlanguageMap;  // Загруженный перевод
     QMap<QVariant, QVariant> statistics;        // Запись статистики первая-слово вторая-количество правильных ответов
     void StatisticsFunction(QStringList);       // Проверка/запись статистики
 
@@ -142,6 +152,8 @@ private:
     void setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
 
     QString wordConversion(QString word);                           // Поиск слова в словаре и выдется перевод
+
+    void setupLanguageProgramm(); // Установка языка
 
 
     void ReadSetting();     // Чтение настроек

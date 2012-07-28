@@ -1,0 +1,67 @@
+id=Russian
+
+start=<center><span style=" font-size:16pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:16pt;"><b>Добро пожаловать в программу Learn words!</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Выберите слова для обучения в настройках,</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">и можно приступать к изучению.</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span></center>
+
+settingone=Общие настройки
+
+settingtwo=Установка уроков
+
+settingthree=Справка
+
+settingfour=О программе
+
+installationlanguage=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Установки языка</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Выберите язык приложения, выбрав</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;"> пункт из выпадающего меню</span>
+
+installationsound=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Установки звука</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Здесь можно включить, выключить, звук</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">приложения или отрегулировать громкость</span>
+
+installationtimer=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Установки таймера</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Таймер предназначен для отображение</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">программы через заданное время</span>
+
+installationstatic=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Установки статистики</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Статистика правильных ответов. Установите</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">позицию в статистике при которой слово</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">будет считаться выученным</span>
+
+installationreload=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Проверка обновлений</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Здесь вы можете проверить и установить</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">обновления</span>
+
+infoprogramm=<center><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Learn words v 2.0</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Халявная прога, т.е <span style=" color:#004000;">OpenSours</span></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Написана на Qt 4.8, т.е межплатформенная</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Написал KeyGen</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Учись!</span></center>
+
+helpsetting=настройки
+
+helpsettingtwo=перейти в настрйки
+
+helphelp=подсказать
+
+helpmask=скрыть
+
+helpclose=выйти
+
+helpback=назад
+
+helpclear=очистить базу слов для обучения
+
+helptranslate=отобразить/скрыть перевод
+
+helpdictionary=выбор словаря
+
+helpaddword=добавить слово
+
+helpdelword=удалить слово
+
+helpsave=сохранить
+
+infostatic=<br>Это отображение статистики.<br><br>Фиксирует правильные ответы.
+
+infolearnlist=<br>Отображение слов которые будем учить<br><br>Добавте слова и можно начинать уроков
+
+infobasedictionary=<br><b>Базовый словарь</b><br><br>Cловари из которых будем учить слова
+
+infominimumsize=<br>Нужно выбрать минимум 5 слов.<br><br>Максимума нет!
+
+buttonupdate=Проверить обновления
+
+helptest=<center>Выберите правильный вариант ответа:</center>
+
+wordinsight=<center><br>Cлово<br><br>уже добавленно</center>
+
+wordadddelete=<center><br>Выберите слово для удаления</center>
+
+worddeleteclear=<center><br>Список изучаемых слов пуст!<br><br>Удалять нечего!</center>
+
+wordinput=<center><br><br>Введите слово</center>

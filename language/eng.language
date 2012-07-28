@@ -1,0 +1,67 @@
+id=English
+
+start=<center><span style=" font-size:16pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:16pt;"><b>Welcome to the program Learn words!</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Choose the words for training in the settings,</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">and you can begin to study.</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span></center>
+
+settingone=General settings
+
+settingtwo=Installing lessons
+
+settingthree=Help
+
+settingfour=About the program
+
+installationlanguage=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Installation language</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Select the language of the application by</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">selecting item from the drop-down menu</span>
+
+installationsound=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Sound settings</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Here you can enable, disable, sound</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">application or adjust the volume</span>
+
+installationtimer=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Set the timer</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Timer is designed to display the program</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">after the specified time</span>
+
+installationstatic=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Facility statistics</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Statistics of correct answers. Set the position</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">in the statistics when the word will be</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">memorized</span>
+
+installationreload=<span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Check for updates</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Here you can check and set update</span>
+
+infoprogramm=<center><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:14pt;"><b>Learn words v 2.0</b></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Free program, i.e. <span style=" color:#004000;">OpenSours</span></span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Written in Qt 4.8, i.e. cross-platform</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Written KeyGen</span><span style=" font-size:6pt;">&#32;<br></span><span style=" font-size:11pt;">Learn!</span></center>
+
+helpsetting=settings
+
+helpsettingtwo=go to the settings
+
+helphelp=supporting
+
+helpmask=hide
+
+helpclose=exit
+
+helpback=back
+
+helpclear=clear database of words for the training of
+
+helptranslate=show/hide translations
+
+helpdictionary=selecting dictionary
+
+helpaddword=add the word
+
+helpdelword=delete the word
+
+helpsave=save
+
+infostatic=<br>It displays statistics.<br><br>Captures the correct answers.
+
+infolearnlist=<br>The display of words that will teach<br><br>Add the words and you can start lessons
+
+infobasedictionary=<br><b>Basic dictionary</b><br><br>Dictionaries of which are going to teach the word
+
+infominimumsize=<br>You need to select at least 5 words.<br><br>There is no maximum!
+
+buttonupdate=Check for updates
+
+helptest=<center>Select the correct variant of the answer:</center>
+
+wordinsight=<center><br>Word<br><br>already adding</center>
+
+wordadddelete=<center><br>Select the word to remove</center>
+
+worddeleteclear=<center><br>The list of studied empty words!<br><br>There is nothing to delete!</center>
+
+wordinput=<center><br><br>Enter the word</center>

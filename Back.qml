@@ -36,11 +36,11 @@ Image {
         onTriggered:
         {
             if(quit.objectName == "setting")
-                Qt_fun.helpButton("Назад",276, 35);
+                Qt_fun.helpButton("helpback=",276, 35);
             else if(quit.objectName == "Backrectagleinfo")
-                Qt_fun.helpButton("Назад",536, 208);
+                Qt_fun.helpButton("helpback=",536, 208);
             else
-                Qt_fun.helpButton("Назад",486, 208);
+                Qt_fun.helpButton("helpback=",486, 208);
         }
     }
 
@@ -67,7 +67,7 @@ Image {
                 }
                 else if(temp == 2)
                 {
-                    Qt_fun.showMassage("<br>Нужно выбрать минимум 5 слов.<br><br>Максимума нет!", "true")
+                    Qt_fun.showMassage("infominimumsize=", "true")
                 }
             }
             else

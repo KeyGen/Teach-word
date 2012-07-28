@@ -88,6 +88,21 @@ void MainWindow::connectObject()
 {
     // Вызывает WainWindow при клике на иконку в трее
     connect(systemTray,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(treyProgrammShow(QSystemTrayIcon::ActivationReason)));
+    // Актион для выхода
+    connect(actionTreyClose, SIGNAL(triggered()),this,SLOT(slotTreyClose()));         // Закрыть программу из трея
+    // Актион включает/выключает звук
+    connect(actionTreySound, SIGNAL(triggered(bool)),this,SLOT(slotTreySound(bool))); // Включить/выключить звук из трея
+    // Актион который открывает справку
+    connect(actionTreyHelp, SIGNAL(triggered()),this,SLOT(slotTreyHelp()));           // Вызов помощи из трея
+    // Актион открывающий диалог инфор. о программе
+    connect(actionTreyInfo, SIGNAL(triggered()),this,SLOT(slotTreyInfo()));           // Вызов информации о программе из трея
+    // Актион открывающий диалог настроек
+    connect(actionTreySetting, SIGNAL(triggered()),this,SLOT(slotTreySetting()));     // Вызов настроек из трея
+    // Актион отображающий программу
+    connect(actionTreyShow, SIGNAL(triggered()),this,SLOT(slotTreyShow()));           // Показать программу из трея
+    // Актион прячет окно программы в трей
+    connect(actionTreyMask, SIGNAL(triggered()),this,SLOT(slotTreyMask()));           // Скрыть программу из трея
+
     connect(dicInput,SIGNAL(activated(QString)),this,SLOT(actionDict(QString)));
     connect(findWord,SIGNAL(textChanged(QString)),this,SLOT(slotFindWord(QString)));
 
@@ -99,6 +114,8 @@ void MainWindow::connectObject()
     connect(oneRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
     connect(twoRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
     connect(threeRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
+
+    connect(setupLanguageComboBox,SIGNAL(activated(QString)),this, SLOT(downloadLanguageProgramm(QString)));
 }
 
 // Чтение настроек
@@ -109,6 +126,8 @@ void MainWindow::ReadSetting()
     // Установка словаря
     this->actionDict(dicSave);
     dicInput->setCurrentIndex(dicInput->findText(dicSave));
+
+    downloadLanguageProgramm("Russian");
 }
 
 // Поиск слова в словаре и выдется результат в html
@@ -206,7 +225,7 @@ void MainWindow::addLearnWords()
     }
     else
     {
-        showMassage("<center><br>Cлово<br>" + ListBase->item(ListBase->currentRow())->text() + "<br>уже добавленно</center>", "true");
+        showMassage("wordinsight=", "true");
     }
 }
 
@@ -254,9 +273,9 @@ void MainWindow::deleteWord()
     else
     {
         if(!learn_word.isEmpty())
-            showMassage("<center><br>Выберите слово для удаления</center>", "true");
+            showMassage("wordadddelete=", "true");
         else
-            showMassage("<center><br>Список изучаемых слов пуст!<br><br>Удалять нечего!</center>", "true");
+            showMassage("worddeleteclear=", "true");
     }
 }
 
@@ -264,7 +283,7 @@ void MainWindow::deleteWord()
 bool MainWindow::showMassage(QString text, QString button)
 {
     showmessage->show();
-    showmessage->activationQml(text, button);
+    showmessage->activationQml(downloadlanguageMap[text], button);
 
     connect(showmessage, SIGNAL(signalMove(QPoint)),this,SLOT(setNewMove(QPoint)));
 
@@ -278,7 +297,7 @@ bool MainWindow::showMassage(QString text, QString button)
 // Срабатывает при навидении на кнопку показывает подсказку
 void MainWindow::helpButton(QString text,int x, int y)
 {
-    QToolTip::showText(QPoint(this->pos().x() + x, this->pos().y() + y),text,this,QRect(0,0,100,30));
+    QToolTip::showText(QPoint(this->pos().x() + x, this->pos().y() + y),downloadlanguageMap[text],this,QRect(0,0,100,30));
 }
 
 // Проверка/запись статистики
@@ -350,7 +369,7 @@ bool MainWindow::inputShowWords(QString str, QString strinput)
     {
         if(strinput.isEmpty())
         {
-            showMassage("<center><br><br>Введите слово</center>", "true");
+            showMassage("wordinput=", "true");
         }
         else
         {
@@ -649,9 +668,6 @@ void MainWindow::helpWord()
     rect = Root->findChild<QObject*>("massegeBackground");
     rect->setProperty("opacity", "0.7");
 
-    rect = Root->findChild<QObject*>("messageText");
-    rect->setProperty("text", "<center>Выберите правильный вариант:</center>");
-
     rect = Root->findChild<QObject*>("timerMessage");
     rect->setProperty("running", "true");
 
@@ -730,5 +746,37 @@ void MainWindow::wordHelpTest(QString word)
     threeRadio->setText(threeRadioStr);                 // При подсказке выбор варианта ответа
 
     oneRadio->click();
+}
 
+// Установка языка
+void MainWindow::setupLanguageProgramm()
+{
+    QDir dir("language");                       // Создаем Qdir в папке dic
+
+    QStringList filters;                        // Устанавливаем фильтры
+    filters << "*.language";                    // Устанавливаем фильтры
+    dir.setNameFilters(filters);                // Устанавливаем фильтры
+
+    QFileInfoList list = dir.entryInfoList();   // Чтение инфо о файлах
+
+    for (int i = 0; i < list.size(); ++i) {
+        QFileInfo fileInfo = list.at(i);        // Получим доступ к имени
+
+        QFile read_file("language/" + fileInfo.fileName().toAscii()); // Открываем перевод
+
+        if(read_file.open(QIODevice::ReadOnly)) // чтение язык перевода
+        {
+            QTextStream out(&read_file);
+            out.setCodec("UTF-8");          // Установка кодека
+            listLanguage[out.readLine().remove("id=")] = fileInfo.fileName();       // Считываем первую строку с именем
+        }
+    }
+
+    QMap<QString,QString>::iterator it = listLanguage.begin();
+
+    for(; it != listLanguage.end(); ++it)
+    {
+        //qDebug() << "key: " << it.key() << "value: " << it.value();
+        setupLanguageComboBox->addItem(it.key());
+    }
 }

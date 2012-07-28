@@ -35,7 +35,7 @@ Image {
         interval: 1000
         onTriggered:
         {
-            Qt_fun.helpButton("Скрыть",373, 2);
+            Qt_fun.helpButton("helpmask=",373, 2);
         }
     }
 

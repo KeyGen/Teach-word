@@ -35,7 +35,7 @@ Image {
         interval: 1000
         onTriggered:
         {
-            Qt_fun.helpButton("Сохранить",522, 208);
+            Qt_fun.helpButton("helpsave=",522, 208);
         }
     }
 

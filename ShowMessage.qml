@@ -294,7 +294,10 @@ Rectangle {
                     timerMessageTwo.running = true
 
                     if(message.objectName == "help")
+                    {
                         Qt_fun.setVisibleQRadioButton(false);
+                        textinputqmlid.textInput = ""
+                    }
                 }
             }
         }

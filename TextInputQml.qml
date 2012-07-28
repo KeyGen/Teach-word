@@ -21,9 +21,7 @@ Rectangle
     anchors.horizontalCenter: parent.horizontalCenter
     y: mainAll.height - 50
 
-    // Разрешаем доступ textButton
-   // property alias setTextInput: textInput.text
-
+    property alias textInput: textInput.text
     TextInput {
         id: textInput
         objectName: "textInput"

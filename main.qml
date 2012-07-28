@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 Rectangle{
     id: mainAll
+    objectName: "mainall"
 
     width: 1200
     height: 300
@@ -276,7 +277,10 @@ Rectangle{
 
         }
 
-        TextInputQml{}
+        TextInputQml{
+            id: textinputqmlid
+            textInput: ""
+        }
 
         StartLearnWord{
             id: start
@@ -317,11 +321,13 @@ Rectangle{
 
         Button_setting{
             id: settingButton
+            objectName: "settingone"
             textButton: "Общие наcтройки"
         }
 
         Button_setting{
             id: learnButton
+            objectName: "settingtwo"
             textButton: "Установка уроков"
             iconButton: ":/picture/learn"
             y:  settingButton.y + 55
@@ -329,6 +335,7 @@ Rectangle{
 
         Button_setting{
             id: helpButton
+            objectName: "settingthree"
             textButton: "Справка"
             iconButton: ":/picture/help"
             y:  learnButton.y + 55
@@ -336,6 +343,7 @@ Rectangle{
 
         Button_setting{
             id: infoButton
+            objectName: "settingfour"
             textButton: "О программе"
             iconButton: ":/picture/info"
             y:  helpButton.y + 55
@@ -348,17 +356,17 @@ Rectangle{
         width: 600
         x: 600
 
-        SaveSetting{}
+        //SaveSetting{}
 
         Back{
             objectName: "inputSetting"
-            x: parent.width - 110
+            x: parent.width - 60
             y: mainAll.height - 50
         }
 
         Setting{
             objectName: "inputSetting"
-            x: parent.width - 160
+            x: parent.width - 110
             y: mainAll.height - 50
         }
 
@@ -392,18 +400,19 @@ Rectangle{
         width: 600
         x: 600
 
-        SaveSetting{
-            x: parent.width - 60
-        }
+//        SaveSetting{
+//            x: parent.width - 60
+//        }
 
         Back{
             objectName: "inputLearnWordsBack"
-            x: parent.width - 110
+            x: parent.width - 60
             y: mainAll.height - 50
+
         }
 
         Setting{
-            x: parent.width - 160
+            x: parent.width - 110
             y: mainAll.height - 50
         }
 
@@ -447,7 +456,7 @@ Rectangle{
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onPressed:
                     {
-                        Qt_fun.showMassage("<br>Это отображение статистики.<br><br>Фиксирует правильные ответы.", "true")
+                        Qt_fun.showMassage("infostatic=", "true")
                     }
                 }
             }
@@ -472,7 +481,7 @@ Rectangle{
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onPressed:
                     {
-                        Qt_fun.showMassage("<br>Отображение слов которые будем учить<br><br>Добавте слова и можно начинать урок", "true")
+                        Qt_fun.showMassage("infolearnlist=", "true")
                     }
                 }
             }
@@ -511,7 +520,7 @@ Rectangle{
                     interval: 1000
                     onTriggered:
                     {
-                        Qt_fun.helpButton("Очистить базу слов для обучения",206, 35);
+                        Qt_fun.helpButton("helpclear=",206, 35);
                     }
                 }
 
@@ -544,7 +553,7 @@ Rectangle{
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onPressed:
                     {
-                        Qt_fun.showMassage("<br><b>Базовый словарь</b><br><br>Cловари из которых будем учить слова", "true")
+                        Qt_fun.showMassage("infobasedictionary=", "true")
                     }
                 }
             }
@@ -583,7 +592,7 @@ Rectangle{
                     interval: 1000
                     onTriggered:
                     {
-                        Qt_fun.helpButton("Отобразить/скрыть перевод",450, 35);
+                        Qt_fun.helpButton("helptranslate=",450, 35);
                     }
                 }
 
@@ -630,7 +639,7 @@ Rectangle{
                     interval: 1000
                     onTriggered:
                     {
-                        Qt_fun.helpButton("Выбор словаря",500, 35);
+                        Qt_fun.helpButton("helpdictionary=",500, 35);
                     }
                 }
 
@@ -678,7 +687,7 @@ Rectangle{
                     interval: 1000
                     onTriggered:
                     {
-                        Qt_fun.helpButton("Убрать слово",277, 175);
+                        Qt_fun.helpButton("helpdelword=",277, 175);
                     }
                 }
 
@@ -724,7 +733,7 @@ Rectangle{
                     interval: 1000
                     onTriggered:
                     {
-                        Qt_fun.helpButton("Добавить слово",271, 53);
+                        Qt_fun.helpButton("helpaddword=",271, 53);
                     }
                 }
 

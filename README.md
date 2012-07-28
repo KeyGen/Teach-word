@@ -25,7 +25,10 @@ Teach word v1.0 (Learn words v2.0)
 Проверка введенного слова.
 Обработка ошибки.
 
-Скрин <br>
+28 июля 2012<br>
+Теперь программа на Английском и Русском языках. Трей работает на ура!
+
+<br>Скрин<br>
 http://images.sevstar.net/images/93834287033553810357.png <br>
 http://images.sevstar.net/images/31767636304684974245.png <br>
 http://images.sevstar.net/images/63196728332416253829.png <br>

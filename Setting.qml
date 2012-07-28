@@ -36,13 +36,13 @@ Image {
         onTriggered:
         {
             if(setting.objectName == "show")
-            Qt_fun.helpButton("Настойки",266, 35);
+            Qt_fun.helpButton("helpsetting=",266, 35);
             else if(setting.objectName == "Settingrectagleinfo")
-                Qt_fun.helpButton("Настойки",476, 208);
+                Qt_fun.helpButton("helpsetting=",476, 208);
             else if(setting.objectName == "settingstartLearnWords")
-                Qt_fun.helpButton("Перейти в настрйки",237, 231);
+                Qt_fun.helpButton("helpsettingtwo=",237, 231);
             else
-            Qt_fun.helpButton("Настойки",426, 208);
+            Qt_fun.helpButton("helpsetting=",426, 208);
         }
     }
 

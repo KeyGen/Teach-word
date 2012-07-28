@@ -632,6 +632,7 @@ Rectangle{
 
         Text {
             id: textInfoLanguage
+            objectName: "objectTextInfoLanguage"
             text:
     "<span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
@@ -688,6 +689,7 @@ Rectangle{
 
         Text {
             id: textInfoSound
+            objectName: "objectTextInfoSound"
             text:
     "<span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
@@ -744,6 +746,7 @@ Rectangle{
 
         Text {
             id: textInfoTimer
+            objectName: "objectTextInfoTimer"
             text:
     "<span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
@@ -800,6 +803,7 @@ Rectangle{
 
         Text {
             id: textInfoLearn
+            objectName: "objectTextInfoLearn"
             text:
     "<span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>
@@ -858,6 +862,7 @@ Rectangle{
 
         Text {
             id: textInfoRecresh
+            objectName: "objectTextInfoRecresh"
             text:
     "<span style=\" font-size:6pt;\">&#32;<br></span>
     <span style=\" font-size:6pt;\">&#32;<br></span>

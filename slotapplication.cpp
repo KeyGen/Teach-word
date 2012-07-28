@@ -166,3 +166,234 @@ void MainWindow::startSoundShow()
 
     mediaObject->play();
 }
+
+// Загрузка перевода в программу
+void MainWindow::downloadLanguageProgramm(QString language)
+{
+    if(!listLanguage.isEmpty())
+    {
+        QFile read_file("language/" + listLanguage[language].toAscii()); // Открываем перевод
+        QString downloadlanguage;
+
+        if(read_file.open(QIODevice::ReadOnly)) // чтение язык перевода
+        {
+            QTextStream out(&read_file);
+            out.setCodec("UTF-8");          // Установка кодека
+            downloadlanguage = out.readAll();
+        }
+
+        /////////////////////////////////////// objectTextStart
+        QString tempstr;
+        for(int i = downloadlanguage.indexOf("start="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("start=");
+
+        QObject *rect = Root->findChild<QObject*>("objectTextStart");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// objectTextInfoLanguage
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("installationlanguage="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("installationlanguage=");
+
+        rect = Root->findChild<QObject*>("objectTextInfoLanguage");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// objectTextInfoSound
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("installationsound="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("installationsound=");
+
+        rect = Root->findChild<QObject*>("objectTextInfoSound");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// objectTextInfoTimer
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("installationtimer="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("installationtimer=");
+
+        rect = Root->findChild<QObject*>("objectTextInfoTimer");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// objectTextInfoLearn
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("installationstatic="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("installationstatic=");
+
+        rect = Root->findChild<QObject*>("objectTextInfoLearn");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// objectTextInfoRecresh
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("installationreload="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("installationreload=");
+
+        rect = Root->findChild<QObject*>("objectTextInfoRecresh");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// objectTextInfo
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("infoprogramm="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("infoprogramm=");
+
+        rect = Root->findChild<QObject*>("objectTextInfo");
+        rect->setProperty("text", tempstr);
+
+        /////////////////////////////////////// settingone
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("settingone="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("settingone=");
+
+        rect = Root->findChild<QObject*>("settingone");
+        rect->setProperty("textButton", tempstr);
+
+        /////////////////////////////////////// settingtwo
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("settingtwo="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("settingtwo=");
+
+        rect = Root->findChild<QObject*>("settingtwo");
+        rect->setProperty("textButton", tempstr);
+
+        /////////////////////////////////////// settingthree
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("settingthree="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("settingthree=");
+
+        rect = Root->findChild<QObject*>("settingthree");
+        rect->setProperty("textButton", tempstr);
+
+        /////////////////////////////////////// settingfour
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("settingfour="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("settingfour=");
+
+        rect = Root->findChild<QObject*>("settingfour");
+        rect->setProperty("textButton", tempstr);
+
+        /////////////////////////////////////// messageText
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helptest="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helptest=");
+
+        rect = Root->findChild<QObject*>("messageText");
+        rect->setProperty("text", tempstr);
+
+        ///////////////////////////////////////
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpsetting="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpsetting=");
+        downloadlanguageMap["helpsetting="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpsettingtwo="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpsettingtwo=");
+        downloadlanguageMap["helpsettingtwo="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helphelp="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helphelp=");
+        downloadlanguageMap["helphelp="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpmask="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpmask=");
+        downloadlanguageMap["helpmask="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpclose="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpclose=");
+        downloadlanguageMap["helpclose="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpback="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpback=");
+        downloadlanguageMap["helpback="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpclear="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpclear=");
+        downloadlanguageMap["helpclear="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helptranslate="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helptranslate=");
+        downloadlanguageMap["helptranslate="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpdictionary="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpdictionary=");
+        downloadlanguageMap["helpdictionary="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpaddword="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpaddword=");
+        downloadlanguageMap["helpaddword="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpdelword="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpdelword=");
+        downloadlanguageMap["helpdelword="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("helpsave="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("helpsave=");
+        downloadlanguageMap["helpsave="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("infostatic="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("infostatic=");
+        downloadlanguageMap["infostatic="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("infolearnlist="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("infolearnlist=");
+        downloadlanguageMap["infolearnlist="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("infobasedictionary="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("infobasedictionary=");
+        downloadlanguageMap["infobasedictionary="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("infominimumsize="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("infominimumsize=");
+        downloadlanguageMap["infominimumsize="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("buttonupdate="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("buttonupdate=");
+        setupUpdate->setText(tempstr);
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("wordinsight="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("wordinsight=");
+        downloadlanguageMap["wordinsight="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("wordadddelete="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("wordadddelete=");
+        downloadlanguageMap["wordadddelete="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("worddeleteclear="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("worddeleteclear=");
+        downloadlanguageMap["worddeleteclear="] = tempstr;
+
+        tempstr.clear();
+        for(int i = downloadlanguage.indexOf("wordinput="); downloadlanguage.at(i) != '\n'; i++) tempstr += downloadlanguage.at(i);
+        tempstr.remove("wordinput=");
+        downloadlanguageMap["wordinput="] = tempstr;
+
+        QMap <QString, QString>::iterator it = listLanguage.begin();
+        int i = 0;
+
+        for(;it != listLanguage.end(); ++it, ++i)
+        {
+            if(it.key() == language)
+                break;
+        }
+
+        setupLanguageComboBox->setCurrentIndex(i);
+    }
+}

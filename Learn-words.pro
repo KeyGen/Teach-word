@@ -15,7 +15,8 @@ SOURCES += main.cpp\
     facilityapplication.cpp \
     qzip/qzip.cpp \
     slotapplication.cpp \
-    showmessage.cpp
+    showmessage.cpp \
+    slottrey.cpp
 
 HEADERS  += mainwindow.h \
     showmessage.h

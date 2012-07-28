@@ -53,17 +53,18 @@ Rectangle{
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked:
         {
-            if(textButton.text == "Общие наcтройки")
+            if(button.objectName == "settingone")
             mainAll.state = "shiftSetting"
 
-            if(textButton.text == "О программе")
-            mainAll.state = "shiftInfo"
-
-            if(textButton.text == "Установка уроков")
+            if(button.objectName == "settingtwo")
             mainAll.state = "shiftinputLearnWords"
 
-            if(textButton.text == "Справка")
+            if(button.objectName == "settingthree")
                 Qt_fun.openUrlHelp()
+
+            if(button.objectName == "settingfour")
+                mainAll.state = "shiftInfo"
+
         }
     }
 }

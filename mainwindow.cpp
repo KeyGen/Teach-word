@@ -55,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent)
     actionTreyShow = new QAction("Показать", this);                 // Актион отображающий программу
     actionTreyMask = new QAction("Скрыть программу", this);         // Актион прячет окно программы в трей
 
+    actionTreySound->setCheckable(true);    // Разрешаем "галочку"
+    actionTreySound->setChecked(true);
+
     // Вставляем иконки в актионы
     actionTreyClose->setIcon(QIcon(QPixmap(":/picture/quit")));         // Актион для выхода
     actionTreySound->setIcon(QIcon(QPixmap(":/picture/music")));        // Актион включает/выключает звук
@@ -116,6 +119,8 @@ MainWindow::MainWindow(QWidget *parent)
     mediaObject = new Phonon::MediaObject(this);
     audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
     Phonon::createPath(mediaObject, audioOutput);
+
+    setupLanguageProgramm();        // Установка языка
 
     bootDictionary();
     connectObject();
@@ -362,16 +367,4 @@ void MainWindow::move_window()
 void MainWindow::maskProgramm()
 {
     this->setVisible(false);    // Прячет MainWindow
-}
-
-// Вызывает WainWindow при клике на иконку в трее
-void MainWindow::treyProgrammShow(QSystemTrayIcon::ActivationReason temp)
-{
-    if(temp == QSystemTrayIcon::Trigger)    // При одинарном клики на иконку в трее
-    {
-        if(!this->isVisible())      // если скрыта программа
-        {
-            this->setVisible(true); // отображает
-        }
-    }
 }

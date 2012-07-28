@@ -35,7 +35,7 @@ Image {
         interval: 1000
         onTriggered:
         {
-            Qt_fun.helpButton("Выйти",176, 2);
+            Qt_fun.helpButton("helpclose=",176, 2);
         }
     }
 

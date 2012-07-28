@@ -36,6 +36,7 @@ Rectangle {
 
     Text {
         id: textInfo
+        objectName: "objectTextInfo"
         text:
 "<center>
 <span style=\" font-size:6pt;\">&#32;<br></span>

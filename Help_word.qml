@@ -35,7 +35,7 @@ Image {
         interval: 1000
         onTriggered:
         {
-            Qt_fun.helpButton("Подсказать",434, 237);
+            Qt_fun.helpButton("helphelp=",434, 237);
         }
     }
 
