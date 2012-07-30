@@ -19,8 +19,10 @@
 #include <QTextBrowser>
 #include <QDir>
 #include <QRadioButton>
+#include <QProgressBar>
 #include "showmessage.h"
 #include <phonon>
+#include <QSettings>
 
 class MainWindow : public QMainWindow
 {
@@ -59,6 +61,7 @@ public:
     Q_INVOKABLE void helpWord();            // Подсказка по словам
     Q_INVOKABLE void setVisibleQRadioButton(bool); // Показыват/скрывает QRadioButton
     Q_INVOKABLE void wordHelpTest(QString); // Установка значений в QRadioButton для помощи
+    Q_INVOKABLE void trueInputWord(QString); // Запись статистики при правильно введенном слове
 
     void showSistemsTrey(); // Отобразить системное меню
 
@@ -74,6 +77,10 @@ private slots:
     void slotRadioButtonClick();                                // Обрабатывает нажатие RadioButton из подсказки
     void startSoundShow();                                      // Слот активации звука при открытии программы
     void downloadLanguageProgramm(QString);                     // Загрузка перевода в программу
+    void verifyupdate();                                        // Проверка обновлений
+    void setTimeShow(QTime); // Установка появления программы
+    void setAnswerTrue(int); // Установка При какой записи статистики слово считать выученным
+    void setSoundValue(); // Установка громкости звука
 
     void slotTreySetting();     // Вызов настроек из трея
     void slotTreySound(bool);   // Включить/выключить звук из трея
@@ -92,8 +99,15 @@ private:
 
     ShowMessage *showmessage;           // Класс сообщения
 
+    QSettings settings;
     int save_x;                         // Сохраняет X положение MainWindow на экране
     int save_y;                         // Сохраняет Y положение MainWindow на экране
+
+    QTime timeShow;                     // Время отображения программы
+    int answerTrueGeneral;              // При какой записи статистики слово считать выученным
+    double soundValue;                  // Сохраняет громкость звука
+    QString dicSave;                    // Название словоря загруженного в прошдый раз
+    QString languageSave;               // Выбранный язык в прошлый раз
 
     QString activeDict;                 // Загруженный в оперативку активный словарь
 
@@ -120,6 +134,7 @@ private:
     QTextBrowser *transferWord;         // Обьект QTextBrowser предназначен для отображения перевода слов
     QComboBox *dicInput;                // Обьект QComboBox предназначен для выбора словаря
     QTextBrowser *dicInfo;              // Обьект QTextBrowser предназначен для отображения свойств словаря
+    QProgressBar *progressdownloaddic;  // Прогресс загрузки словоря
     bool fixedChanges;                  // Фиксирует были или нет изменения в learn_word (Слова для обучения)
 
     void SetupObjectSetup();            // Установка обьектов насторек qml
@@ -142,7 +157,7 @@ private:
     QMap<QString,QString> listDict;             // Запись информации и имя словоря
     QMap<QString,QString> listLanguage;         // Переводы программы
     QMap<QString,QString> downloadlanguageMap;  // Загруженный перевод
-    QMap<QVariant, QVariant> statistics;        // Запись статистики первая-слово вторая-количество правильных ответов
+    QMap<QString, QString> statistics;        // Запись статистики первая-слово вторая-количество правильных ответов
     void StatisticsFunction(QStringList);       // Проверка/запись статистики
 
     bool containsWord(QString one, QString two); // Функция осуществляющая проверку на идентицность без учета регистра
@@ -154,9 +169,12 @@ private:
     QString wordConversion(QString word);                           // Поиск слова в словаре и выдется перевод
 
     void setupLanguageProgramm(); // Установка языка
+    void temp(bool);
 
 
     void ReadSetting();     // Чтение настроек
+    void SaveSetting();     // Созранение настроек
+    void DeleteSetting();   // Удаление настроек
 };
 
 #endif // MAINWINDOW_H

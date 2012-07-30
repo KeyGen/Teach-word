@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication *app = new QApplication(argc, argv);
 
     // Устанавливаем кодировку с которй будет работать программа (UTF-8)
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -13,11 +13,11 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 
     // Создаем наш класс (программу)
-    MainWindow w;
+    MainWindow *appmain = new MainWindow();
 
     // Отображаем
-    w.show();
-    w.showSistemsTrey(); // Отображаем трей
+    appmain->show();
+    appmain->showSistemsTrey(); // Отображаем трей
     
-    return a.exec();
+    return app->exec();
 }

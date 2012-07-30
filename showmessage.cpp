@@ -5,7 +5,7 @@
 ShowMessage::ShowMessage(QWidget *parent)
     : QMainWindow(parent)
 {
-    this->setWindowFlags(Qt::CustomizeWindowHint);  // Отключаем обводку
+    this->setWindowFlags(Qt::Drawer);  // Отключаем обводку
 
     this->setFixedSize(600,300);    // Фиксируем размер окна
 

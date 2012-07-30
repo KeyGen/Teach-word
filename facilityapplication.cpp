@@ -103,6 +103,8 @@ void MainWindow::connectObject()
     // Актион прячет окно программы в трей
     connect(actionTreyMask, SIGNAL(triggered()),this,SLOT(slotTreyMask()));           // Скрыть программу из трея
 
+    connect(setupUpdate, SIGNAL(clicked()), this,SLOT(verifyupdate()));               // Проверка обновлений
+
     connect(dicInput,SIGNAL(activated(QString)),this,SLOT(actionDict(QString)));
     connect(findWord,SIGNAL(textChanged(QString)),this,SLOT(slotFindWord(QString)));
 
@@ -116,18 +118,9 @@ void MainWindow::connectObject()
     connect(threeRadio, SIGNAL(clicked()),this,SLOT(slotRadioButtonClick()));
 
     connect(setupLanguageComboBox,SIGNAL(activated(QString)),this, SLOT(downloadLanguageProgramm(QString)));
-}
 
-// Чтение настроек
-void MainWindow::ReadSetting()
-{
-    QString dicSave = "Biology (En-Ru)";
-
-    // Установка словаря
-    this->actionDict(dicSave);
-    dicInput->setCurrentIndex(dicInput->findText(dicSave));
-
-    downloadLanguageProgramm("Russian");
+    connect(setupTime,SIGNAL(timeChanged(QTime)),this,SLOT(setTimeShow(QTime)));
+    connect(setupSinBoxInputAmountCorrect,SIGNAL(valueChanged(int)),this,SLOT(setAnswerTrue(int)));
 }
 
 // Поиск слова в словаре и выдется результат в html
@@ -298,32 +291,6 @@ bool MainWindow::showMassage(QString text, QString button)
 void MainWindow::helpButton(QString text,int x, int y)
 {
     QToolTip::showText(QPoint(this->pos().x() + x, this->pos().y() + y),downloadlanguageMap[text],this,QRect(0,0,100,30));
-}
-
-// Проверка/запись статистики
-void MainWindow::StatisticsFunction(QStringList list)
-{
-    if(!statistics.isEmpty())
-    {
-        //statistics[ListBase->item(ListBase->currentRow())->text()] = 0;
-        //QMap<QVariant,QVariant>::iterator it = statistics.begin();
-    }
-    else
-    {
-        if(!list.isEmpty())
-        {
-            answerTrue->clear();
-            for(int i=0; i<list.size(); i++)
-            {
-                answerTrue->addItem("0");
-
-                if(i%2)
-                {
-                    answerTrue->item(i)->setBackgroundColor(QColor(187, 255, 255));
-                }
-            }
-        }
-    }
 }
 
 // Функция устанавливающая размер шрифта относительно размера окна
@@ -776,7 +743,96 @@ void MainWindow::setupLanguageProgramm()
 
     for(; it != listLanguage.end(); ++it)
     {
-        //qDebug() << "key: " << it.key() << "value: " << it.value();
         setupLanguageComboBox->addItem(it.key());
     }
+}
+
+// Проверка/запись статистики
+void MainWindow::StatisticsFunction(QStringList list)
+{
+    answerTrue->clear();
+
+    if(!statistics.isEmpty())
+    {
+        for(int i = 0; i<learn_word.size(); i++)
+        {
+            bool BL = true;
+            QMap <QString,QString>::iterator it = statistics.begin();
+
+            for(; it != statistics.end(); ++it)
+            {
+                if(it.key() == learn_word.at(i))
+                {
+                    answerTrue->addItem(it.value());
+                    BL = false;
+                }
+            }
+
+            if(BL)
+            {
+                answerTrue->addItem("0");
+            }
+
+            if(i%2)
+            {
+                answerTrue->item(i)->setBackgroundColor(QColor(187, 255, 255));
+            }
+        }
+    }
+    else
+    {
+        if(!list.isEmpty())
+        {
+            for(int i=0; i<list.size(); i++)
+            {
+                answerTrue->addItem("0");
+
+                if(i%2)
+                {
+                    answerTrue->item(i)->setBackgroundColor(QColor(187, 255, 255));
+                }
+            }
+        }
+    }
+}
+
+// Запись статистики при правильно введенном слове
+void MainWindow::trueInputWord(QString str)
+{
+    QTextEdit *temp = new QTextEdit(str, this);
+    str = temp->toPlainText();
+    delete temp;
+
+    qDebug() << str;
+
+    if(statistics.isEmpty())
+    {
+        statistics[str] = "1";
+    }
+    else
+    {
+        bool BL = true;
+
+        QMap <QString, QString>::iterator it = statistics.begin();
+
+        for(; it != statistics.end(); ++it)
+        {
+            if(it.key() == str)
+            {
+                QString tempstr = it.value();
+                int tempint = tempstr.toInt();
+                tempint++;
+                it.value() = QString::number(tempint,10);
+                BL = false;
+                break;
+            }
+        }
+
+        if(BL)
+        {
+            statistics[str] = "1";
+        }
+    }
+
+    StatisticsFunction(learn_word);
 }

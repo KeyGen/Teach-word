@@ -607,6 +607,7 @@ Rectangle{
 
             Image {
                 id: languageBase
+                objectName: "languageBase"
                 source: ":/picture/globe"
 
                 width: 40

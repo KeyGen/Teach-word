@@ -1,14 +1,32 @@
 #include "mainwindow.h"
+#include <QCoreApplication>
+#include <QApplication>
 
 // Вызывает WainWindow при выборе словаря
 void MainWindow::actionDict(QString str)
 {
+    dicSave = str;
+
     QMap<QString,QString>::iterator it = listDict.begin();
 
+    progressdownloaddic->setVisible(true); // Это QProgressBar по идее должен отобразиться а его нет
+
+    bool BL = false;
+    if(dicInput->isVisible())
+    {
+        dicInput->setVisible(false);
+        BL = true;
+    }
+
+    progressdownloaddic->setValue(0);
+    QApplication::processEvents(); // Обновим приложение
+
+    // Загрузка словоря stardict
     for(; it != listDict.end(); ++it)
     {
         if(it.key().contains(str))
         {
+
             QString htmlValue;
 
             htmlValue += "<br>";
@@ -40,6 +58,9 @@ void MainWindow::actionDict(QString str)
 
             dicInfo->setText(htmlValue);
 
+            progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+            QApplication::processEvents(); // Обновим приложение
+
             QFile openDict("dic/tempdir/" + it.value().toAscii()); // Загружаем словарь
 
             if(openDict.open(QIODevice::ReadOnly)) // чтение словаря
@@ -51,11 +72,16 @@ void MainWindow::actionDict(QString str)
 
             activeDict.replace("&apos;", "\'"); // Уберем html замашки
             activeDict.replace("&quot;", "");   // Уберем html замашки
+            activeDict.replace("&amp;", "&");
+
+            progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+            QApplication::processEvents(); // Обновим приложение
 
             ListBase->clear();
             baseWord.clear();
             findWord->clear();
             transferWord->clear();
+
 
             QRegExp rx("<k>([^<]*)<\/k>");
             rx.setMinimal(true);
@@ -67,7 +93,24 @@ void MainWindow::actionDict(QString str)
                  pos += rx.matchedLength();
              }
 
-             ListBase->addItems(baseWord);
+             progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+             QApplication::processEvents(); // Обновим приложение
+             int tempint = baseWord.size()/4;
+
+             for(int i=0; i<baseWord.size(); i++)
+             {
+                 ListBase->addItem(baseWord.at(i));
+
+                 if(!(i%tempint)&&i!=0)
+                 {
+                     if(progressdownloaddic->value()<60)
+                     {
+                         progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+                         QApplication::processEvents(); // Обновим приложение
+                     }
+                 }
+             }
+
              ListBase->setCurrentRow(0);
 
              for(int i=0; i<ListBase->count(); i++)
@@ -76,11 +119,32 @@ void MainWindow::actionDict(QString str)
                  {
                      ListBase->item(i)->setBackgroundColor(QColor(187, 255, 255));
                  }
+
+                 if(!(i%tempint)&&i!=0)
+                 {
+                     if(progressdownloaddic->value()<100)
+                     {
+                         progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+                         QApplication::processEvents(); // Обновим приложение
+                     }
+                 }
              }
+
+             progressdownloaddic->setValue(100);
+
 
             break;
         }
     }
+
+    progressdownloaddic->setVisible(false); // Теперь должен скрыть QProgressBar
+
+    if(BL)
+    {
+        dicInput->setVisible(true);
+    }
+
+    progressdownloaddic->setValue(0);
 }
 
 // Слот для поиска слов по загруженному словарю
@@ -170,6 +234,8 @@ void MainWindow::startSoundShow()
 // Загрузка перевода в программу
 void MainWindow::downloadLanguageProgramm(QString language)
 {
+    languageSave = language;
+
     if(!listLanguage.isEmpty())
     {
         QFile read_file("language/" + listLanguage[language].toAscii()); // Открываем перевод
@@ -396,4 +462,28 @@ void MainWindow::downloadLanguageProgramm(QString language)
 
         setupLanguageComboBox->setCurrentIndex(i);
     }
+}
+
+// Установка появления программы
+void MainWindow::setTimeShow(QTime newtime)
+{
+    timeShow = newtime;
+}
+
+// Установка При какой записи статистики слово считать выученным
+void MainWindow::setAnswerTrue(int newint)
+{
+    answerTrueGeneral = newint;
+}
+
+// Установка громкости звука
+void MainWindow::setSoundValue()
+{
+
+}
+
+// Проверка обновлений
+void MainWindow::verifyupdate()
+{
+    qDebug() << "Проверить обновления";
 }

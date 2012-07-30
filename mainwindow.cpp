@@ -6,7 +6,8 @@
 #include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+      settings("KeyGen","Learn-words")
 {
 
     this->setWindowFlags(Qt::CustomizeWindowHint);  // Отключаем обводку
@@ -18,6 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
     this->move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2); // Распологаем MainWindow в ценре
 
     setRoundedCorners(20,20,20,20); // Вызываем функцию которая закруглит углы
+
+    //////////////// Установки пременных по умолчанию
+    timeShow = QTime(1,0,0);                     // Время отображения программы
+    answerTrueGeneral = 15;              // При какой записи статистики слово считать выученным
+    dicSave = "Biology (En-Ru)";                    // Название словоря загруженного в прошдый раз
+    languageSave = "Russian";               // Выбранный язык в прошлый раз
+    //////////////// Установки пременных по умолчанию the end
 
     //Включаем наш QML
     ui = new QDeclarativeView();
@@ -124,6 +132,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     bootDictionary();
     connectObject();
+
+    //DeleteSetting();
+
     ReadSetting();
 }
 
@@ -183,6 +194,12 @@ void MainWindow::SetupLautWordsInput()
     dicInfo = new QTextBrowser(this);       // Обьект QTextBrowser предназначен для отображения свойств словаря
     dicInfo->setGeometry(moveLautWordsInput + 200, 50, 225, 155); // Устанавливаем геометрию (положение/размер) обекта QTextBrowser
     dicInfo->setVisible(false);
+
+    progressdownloaddic = new QProgressBar(this);  // Прогресс загрузки словоря
+    progressdownloaddic->setMaximum(100);
+    progressdownloaddic->setMinimum(0);
+    progressdownloaddic->setGeometry(moveLautWordsInput + 200, 50, 225, 30); // Устанавливаем геометрию (положение/размер) обекта QComboBox
+   // progressdownloaddic->setVisible(false);
 }
 
 // Функция C++ вызываемая из QML для перемещания обьектов редактора уроков обучения
@@ -199,6 +216,7 @@ void MainWindow::moveInputWords(int moveInt)
 
     dicInput->move(moveLautWordsInput + 344, 50);  // Перемещаем обьект
     dicInfo->move(moveLautWordsInput + 344, 80);       // Перемещаем обьект
+    progressdownloaddic->move(moveLautWordsInput + 344, 50);       // Перемещаем обьект Прогресс загрузки словоря
 }
 
 // Показать/скрыть dicInput и dicInfo
@@ -206,8 +224,11 @@ void MainWindow::showObjectdicInputanddicInfo()
 {
     if(dicInput->isVisible())
     {
+        QApplication::processEvents(); // Обновим приложение
+
         dicInput->setVisible(false);
         dicInfo->setVisible(false);
+        transferWord->setVisible(false);
     }
     else
     {
@@ -219,15 +240,18 @@ void MainWindow::showObjectdicInputanddicInfo()
 // Показывает/скрывает findWord transferWord
 void MainWindow::setVisibleObjectLernWord()
 {
-    if(ListBase->isVisible())
+    if(!dicInput->isVisible())
     {
-        ListBase->setVisible(false);
-        transferWord->setVisible(true);
-    }
-    else
-    {
-        ListBase->setVisible(true);
-        transferWord->setVisible(false);
+        if(ListBase->isVisible())
+        {
+            ListBase->setVisible(false);
+            transferWord->setVisible(true);
+        }
+        else
+        {
+            ListBase->setVisible(true);
+            transferWord->setVisible(false);
+        }
     }
 }
 
@@ -238,10 +262,14 @@ void MainWindow::SetupObjectSetup()
     moveObjectSetup = 600;
 
     setupTime = new QTimeEdit(this);
+    setupTime->setMinimumTime(QTime(0,0,10));
+    setupTime->setTime(timeShow);
     setupTime->setGeometry(moveObjectSetup, 0, 200, 30);
     setupTime->setVisible(false);
 
     setupSinBoxInputAmountCorrect = new QSpinBox(this);
+    setupSinBoxInputAmountCorrect->setMinimum(5);
+    setupSinBoxInputAmountCorrect->setValue(answerTrueGeneral);
     setupSinBoxInputAmountCorrect->setGeometry(moveObjectSetup, 0, 200, 30);
     setupSinBoxInputAmountCorrect->setVisible(false);
 
@@ -308,6 +336,7 @@ void MainWindow::setVisibleObjectsetupUpdate(bool BL)
 // Функция C++ вызываемая из QML для завершения работы приложения
 void MainWindow::quit()
 {
+    SaveSetting();
     this->close(); // Завершает выполнение программы
     showmessage->close();
 }
@@ -367,4 +396,92 @@ void MainWindow::move_window()
 void MainWindow::maskProgramm()
 {
     this->setVisible(false);    // Прячет MainWindow
+}
+
+void MainWindow::temp(bool BL)
+{
+    progressdownloaddic->setVisible(BL);
+}
+
+// Чтение настроек
+void MainWindow::ReadSetting()
+{
+    if(settings.value("/Settings/pos/x").toInt()!=0&&settings.value("/Settings/pos/y").toInt()!=0)
+    this->move(settings.value("/Settings/pos/x").toInt(),settings.value("/Settings/pos/y").toInt());
+
+    languageSave = settings.value("/Settings/language", languageSave).toString();
+    dicSave = settings.value("/Settings/dictionary", dicSave).toString();
+    answerTrueGeneral = settings.value("/Settings/answer", answerTrueGeneral).toInt();
+    soundValue = settings.value("/Settings/soundValue", soundValue).toDouble();
+    timeShow = settings.value("/Settings/timerShow", timeShow).toTime();
+
+
+    QStringList key, value;
+    key = settings.value("/Settings/statisticskey", key).toStringList();
+    value = settings.value("/Settings/statisticsvalue", value).toStringList();
+
+    // Чтение статистики
+    if((!key.isEmpty())&&(!value.isEmpty()))
+    {
+        for(int i = 0; i<key.size(); i++)
+        {
+            statistics[key.at(i)] = value.at(i);
+        }
+    }
+
+    // Установка словаря
+    this->actionDict(dicSave);
+    dicInput->setCurrentIndex(dicInput->findText(dicSave));
+
+    downloadLanguageProgramm(languageSave);
+
+    setupTime->setTime(timeShow);
+    setupSinBoxInputAmountCorrect->setValue(answerTrueGeneral);
+}
+
+// Созранение настроек
+void MainWindow::SaveSetting()
+{
+    settings.setValue("/Settings/pos/x" , this->pos().x());     // Позиция x
+    settings.setValue("/Settings/pos/y" , this->pos().y());     // Позиция y
+
+    settings.setValue("Settings/language", languageSave);       // Выбранный язык в прошлый раз
+    settings.setValue("Settings/dictionary", dicSave);          // Название словоря загруженного в прошдый раз
+    settings.setValue("Settings/answer", answerTrueGeneral);    // При какой записи статистики слово считать выученным
+    settings.setValue("Settings/soundValue", soundValue);       // Сохраняет громкость звука
+    settings.setValue("Settings/timerShow", timeShow);          // Время отображения программы
+
+    // Запись статистики
+    if(!statistics.isEmpty())
+    {
+        QStringList key, value;
+        QMap<QString,QString>::iterator it = statistics.begin();
+
+        for(; it != statistics.end(); ++it)
+        {
+            key << it.key();
+            value << it.value();
+        }
+
+        settings.setValue("Settings/statisticskey", key);
+        settings.setValue("Settings/statisticsvalue", value);
+    }
+}
+
+
+// Удаление настроек
+void MainWindow::DeleteSetting()
+{
+    settings.remove("/Settings/pos/x");
+    settings.remove("/Settings/pos/y");
+
+    settings.remove("Settings/language");       // Выбранный язык в прошлый раз
+    settings.remove("Settings/dictionary");     // Название словоря загруженного в прошдый раз
+    settings.remove("Settings/answer");         // При какой записи статистики слово считать выученным
+    settings.remove("Settings/soundValue");     // Сохраняет громкость звука
+    settings.remove("Settings/timerShow");      // Время отображения программы
+
+    // Удаление статистики
+    settings.remove("Settings/statisticskey");
+    settings.remove("Settings/statisticsvalue");
 }

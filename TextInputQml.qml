@@ -455,49 +455,59 @@ Rectangle
 
                 if(Qt_fun.inputShowWords(textOne, textInput.text))
                 {
+                    var text;
                     if(showleftopacity.objectName == "show_1")
                     {
                         showleftopacity.scale = 1.3
+                        text = showleftopacity.textShow
                     }
 
                     else if(show1.objectName == "show_1")
                     {
                         show1.scale = 1.3
+                        text = show1.textShow
                     }
 
                     else if(show2.objectName == "show_1")
                     {
                         show2.scale = 1.3
+                        text = show2.textShow
                     }
 
                     else if(show3.objectName == "show_1")
                     {
                         show3.scale = 1.3
+                        text = show3.textShow
                     }
 
                     else if(showrightopacity.objectName == "show_1")
                     {
                         showrightopacity.scale = 1.3
+                        text = showrightopacity.textShow
                     }
 
                     else if(show5.objectName == "show_1")
                     {
                         show5.scale = 1.3
+                        text = show5.textShow
                     }
 
                     else if(show4.objectName == "show_1")
                     {
                         show4.scale = 1.3
+                        text = show4.textShow
                     }
 
                     else if(show6.objectName == "show_1")
                     {
                         show6.scale = 1.3
+                        text = show6.textShow
                     }
 
                     else if(show7.objectName == "show_1")
                     {
                         show7.scale = 1.3
+                        text = show7.textShow
                     }
 
                     timerFocus.running = true
@@ -505,6 +515,9 @@ Rectangle
                     timerThreeFocus.running = true
 
                     textInput.text = ""
+
+                    /////////////////////////////////////////////////////////////
+                    Qt_fun.trueInputWord(text)
                 }
             }
         }
