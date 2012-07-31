@@ -121,6 +121,8 @@ void MainWindow::connectObject()
 
     connect(setupTime,SIGNAL(timeChanged(QTime)),this,SLOT(setTimeShow(QTime)));
     connect(setupSinBoxInputAmountCorrect,SIGNAL(valueChanged(int)),this,SLOT(setAnswerTrue(int)));
+
+    connect(timerShow, SIGNAL(timeout()),this,SLOT(slotTimeOut()));
 }
 
 // Поиск слова в словаре и выдется результат в html
@@ -179,46 +181,54 @@ QString MainWindow::DictInHtml(QString word)
 }
 
 // Добавление слова из базы для обучения
-void MainWindow::addLearnWords()
+void MainWindow::addLearnWords(QStringList list)
 {
     //qDebug() << "Количество слов в словаре: " << baseWord.count();
 
-
-    if(!learn_word.contains(ListBase->item(ListBase->currentRow())->text()))
+    if(list.at(0) == "null" || list.isEmpty())
     {
-        learn_word << ListBase->item(ListBase->currentRow())->text();
-
-        ///////////////////////////////////////////////////////////////
-
-        setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
-
-        ///////////////////////////////////////////////////////////////
-
-        StatisticsFunction(learn_word); // Проверка/запись статистики
-
-        ///////////////////////////////////////////////////////////////
-
-        ListLearnWords->clear();
-        ListLearnWords->addItems(learn_word);
-
-        for(int i=0; i<ListLearnWords->count(); i++)
-        {
-            if(i%2)
-            {
-                ListLearnWords->item(i)->setBackgroundColor(QColor(187, 255, 255));
-            }
-        }
-
-        int temp = ListBase->currentRow();
-
-        if(temp < ListBase->count())
-        ListBase->setCurrentRow(ListBase->currentRow()+1);
-
-        fixedChanges = true; // Фиксирует были или нет изменения в learn_word (Слова для обучения)
+        list.clear();
+        list << ListBase->item(ListBase->currentRow())->text();
     }
-    else
+
+    for(int i = 0; i<list.size(); i++)
     {
-        showMassage("wordinsight=", "true");
+        if(!learn_word.contains(list.at(i)))
+        {
+            learn_word << list.at(i);
+
+            ///////////////////////////////////////////////////////////////
+
+            setWords(); // Функция регулирует вывод изучаемых слов на qml из learn_word
+
+            ///////////////////////////////////////////////////////////////
+
+            StatisticsFunction(learn_word); // Проверка/запись статистики
+
+            ///////////////////////////////////////////////////////////////
+
+            ListLearnWords->clear();
+            ListLearnWords->addItems(learn_word);
+
+            for(int i=0; i<ListLearnWords->count(); i++)
+            {
+                if(i%2)
+                {
+                    ListLearnWords->item(i)->setBackgroundColor(QColor(187, 255, 255));
+                }
+            }
+
+            int temp = ListBase->currentRow();
+
+            if(temp < ListBase->count())
+                ListBase->setCurrentRow(ListBase->currentRow()+1);
+
+            fixedChanges = true; // Фиксирует были или нет изменения в learn_word (Слова для обучения)
+        }
+        else
+        {
+            showMassage("wordinsight=", "true");
+        }
     }
 }
 
@@ -835,4 +845,11 @@ void MainWindow::trueInputWord(QString str)
     }
 
     StatisticsFunction(learn_word);
+}
+
+// Конец загрузки приложения
+void MainWindow::downloadoff()
+{
+    dial->setValue(100);
+    dial->setVisible(false);
 }

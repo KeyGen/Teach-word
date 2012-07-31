@@ -23,6 +23,8 @@
 #include "showmessage.h"
 #include <phonon>
 #include <QSettings>
+#include <QProgressDialog>
+#include <QTimer>
 
 class MainWindow : public QMainWindow
 {
@@ -50,13 +52,13 @@ public:
     Q_INVOKABLE void setVisibleObjectLernWord();                    // Показывает/скрывает findWord transferWord
     Q_INVOKABLE bool inputShowWords(QString, QString);              // Установка слов в qml / проверка правильности введенного ответа
     Q_INVOKABLE void showObjectdicInputanddicInfo();                // Показать/скрыть dicInput и dicInfo
-    Q_INVOKABLE void addLearnWords();                               // Добавление слова из базы для обучения
+    Q_INVOKABLE void addLearnWords(QStringList list);                               // Добавление слова из базы для обучения
     Q_INVOKABLE void clearLearnWords();                             // Очистка слов для обучения
     Q_INVOKABLE void deleteWord();                                  // Удаление выделенного слова из изучаемых слов
 
     Q_INVOKABLE bool showMassage(QString text = "On text", QString button = "true, false");     // Форма для сообщения общается с qml
     Q_INVOKABLE void helpButton(QString text, int, int); // Срабатывает при навидении на кнопку показывает подсказку
-    Q_INVOKABLE void setShowOnDefault();    // Функция устанавливает пумолчанию главное окно программы
+    Q_INVOKABLE void setShowOnDefault();    // Функция устанавливает по умолчанию главное окно программы
     Q_INVOKABLE int controlSize();         // Функция проверяет сколько загружено слов для обучения (минимум 5)
     Q_INVOKABLE void helpWord();            // Подсказка по словам
     Q_INVOKABLE void setVisibleQRadioButton(bool); // Показыват/скрывает QRadioButton
@@ -64,6 +66,7 @@ public:
     Q_INVOKABLE void trueInputWord(QString); // Запись статистики при правильно введенном слове
 
     void showSistemsTrey(); // Отобразить системное меню
+    void downloadoff();     // Конец загрузки приложения
 
 private slots:
     void treyProgrammShow(QSystemTrayIcon::ActivationReason);   // Вызывает WainWindow при клике на иконку в трее
@@ -81,6 +84,7 @@ private slots:
     void setTimeShow(QTime); // Установка появления программы
     void setAnswerTrue(int); // Установка При какой записи статистики слово считать выученным
     void setSoundValue(); // Установка громкости звука
+    void slotTimeOut(); // Конец таймера
 
     void slotTreySetting();     // Вызов настроек из трея
     void slotTreySound(bool);   // Включить/выключить звук из трея
@@ -93,17 +97,19 @@ private slots:
 private:
     QDeclarativeView *ui;               // Qml
     QObject *Root;                      // Корневой элемент QML модели
+    QProgressDialog *dial;              // Отображает процесс загрузки приложения
 
     Phonon::MediaObject *mediaObject;
     Phonon::AudioOutput *audioOutput;
 
     ShowMessage *showmessage;           // Класс сообщения
 
-    QSettings settings;
+    QSettings settings;                 // Сохранения
     int save_x;                         // Сохраняет X положение MainWindow на экране
     int save_y;                         // Сохраняет Y положение MainWindow на экране
 
     QTime timeShow;                     // Время отображения программы
+    QTimer *timerShow;                   // Таймер для отображения
     int answerTrueGeneral;              // При какой записи статистики слово считать выученным
     double soundValue;                  // Сохраняет громкость звука
     QString dicSave;                    // Название словоря загруженного в прошдый раз

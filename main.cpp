@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include <QTextCodec>
+#include <QDebug>
+
 
 int main(int argc, char *argv[])
 {
@@ -18,6 +20,7 @@ int main(int argc, char *argv[])
     // Отображаем
     appmain->show();
     appmain->showSistemsTrey(); // Отображаем трей
+    appmain->downloadoff();
     
     return app->exec();
 }

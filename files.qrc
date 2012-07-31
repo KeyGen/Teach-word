@@ -56,6 +56,7 @@
         <file alias="info128">picture/info128.png</file>
         <file alias="yes">picture/yes.png</file>
         <file alias="idea">picture/idea.png</file>
+        <file alias="startbackground">picture/startbackground.png</file>
     </qresource>
     <qresource prefix="/sound">
         <file>sound/enter_button.mp3</file>

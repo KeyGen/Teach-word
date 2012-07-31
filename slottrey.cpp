@@ -32,7 +32,7 @@ void MainWindow::slotTreyShow()
 {
     if(!this->isVisible())      // если скрыта программа
     {
-        this->setVisible(true); // отображает
+        this->slotTimeOut(); // отображает
     }
 }
 
@@ -42,6 +42,7 @@ void MainWindow::slotTreyMask()
     if(this->isVisible())      // если отображена программа
     {
         this->setVisible(false); // скрывает
+        timerShow->start();
     }
 }
 

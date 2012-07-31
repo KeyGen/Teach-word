@@ -3,6 +3,7 @@ import QtQuick 1.1
 
 Rectangle {
     id:startLearnWords
+    objectName: "startLearnWords"
     width: 600
     height: 300
 

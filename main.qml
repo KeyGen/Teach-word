@@ -742,7 +742,7 @@ Rectangle{
                     id: leftMouse
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
-                    onPressed: Qt_fun.addLearnWords()
+                    onPressed: Qt_fun.addLearnWords("null")
                 }
             }
        }

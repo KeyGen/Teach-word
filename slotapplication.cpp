@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QApplication>
 
+
 // Вызывает WainWindow при выборе словаря
 void MainWindow::actionDict(QString str)
 {
@@ -19,6 +20,10 @@ void MainWindow::actionDict(QString str)
     }
 
     progressdownloaddic->setValue(0);
+
+    if(dial->isVisible())
+    dial->setValue(0);
+
     QApplication::processEvents(); // Обновим приложение
 
     // Загрузка словоря stardict
@@ -59,6 +64,10 @@ void MainWindow::actionDict(QString str)
             dicInfo->setText(htmlValue);
 
             progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+
+            if(dial->isVisible())
+            dial->setValue(10);
+
             QApplication::processEvents(); // Обновим приложение
 
             QFile openDict("dic/tempdir/" + it.value().toAscii()); // Загружаем словарь
@@ -75,6 +84,10 @@ void MainWindow::actionDict(QString str)
             activeDict.replace("&amp;", "&");
 
             progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+
+            if(dial->isVisible())
+            dial->setValue(20);
+
             QApplication::processEvents(); // Обновим приложение
 
             ListBase->clear();
@@ -94,6 +107,10 @@ void MainWindow::actionDict(QString str)
              }
 
              progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+
+             if(dial->isVisible())
+             dial->setValue(30);
+
              QApplication::processEvents(); // Обновим приложение
              int tempint = baseWord.size()/4;
 
@@ -106,6 +123,10 @@ void MainWindow::actionDict(QString str)
                      if(progressdownloaddic->value()<60)
                      {
                          progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+
+                         if(dial->isVisible()&&dial->value()<90)
+                         dial->setValue(dial->value() + 10);
+
                          QApplication::processEvents(); // Обновим приложение
                      }
                  }
@@ -125,13 +146,18 @@ void MainWindow::actionDict(QString str)
                      if(progressdownloaddic->value()<100)
                      {
                          progressdownloaddic->setValue(progressdownloaddic->value() + 10);
+
+                         if(dial->isVisible()&&dial->value()<90)
+                            dial->setValue(dial->value() + 10);
+                         else if(dial->isVisible())
+                             dial->setValue(95);
+
                          QApplication::processEvents(); // Обновим приложение
                      }
                  }
              }
 
              progressdownloaddic->setValue(100);
-
 
             break;
         }
@@ -464,10 +490,21 @@ void MainWindow::downloadLanguageProgramm(QString language)
     }
 }
 
+// Конец таймера
+void MainWindow::slotTimeOut()
+{
+    this->setVisible(true);
+    timerShow->stop();
+    fixedChanges = true;
+    setShowOnDefault();
+}
+
 // Установка появления программы
 void MainWindow::setTimeShow(QTime newtime)
 {
     timeShow = newtime;
+    int temp = timeShow.hour()*120*1000 + timeShow.minute()*60*1000 + timeShow.second()*1000;
+    timerShow->setInterval(temp);
 }
 
 // Установка При какой записи статистики слово считать выученным

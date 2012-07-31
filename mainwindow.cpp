@@ -5,6 +5,10 @@
 #include <QRadioButton>
 #include <QDesktopServices>
 
+
+//#include <QDesktopWidget>
+#include <QLabel>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       settings("KeyGen","Learn-words")
@@ -18,6 +22,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2); // Распологаем MainWindow в ценре
 
+    dial = new QProgressDialog();       // Первоначальная загрузка приложения
+    QLabel *lab = new QLabel(dial);
+    lab->setPixmap(QPixmap(":/picture/startbackground"));
+    dial->setWindowFlags(Qt::ToolTip);
+    dial->setFixedSize(429,150);
+    dial->move((desktop->width()-dial->width())/2,(desktop->height()-dial->height())/2); // Распологаем MainWindow в ценре
+    dial->show();
+
     setRoundedCorners(20,20,20,20); // Вызываем функцию которая закруглит углы
 
     //////////////// Установки пременных по умолчанию
@@ -26,6 +38,11 @@ MainWindow::MainWindow(QWidget *parent)
     dicSave = "Biology (En-Ru)";                    // Название словоря загруженного в прошдый раз
     languageSave = "Russian";               // Выбранный язык в прошлый раз
     //////////////// Установки пременных по умолчанию the end
+
+    int temp = timeShow.hour()*120*1000 + timeShow.minute()*60*1000 + timeShow.second()*1000;
+    timerShow = new QTimer(this);                   // Таймер для отображения
+    timerShow->setInterval(temp);
+
 
     //Включаем наш QML
     ui = new QDeclarativeView();
@@ -396,6 +413,7 @@ void MainWindow::move_window()
 void MainWindow::maskProgramm()
 {
     this->setVisible(false);    // Прячет MainWindow
+    timerShow->start();
 }
 
 void MainWindow::temp(bool BL)
@@ -407,14 +425,17 @@ void MainWindow::temp(bool BL)
 void MainWindow::ReadSetting()
 {
     if(settings.value("/Settings/pos/x").toInt()!=0&&settings.value("/Settings/pos/y").toInt()!=0)
-    this->move(settings.value("/Settings/pos/x").toInt(),settings.value("/Settings/pos/y").toInt());
+    {
+        this->move(settings.value("/Settings/pos/x").toInt(),settings.value("/Settings/pos/y").toInt());
+        showmessage->move(settings.value("/Settings/pos/x").toInt(),settings.value("/Settings/pos/y").toInt());
+    }
 
     languageSave = settings.value("/Settings/language", languageSave).toString();
     dicSave = settings.value("/Settings/dictionary", dicSave).toString();
     answerTrueGeneral = settings.value("/Settings/answer", answerTrueGeneral).toInt();
     soundValue = settings.value("/Settings/soundValue", soundValue).toDouble();
     timeShow = settings.value("/Settings/timerShow", timeShow).toTime();
-
+    QStringList templearn_word = settings.value("Settings/learnword").toStringList();        // Слова загруженные для обучения
 
     QStringList key, value;
     key = settings.value("/Settings/statisticskey", key).toStringList();
@@ -437,6 +458,16 @@ void MainWindow::ReadSetting()
 
     setupTime->setTime(timeShow);
     setupSinBoxInputAmountCorrect->setValue(answerTrueGeneral);
+
+
+    if(!templearn_word.isEmpty())
+    {
+        addLearnWords(templearn_word);
+
+        // Достум из С++ к qml
+        QObject *rect = Root->findChild<QObject*>("startLearnWords");
+        rect->setProperty("state", "shift");
+    }
 }
 
 // Созранение настроек
@@ -450,6 +481,7 @@ void MainWindow::SaveSetting()
     settings.setValue("Settings/answer", answerTrueGeneral);    // При какой записи статистики слово считать выученным
     settings.setValue("Settings/soundValue", soundValue);       // Сохраняет громкость звука
     settings.setValue("Settings/timerShow", timeShow);          // Время отображения программы
+    settings.setValue("Settings/learnword", learn_word);        // Слова загруженные для обучения
 
     // Запись статистики
     if(!statistics.isEmpty())
@@ -480,6 +512,7 @@ void MainWindow::DeleteSetting()
     settings.remove("Settings/answer");         // При какой записи статистики слово считать выученным
     settings.remove("Settings/soundValue");     // Сохраняет громкость звука
     settings.remove("Settings/timerShow");      // Время отображения программы
+    settings.remove("Settings/learnword");        // Слова загруженные для обучения
 
     // Удаление статистики
     settings.remove("Settings/statisticskey");
